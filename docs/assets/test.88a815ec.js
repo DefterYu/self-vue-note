@@ -1,0 +1,1 @@
+import{S as e}from"./index.e62ece1f.js";const r=e("test",{state:()=>({count:0,count1:0,count2:0,count3:0}),getters:{countStr(t){return`getter \u53C2\u6570${t.count}`},countStr2(){return`\u53C2\u6570\u4E92\u8C03 => ${this.countStr}`}},actions:{x2(t){this.count*=t},to0(){this.count=0}},persist:{enabled:!0,strategies:[{key:"test",storage:localStorage}]}});export{r as t};
