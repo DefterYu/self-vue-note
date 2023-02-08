@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.16:7777';
-// const BASE_URL = 'http://localhost:7777'
+// const BASE_URL = 'http://192.168.1.16:7777';
+const BASE_URL = 'http://localhost:7777';
 
 const service = axios.create({
     baseURL: BASE_URL

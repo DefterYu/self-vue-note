@@ -7,3 +7,7 @@ export const test1 = () => {
 export const loginTest = (params: any) => {
     return request.post('/user/login', { ...params });
 };
+
+export const regist = (params: any) => {
+    return request.post('/user/login', { ...params });
+};
