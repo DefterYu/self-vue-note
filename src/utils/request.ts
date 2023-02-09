@@ -10,6 +10,14 @@ const service = axios.create({
 //请求拦截器
 service.interceptors.request.use(
     config => {
+        const tokenObj = window.localStorage.getItem('token');
+
+        console.log(config);
+        if (tokenObj && JSON.parse(tokenObj).token) {
+            console.log('存在token:', tokenObj);
+            config.headers['token'] = JSON.parse(tokenObj).token;
+        }
+
         return config;
     },
     error => {
@@ -20,6 +28,7 @@ service.interceptors.request.use(
 //响应拦截器
 service.interceptors.response.use(
     response => {
+        // 仅返回响应中的data
         return response.data;
     },
     error => {
