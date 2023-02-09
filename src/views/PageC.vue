@@ -1,6 +1,10 @@
 <script setup lang="ts">
-    import { test1, loginTest } from '@/api/index';
-    import { reactive } from 'vue';
+    import { test1, loginTest, register, logoutTest } from '@/api/index';
+    import { reactive, ref } from 'vue';
+    import { author } from '@/store/authentication';
+    import { storeToRefs } from 'pinia';
+    const authentication = author();
+    const { token } = storeToRefs(authentication);
 
     const loginFromData = reactive({
         userName: 'test',
@@ -8,18 +12,34 @@
     });
     const regFromData = reactive({
         userName: '',
-        psd: '',
-        psdAgain: ''
+        password: ''
     });
+    let psdAgain = ref<string>('');
     const login = () => {
         loginTest(loginFromData).then(res => {
             console.log('登录结果', res);
-            if (typeof res == 'undefined') {
-                ElMessage({ message: '请求异常', type: 'error' });
+            if (typeof res == 'undefined' || res.code != 200) {
+                return ElMessage({
+                    message: res.msg || '请求异常',
+                    type: 'error'
+                });
             }
+            ElMessage({ message: res.msg, type: 'success' });
+            console.log('token', res);
+
+            token.value = res.data.token;
         });
     };
 
+    const logout = () => {
+        logoutTest().then(res => {
+            console.log('退出登录', res);
+            if (res.code == 200) {
+                ElMessage({ message: res.msg, type: 'success' });
+                clearToken();
+            }
+        });
+    };
     const test = () => {
         test1().then(res => {
             console.log('i', res);
@@ -30,14 +50,19 @@
     };
     //注册接口
     const reg = () => {
-        console.log('-----------点击注册');
-        if (
-            !regFromData.userName ||
-            !regFromData.psd ||
-            !regFromData.psdAgain
-        ) {
+        console.log('-----------点击注册', psdAgain.value);
+        if (!regFromData.userName || !regFromData.password || !psdAgain.value) {
             return ElMessage({ message: '请完善信息', type: 'error' });
         }
+        if (regFromData.password != psdAgain.value) {
+            return ElMessage({ message: '两次密码不一致', type: 'error' });
+        }
+        register(regFromData).then(res => {
+            console.log('注册返回信息', res);
+        });
+    };
+    const clearToken = () => {
+        authentication.deleToken();
     };
 </script>
 
@@ -73,6 +98,18 @@
                 >
                     登录
                 </el-button>
+                <el-button
+                    round
+                    @click="logout"
+                >
+                    注销
+                </el-button>
+                <el-button
+                    round
+                    @click="clearToken"
+                >
+                    清空token
+                </el-button>
             </div>
         </div>
     </div>
@@ -89,14 +126,14 @@
             <div>
                 密码
                 <el-input
-                    v-model="regFromData.psd"
+                    v-model="regFromData.password"
                     placeholder="Please input"
                 />
             </div>
             <div>
                 确认密码
                 <el-input
-                    v-model="regFromData.psdAgain"
+                    v-model="psdAgain"
                     placeholder="Please input"
                 />
             </div>

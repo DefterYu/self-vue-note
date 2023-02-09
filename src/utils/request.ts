@@ -10,12 +10,13 @@ const service = axios.create({
 //请求拦截器
 service.interceptors.request.use(
     config => {
-        const tokenObj = window.localStorage.getItem('token');
+        const author = window.localStorage.getItem('author');
 
-        console.log(config);
-        if (tokenObj && JSON.parse(tokenObj).token) {
-            console.log('存在token:', tokenObj);
-            config.headers['token'] = JSON.parse(tokenObj).token;
+        console.log('请求参数', config);
+
+        if (author && JSON.parse(author).token) {
+            console.log('存在token:', author);
+            config.headers['token'] = JSON.parse(author).token;
         }
 
         return config;

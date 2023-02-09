@@ -2,10 +2,7 @@ import { defineStore } from 'pinia';
 
 export const testStore = defineStore('test', {
     state: () => ({
-        count: 0,
-        count1: 0,
-        count2: 0,
-        count3: 0
+        count: 2
     }),
     getters: {
         countStr(state) {
@@ -26,14 +23,5 @@ export const testStore = defineStore('test', {
         to0() {
             this.count = 0;
         }
-    },
-    persist: {
-        enabled: true,
-        strategies: [
-            {
-                key: 'test',
-                storage: localStorage
-            }
-        ]
     }
 });
