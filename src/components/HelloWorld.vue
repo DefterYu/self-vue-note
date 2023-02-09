@@ -14,6 +14,10 @@
     const x2 = (num: number) => {
         myStore.x2(num);
     };
+    //$reset 将数据进行重置
+    const resetStroe = () => {
+        myStore.$reset();
+    };
 </script>
 
 <template>
@@ -37,6 +41,12 @@
             @click="myStore.to0"
         >
             clear
+        </el-button>
+        <el-button
+            type="info"
+            @click="resetStroe"
+        >
+            $reset clear
         </el-button>
     </div>
     <div>storeToRefs解构getter:{{ countStr }}</div>
