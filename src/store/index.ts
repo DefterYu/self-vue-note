@@ -1,8 +1,11 @@
 import { createPinia } from 'pinia';
-import piniaPluginPersist from 'pinia-plugin-persist';
+
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 const pinia = createPinia();
 
-pinia.use(piniaPluginPersist);
+//使用pinia持久化插件
+pinia.use(piniaPluginPersistedstate);
 
+//对外导出用于main导入pinia实例
 export default pinia;
