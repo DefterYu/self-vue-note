@@ -15,3 +15,7 @@ export const register = (params: any) => {
 export const logoutTest = () => {
     return request.get('/user/logout');
 };
+//检测token是否有效
+export const onlineTest = () => {
+    return request.get('/user/online');
+};

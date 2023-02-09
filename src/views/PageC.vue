@@ -1,10 +1,26 @@
 <script setup lang="ts">
-    import { test1, loginTest, register, logoutTest } from '@/api/index';
+    import {
+        test1,
+        loginTest,
+        register,
+        logoutTest,
+        onlineTest
+    } from '@/api/index';
     import { reactive, ref } from 'vue';
     import { author } from '@/store/authentication';
     import { storeToRefs } from 'pinia';
     const authentication = author();
     const { token } = storeToRefs(authentication);
+
+    const isOnline = () => {
+        onlineTest().then(res => {
+            console.log('检测结果', res);
+            ElMessage({
+                message: res.msg,
+                type: res.code == 200 ? 'success' : 'error'
+            });
+        });
+    };
 
     const loginFromData = reactive({
         userName: 'test',
@@ -73,6 +89,13 @@
         @click="test"
     >
         测试请求
+    </el-button>
+    <el-button
+        type="danger"
+        round
+        @click="isOnline"
+    >
+        在线检测
     </el-button>
     <div class="w-6/12 border border-red-500 rounded-md px-10">
         <p class="text-xl">登录测试</p>
