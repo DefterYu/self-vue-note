@@ -44,13 +44,11 @@
         });
     };
 
+    // 退出登录
     const logout = () => {
         logoutTest().then(res => {
+            clearToken();
             console.log('退出登录', res);
-            if (res.code == 200) {
-                ElMessage({ message: res.msg, type: 'success' });
-                clearToken();
-            }
         });
     };
     const test = () => {
