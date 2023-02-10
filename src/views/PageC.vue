@@ -8,9 +8,8 @@
     } from '@/api/index';
     import { reactive, ref } from 'vue';
     import { author } from '@/store/authentication';
-    import { storeToRefs } from 'pinia';
+
     const authentication = author();
-    const { token } = storeToRefs(authentication);
 
     const isOnline = () => {
         onlineTest().then(res => {
@@ -41,9 +40,7 @@
                 });
             }
             ElMessage({ message: res.msg, type: 'success' });
-            console.log('token', res);
-
-            token.value = res.data.token;
+            authentication.setToken(res.data.token);
         });
     };
 
@@ -75,6 +72,10 @@
         }
         register(regFromData).then(res => {
             console.log('注册返回信息', res);
+            ElMessage({
+                message: res.msg,
+                type: res.code == 200 ? 'success' : 'error'
+            });
         });
     };
     const clearToken = () => {
