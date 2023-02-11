@@ -19,3 +19,12 @@ export const logoutTest = () => {
 export const onlineTest = () => {
     return request.get('/user/online');
 };
+
+//发送邮箱验证码
+export const sendVerificationCode = (params: { mail: string }) => {
+    return request.post('/mail/sendVerificationCode', { ...params });
+};
+//校验验证码
+export const checkVerificationCode = (code: string) => {
+    return request.get(`/mail/${code}/1`);
+};
