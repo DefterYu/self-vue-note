@@ -8,6 +8,7 @@
     } from '@/api/index';
     import { reactive, ref } from 'vue';
     import { author } from '@/store/authentication';
+    import EmailTest from '@/components/EmailTest.vue';
 
     const authentication = author();
 
@@ -169,6 +170,8 @@
             </div>
         </div>
     </div>
+
+    <email-test></email-test>
 </template>
 
 <style scoped></style>
