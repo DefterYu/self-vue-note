@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto w-6/12 shadow-xl rounded-lg p-6">
+    <div class="container mx-auto w-6/12 min-w-min shadow-xl rounded-lg p-6">
         <p class="my-8 text-4xl font-bold">账号设置</p>
         <p class="my-6 text-2xl font-bold">基本信息</p>
         <div
@@ -8,7 +8,6 @@
             <div class="py-2">
                 <avatar @upSuccess="upSuccess"></avatar>
             </div>
-
             <div class="text-gray-500">
                 点击修改头像。支持2M以内的 .JPG .PNG .BMP图片
             </div>
@@ -40,15 +39,7 @@
                 <div><el-button>修改昵称</el-button></div>
             </div>
         </div>
-        <div
-            class="my-4 py-2 border-b-2 border-light-blue-500 border-opacity-100"
-        >
-            <p class="text-xl font-semibold my-4">性别</p>
-            <div class="flex justify-between">
-                <div class="text-gray-500">男</div>
-                <div><el-button>修改性别</el-button></div>
-            </div>
-        </div>
+
         <div
             class="my-4 py-2 border-b-2 border-light-blue-500 border-opacity-100"
         >
