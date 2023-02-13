@@ -1,19 +1,27 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const author = defineStore('author', {
-    state: () => ({
-        token: ''
-    }),
-    //只有过action 持久化才能同步  直接修改state无法同步持久化
-    actions: {
+export const author = defineStore(
+    'author',
+    () => {
+        const token = ref<string>('');
+
         //设置token
-        setToken(newVal: string): void {
-            this.token = newVal;
-        },
-        //清除token
-        deleToken(): void {
-            this.setToken('');
+        function setToken(newVal: string): void {
+            token.value = newVal;
         }
+        //清除token
+        function deleToken(): void {
+            setToken('');
+        }
+
+        return {
+            token,
+            setToken,
+            deleToken
+        };
     },
-    persist: true
-});
+    {
+        persist: true
+    }
+);
