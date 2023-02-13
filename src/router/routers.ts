@@ -1,30 +1,30 @@
 /**
  * @description 路由记录
  */
-export const routes = [
+export const testRoutes = [
     {
         path: '/',
         name: 'root',
-        component: () => import('@/views/PageDefault.vue')
+        component: () => import('@/views/test/PageDefault.vue')
     },
     {
         path: '/PageA',
         name: 'PageA',
-        component: () => import('@/views/PageA.vue')
+        component: () => import('@/views/test/PageA.vue')
     },
     {
         path: '/PageB',
         name: 'PageB',
-        component: () => import('@/views/PageB.vue')
+        component: () => import('@/views/test/PageB.vue')
     },
     {
         path: '/PageC',
         name: 'PageC',
-        component: () => import('@/views/PageC.vue')
+        component: () => import('@/views/test/PageC.vue')
     },
     {
         path: '/PageD',
         name: 'PageD',
-        component: () => import('@/views/PageD.vue')
+        component: () => import('@/views/test/PageD.vue')
     }
 ];
