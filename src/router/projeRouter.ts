@@ -25,6 +25,10 @@ export const projeRouter = [
         path: '/user',
         name: 'user',
         showName: '用户',
+        meta: {
+            //添加自定义参数 需要登录才能进
+            requireAuth: true
+        },
         component: () => import('@/views/user/User.vue')
     },
     {
