@@ -6,11 +6,16 @@ export const author = defineStore(
     () => {
         const token = ref<string>('');
 
-        //设置token
+        /**
+         * 设置token
+         */
         function setToken(newVal: string): void {
             token.value = newVal;
         }
-        //清除token
+
+        /**
+         * 清除token
+         */
         function deleToken(): void {
             setToken('');
         }

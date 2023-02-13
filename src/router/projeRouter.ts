@@ -34,13 +34,14 @@ export const projeRouter = [
     {
         path: '/login',
         name: 'login',
-        showName: '用户',
+        showName: '登录',
         component: () => import('@/views/user/LoginPage.vue')
     },
     {
         path: '/user/setting',
         name: 'setting',
         showName: '账号设置',
+        meta: { requireAuth: true },
         component: () => import('@/views/user/BaseInfoEdit.vue')
     }
 ];

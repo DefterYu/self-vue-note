@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import { testRoutes } from './routers';
 import { projeRouter } from './projeRouter';
+import { author } from '@/store/authentication';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -8,14 +9,22 @@ const router = createRouter({
     routes: projeRouter
 });
 
+// const authentication = author();
+
 //全局路由守卫 跳转前
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
-        console.log('需要权限的页面1');
-
-        next('');
+        console.log('need Author');
+        // if (authentication.token) {
+        //     console.log('token null');
+        //     next('/login');
+        // } else {
+        //     console.log('have token');
+        //     next();
+        // }
+        next('/login');
     } else {
-        console.log('不需要权限的页面');
+        console.log('dont need Author');
         next();
     }
 });
