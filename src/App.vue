@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ref, reactive, watch } from 'vue';
+    import { ref, reactive } from 'vue';
     import { projeRouter } from '@/router/projeRouter';
 
     import { useRouter } from 'vue-router';
@@ -43,7 +43,6 @@
         <el-sub-menu index="2">
             <template #title>
                 <el-avatar
-                    :size="50"
                     src="https://defteryu-1251931232.cos.ap-guangzhou.myqcloud.com/mika.jpg"
                 />
             </template>

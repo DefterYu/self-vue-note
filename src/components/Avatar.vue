@@ -6,47 +6,59 @@
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
     >
-        <img
+        <el-avatar
             v-if="imageUrl"
             :src="imageUrl"
-            class="avatar"
+            shape="square"
+            :size="imgSize"
         />
-        <el-icon
+
+        <el-avatar
             v-else
-            class="avatar-uploader-icon"
+            shape="square"
+            :size="imgSize"
         >
-            <Plus />
-        </el-icon>
+            头像
+        </el-avatar>
     </el-upload>
 </template>
 
 <script lang="ts" setup>
     import { ref } from 'vue';
     import { ElMessage } from 'element-plus';
-    import { Plus } from '@element-plus/icons-vue';
-
     import type { UploadProps } from 'element-plus';
 
-    const imageUrl = ref('');
+    const imageUrl = ref(''),
+        imgSize = ref(100);
+
+    const emit = defineEmits(['upSuccess']);
+
     const imgTypeList = ['image/jpeg', 'image/png', 'image/bmp'];
 
     const handleAvatarSuccess: UploadProps['onSuccess'] = (
         response,
         uploadFile
     ) => {
-        imageUrl.value = URL.createObjectURL(uploadFile.raw!);
+        console.log('上传结果', response);
+
+        if (response.code == 200) {
+            imageUrl.value = response.data.url;
+            emit('upSuccess', response.data.url);
+        } else {
+            ElMessage.error('服务器异常,图片上传异常');
+        }
     };
 
     const beforeAvatarUpload: UploadProps['beforeUpload'] = rawFile => {
-        console.log('文件类型', rawFile.type);
-
         if (!imgTypeList.includes(rawFile.type)) {
-            ElMessage.error('Avatar picture must be JPG format!');
+            ElMessage.error('只能使用限定格式的图片');
             return false;
-        } else if (rawFile.size / 1024 / 1024 > 5) {
-            ElMessage.error('图片最大支持5MB!');
+        } else if (rawFile.size / 1024 / 1024 > 2) {
+            ElMessage.error('图片最大支持2MB!');
             return false;
         }
+        console.log('图片上传成功');
+        // return false;
         return true;
     };
 </script>

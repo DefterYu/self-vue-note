@@ -5,11 +5,12 @@
         <div
             class="my-4 py-2 border-b-2 border-light-blue-500 border-opacity-100"
         >
-            <div class="text-xl font-semibold my-4">头像</div>
+            <div class="py-2">
+                <avatar @upSuccess="upSuccess"></avatar>
+            </div>
 
-            <div class="flex justify-between">
-                <div class="text-gray-500">支持2M以内的 .JPG .PNG .BMP图片</div>
-                <div><el-button>修改头像</el-button></div>
+            <div class="text-gray-500">
+                点击修改头像。支持2M以内的 .JPG .PNG .BMP图片
             </div>
         </div>
         <div
@@ -42,6 +43,15 @@
         <div
             class="my-4 py-2 border-b-2 border-light-blue-500 border-opacity-100"
         >
+            <p class="text-xl font-semibold my-4">性别</p>
+            <div class="flex justify-between">
+                <div class="text-gray-500">男</div>
+                <div><el-button>修改性别</el-button></div>
+            </div>
+        </div>
+        <div
+            class="my-4 py-2 border-b-2 border-light-blue-500 border-opacity-100"
+        >
             <p class="text-xl font-semibold my-4">密码</p>
             <div class="flex justify-between">
                 <div class="text-gray-500">已设置</div>
@@ -53,6 +63,11 @@
 
 <script setup lang="ts">
     import { toRefs, reactive } from 'vue';
+    import Avatar from '@/components/Avatar.vue';
+
+    const upSuccess = (url: string) => {
+        console.log('获取到组件返回的链接', url);
+    };
 
     const state = reactive({
         formData: {
