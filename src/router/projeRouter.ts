@@ -1,11 +1,16 @@
 /**
- * @description 路由记录
+ * @description 项目使用的路由记录
  */
 export const projeRouter = [
     {
         // 访问根路径重定向到/home
         path: '/',
         redirect: '/index'
+    },
+    {
+        //匹配位置路径到404
+        path: '/:pathMatch(.*)*',
+        component: () => import('@/views/NotFound.vue')
     },
     {
         path: '/index',
