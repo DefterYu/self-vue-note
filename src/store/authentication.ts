@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 
 export const author = defineStore(
     'author',
     () => {
         const token = ref<string>('');
+        let userInfo = reactive({});
 
         /**
          * 设置token
@@ -20,10 +21,17 @@ export const author = defineStore(
             setToken('');
         }
 
+        /**配置用户数据 */
+        function setUserInfo(obj: any): void {
+            userInfo = obj;
+        }
+
         return {
             token,
             setToken,
-            deleToken
+            deleToken,
+            userInfo,
+            setUserInfo
         };
     },
     {
