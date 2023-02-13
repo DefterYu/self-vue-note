@@ -9,7 +9,7 @@
         <el-menu-item index="/index">LOGO</el-menu-item>
         <div class="flex-grow" />
         <el-menu-item index="/index">首页</el-menu-item>
-        <el-menu-item index="/news">新闻</el-menu-item>
+        <el-menu-item index="/index/news">新闻</el-menu-item>
         <el-menu-item
             index="customerService"
             v-if="authentication.token"
@@ -37,27 +37,18 @@
             登录
         </el-menu-item>
     </el-menu>
+    <router-view></router-view>
 </template>
 
 <script setup lang="ts">
-    import { ref, reactive, onMounted } from 'vue';
+    import { ref, onMounted } from 'vue';
     import { projeRouter } from '@/router/projeRouter';
-    import { loginTest, register, logoutTest, onlineTest } from '@/api/index';
+    import { logoutTest } from '@/api/index';
     import { useRouter } from 'vue-router';
     import { author } from '@/store/authentication';
 
     const authentication = author();
     const router = useRouter();
-
-    const pageList = reactive(
-        projeRouter.map(v => {
-            return {
-                name: v.name,
-                showName: v.showName,
-                path: v.path
-            };
-        })
-    );
 
     // 退出登录
     const logout = () => {
@@ -71,7 +62,7 @@
         console.log(key, keyPath);
         if (key == 'loginOut') {
             logout();
-        } else if (pageList.findIndex(v => v.path == key)) {
+        } else if (projeRouter.findIndex(v => v.path == key)) {
             router.push(key);
         }
     };

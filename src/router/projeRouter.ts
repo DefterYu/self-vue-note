@@ -1,6 +1,8 @@
 /**
  * @description 项目使用的路由记录
  */
+import { indexChildren } from './indexChildren';
+
 export const projeRouter = [
     {
         // 访问根路径重定向到/home
@@ -16,13 +18,8 @@ export const projeRouter = [
         path: '/index',
         name: 'root',
         showName: '首页',
-        component: () => import('@/views/Index.vue')
-    },
-    {
-        path: '/news',
-        name: 'news',
-        showName: '新闻',
-        component: () => import('@/views/news/News.vue')
+        component: () => import('@/views/Index.vue'),
+        children: indexChildren
     },
     {
         path: '/user',
