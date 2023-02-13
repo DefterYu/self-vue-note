@@ -9,6 +9,7 @@
     import { reactive, ref } from 'vue';
     import { author } from '@/store/authentication';
     import EmailTest from '@/components/EmailTest.vue';
+    import Avatar from '@/components/Avatar.vue';
 
     const authentication = author();
 
@@ -172,6 +173,7 @@
     </div>
 
     <email-test></email-test>
+    <avatar></avatar>
 </template>
 
 <style scoped></style>
