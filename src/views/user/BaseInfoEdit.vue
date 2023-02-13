@@ -1,4 +1,6 @@
 <template>
+    <back-index page-name="用户" />
+
     <div class="container mx-auto w-6/12 min-w-min shadow-xl rounded-lg p-6">
         <p class="my-8 text-4xl font-bold">账号设置</p>
         <p class="my-6 text-2xl font-bold">基本信息</p>
@@ -54,6 +56,7 @@
 
 <script setup lang="ts">
     import { toRefs, reactive } from 'vue';
+    import BackIndex from '@/components/BackIndex.vue';
     import Avatar from '@/components/Avatar.vue';
 
     const upSuccess = (url: string) => {
