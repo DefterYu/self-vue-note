@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
-    <head>
-        <meta charset="utf-8" />
-
-        <title>绑定邮件</title>
-    </head>
-
+<html lang=zh-cn xmlns:th=http://www.thymeleaf.org>
+<head>
+    <meta charset="utf-8" />
+    <title>绑定邮件</title>
     <body>
         <div
             style="
@@ -14,18 +11,23 @@
                 line-height: 20px;
                 border-width: 3px 1px 1px;
                 border-style: solid;
-                border-color: rgb(66, 132, 245) rgb(215, 215, 215)
-                    rgb(215, 215, 215);
+                border-color: #4284f5 #d7d7d7 #d7d7d7;
                 border-image: initial;
                 padding: 25px;
                 max-width: 640px;
+                margin: 0 auto;
             "
         >
             <div style="padding: 30px 20px">
                 <p style="line-height: 2">尊敬的用户：</p>
                 <p style="text-indent: 2em">
                     您的账号正在进行
-                    <span style="color: red; font-weight: bold">绑定邮箱</span>
+                    <span
+                        style="color: red; font-weight: bold"
+                        th:text="${codeType}"
+                    >
+                        绑定邮箱
+                    </span>
                     操作，如非本人操作，请忽略。
                 </p>
                 <p style="text-indent: 2em">验证码为：</p>
@@ -34,34 +36,33 @@
                         style="
                             color: #4284f5;
                             font-size: 20px;
-                            font-weight: bold;
+                            font-weight: 700;
                             background-color: #efefef;
                             border: 1px solid #dfdfdf;
                             padding: 6px;
                             border-radius: 6px;
                         "
-                    >
-                        22GG9V
-                    </span>
+                        th:text="${verificationCode}"
+                    ></span>
                 </p>
                 <p style="text-indent: 2em">
                     有效期为
-                    <span style="color: red">10</span>
+                    <span
+                        style="color: red; font-weight: bold"
+                        th:text="${codeTime}"
+                    ></span>
                     分钟
                 </p>
-
-                <div style="margin: 40px 0px">
+                <div style="margin: 40px 0">
                     <div style="margin-top: 20px"></div>
                     <div style="margin-top: 20px">
                         <div style="margin-top: 10px">感谢您的使用！</div>
-                        <div>
-                            <span>此信为系统邮件，请不要直接回复</span>
-                        </div>
-                        <div style="text-align: left; margin: 20px 0px">
+                        <div><span>此信为系统邮件，请不要直接回复</span></div>
+                        <div style="text-align: left; margin: 20px 0">
                             <div
                                 style="
-                                    border-bottom: 1px solid rgb(215, 215, 215);
-                                    padding: 20px 0px;
+                                    border-bottom: 1px solid #d7d7d7;
+                                    padding: 20px 0;
                                     text-align: center;
                                 "
                             ></div>
@@ -71,12 +72,12 @@
                                 margin-top: 20px;
                                 font-size: 12px;
                                 text-align: center;
-                                color: rgb(153, 153, 153);
+                                color: #999;
                             "
                         >
                             <div style="padding-bottom: 10px">
-                                <p style="margin: 0px">
-                                    桂林电子科技大学 北海校区
+                                <p style="margin: 0">
+                                    桂林电子科技大学 2019级毕设项目
                                 </p>
                             </div>
                         </div>
@@ -85,4 +86,4 @@
             </div>
         </div>
     </body>
-</html>
+</head>
