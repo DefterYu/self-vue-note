@@ -23,8 +23,10 @@
         >
             <template #title>
                 <el-avatar
-                    src="https://defteryu-1251931232.cos.ap-guangzhou.myqcloud.com/mika.jpg"
+                    :src="authentication.userInfo.avatar"
+                    v-if="authentication.userInfo.avatar"
                 />
+                <el-avatar v-else>头像</el-avatar>
             </template>
             <el-menu-item index="2-1">个人中心</el-menu-item>
             <el-menu-item index="/user/setting">账号设置</el-menu-item>
