@@ -28,3 +28,8 @@ export const sendVerificationCode = (params: { mail: string }) => {
 export const checkVerificationCode = (code: string) => {
     return request.get(`/mail/${code}/1`);
 };
+
+//更新用户信息
+export const updataUserInfo = (param: any) => {
+    return request.post(`/useredit/updata`, { ...param });
+};

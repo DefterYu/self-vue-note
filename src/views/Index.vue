@@ -23,12 +23,12 @@
         >
             <template #title>
                 <el-avatar
-                    :src="authentication.userInfo.avatar"
+                    :src="IMG_BASE_URL + authentication.userInfo.avatar"
                     v-if="authentication.userInfo.avatar"
                 />
                 <el-avatar v-else>头像</el-avatar>
             </template>
-            <el-menu-item index="2-1">个人中心</el-menu-item>
+            <el-menu-item index="/user">个人中心</el-menu-item>
             <el-menu-item index="/user/setting">账号设置</el-menu-item>
             <el-menu-item index="loginOut">退出登录</el-menu-item>
         </el-sub-menu>
@@ -48,6 +48,7 @@
     import { logoutTest } from '@/api/index';
     import { useRouter } from 'vue-router';
     import { author } from '@/store/authentication';
+    import { IMG_BASE_URL } from '@/utils/common';
 
     const authentication = author();
     const router = useRouter();

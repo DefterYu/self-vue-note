@@ -8,7 +8,7 @@
     >
         <el-avatar
             v-if="imageUrl"
-            :src="imageUrl"
+            :src="IMG_BASE_URL + imageUrl"
             shape="square"
             :size="imgSize"
         />
@@ -27,13 +27,13 @@
     import { ref } from 'vue';
     import { ElMessage } from 'element-plus';
     import type { UploadProps } from 'element-plus';
+    import { IMG_BASE_URL } from '@/utils/common';
 
-    const imageUrl = ref(''),
-        imgSize = ref(100);
-
+    const imgSize = ref(100);
+    defineProps({ imageUrl: { type: String } });
     const emit = defineEmits(['upSuccess']);
 
-    const imgTypeList = ['image/jpeg', 'image/png', 'image/bmp'];
+    const imgTypeList = ['image/jpeg', 'image/png'];
 
     const handleAvatarSuccess: UploadProps['onSuccess'] = (
         response,
@@ -42,7 +42,6 @@
         console.log('上传结果', response);
 
         if (response.code == 200) {
-            imageUrl.value = response.data.url;
             emit('upSuccess', response.data.url);
         } else {
             ElMessage.error('服务器异常,图片上传异常');
