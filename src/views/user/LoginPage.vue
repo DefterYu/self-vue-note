@@ -42,8 +42,8 @@
     import BackIndex from '@/components/BackIndex.vue';
     import { loginTest, register } from '@/api/index';
     import { reactive, ref } from 'vue';
-    import { author } from '@/store/authentication';
     import { useRouter } from 'vue-router';
+    import { author } from '@/store/authentication';
 
     const authentication = author();
     const router = useRouter();
@@ -67,6 +67,7 @@
                 });
             }
             ElMessage({ message: res.msg, type: 'success' });
+
             authentication.setToken(res.data.token);
             authentication.setUserInfo(res.data.userInfo);
             setTimeout(() => {

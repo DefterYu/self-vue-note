@@ -12,9 +12,6 @@ const router = createRouter({
 //全局路由守卫 跳转前
 router.beforeEach((to, from, next) => {
     const authentication = author();
-
-    console.log(to);
-
     //判断路由是否需要权限
     if (to.meta.requireAuth) {
         console.log('need Author');
