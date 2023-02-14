@@ -9,21 +9,28 @@ const router = createRouter({
     routes: projeRouter
 });
 
-// const authentication = author();
-
 //全局路由守卫 跳转前
 router.beforeEach((to, from, next) => {
+    const authentication = author();
+
+    console.log(to);
+
+    //判断路由是否需要权限
     if (to.meta.requireAuth) {
         console.log('need Author');
-        // if (authentication.token) {
-        //     console.log('token null');
-        //     next('/login');
-        // } else {
-        //     console.log('have token');
-        //     next();
-        // }
-        next('/login');
+        //存在token则放行
+        if (authentication.token) {
+            console.log('have token');
+            next();
+        } else {
+            console.log('token null');
+            next('/login');
+        }
+    } else if (to.path == '/login' && authentication.token) {
+        //已登录 且 目标为登录页 返回首页
+        next('/');
     } else {
+        //其他情况则放行
         console.log('dont need Author');
         next();
     }
