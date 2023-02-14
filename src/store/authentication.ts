@@ -28,6 +28,11 @@ export const author = defineStore(
             }
         }
 
+        /** 设置用户单个信息 */
+        function setUserInfoItem(key: string, item: any): void {
+            userInfo[key] = item;
+        }
+
         /** 退出登录 清除token、userinfo */
         function deleToken(): void {
             setToken('');
@@ -39,7 +44,8 @@ export const author = defineStore(
             setToken,
             deleToken,
             userInfo,
-            setUserInfo
+            setUserInfo,
+            setUserInfoItem
         };
     },
     {
