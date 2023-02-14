@@ -30,6 +30,7 @@ declare module '@vue/runtime-core' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     EmailTest: typeof import('./src/components/EmailTest.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    MyEdit: typeof import('./src/components/MyEdit.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Tinput: typeof import('./src/components/todo/Tinput.vue')['default']

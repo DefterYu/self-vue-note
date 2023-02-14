@@ -25,7 +25,11 @@
                 <div class="text-gray-500">
                     {{ userInfo.nickName }}
                 </div>
-                <div><el-button>修改昵称</el-button></div>
+                <div>
+                    <el-button @click="btnClick('nickName')">
+                        修改昵称
+                    </el-button>
+                </div>
             </div>
         </div>
         <div
@@ -37,7 +41,7 @@
                     {{ userInfo.email }}
                 </div>
                 <div>
-                    <el-button>修改邮箱</el-button>
+                    <el-button @click="btnClick('email')">修改邮箱</el-button>
                 </div>
             </div>
         </div>
@@ -49,7 +53,11 @@
                 <div class="text-gray-500">
                     {{ userInfo.phoneNumber }}
                 </div>
-                <div><el-button>修改手机</el-button></div>
+                <div>
+                    <el-button @click="btnClick('phoneNumber')">
+                        修改手机
+                    </el-button>
+                </div>
             </div>
         </div>
 
@@ -59,7 +67,11 @@
             <p class="text-xl font-semibold my-4">密码</p>
             <div class="flex justify-between">
                 <div class="text-gray-500">已设置</div>
-                <div><el-button>修改密码</el-button></div>
+                <div>
+                    <el-button @click="btnClick('password')">
+                        修改密码
+                    </el-button>
+                </div>
             </div>
         </div>
     </div>
@@ -67,7 +79,7 @@
 
 <script setup lang="ts">
     import { updataUserInfo } from '@/api';
-    import { toRefs, reactive } from 'vue';
+    import { ref, reactive } from 'vue';
     import BackIndex from '@/components/BackIndex.vue';
     import Avatar from '@/components/Avatar.vue';
     import { author } from '@/store/authentication';
@@ -83,6 +95,11 @@
         updataUserInfo({ avatar: url }).then(res => {
             console.log('请求结果', res);
         });
+    };
+
+    const nowTarget = ref('');
+    const btnClick = (key: string) => {
+        nowTarget.value = key;
     };
 
     const state = reactive({
