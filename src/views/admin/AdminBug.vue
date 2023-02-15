@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
     import { newList, newsUpdate } from '@/api/news';
-    import { INewsObje } from '@/utils/interface';
+    import { INewsObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
     import { ref, reactive, onMounted } from 'vue';
     const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
@@ -86,7 +86,7 @@
     });
     const total = ref(0);
     const state = reactive({
-        list: [] as INewsObje[]
+        list: [] as INewsObj[]
     });
     const tabChange = () => {
         console.log('变动', activeName.value);

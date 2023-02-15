@@ -1,14 +1,15 @@
 <template>
     <div class="w-full p-10">
         <el-tag
-            v-for="tag in dynamicTags"
+            v-for="(tag, index) in state.dynamicTags"
             :key="tag"
             class="mx-1"
+            size="large"
             closable
             :disable-transitions="false"
-            @close="handleClose(tag)"
+            @close="handleClose(tag.id, index)"
         >
-            {{ tag }}
+            {{ tag.typeName }}
         </el-tag>
         <el-input
             v-if="inputVisible"
@@ -31,16 +32,25 @@
 </template>
 
 <script lang="ts" setup>
-    import { nextTick, ref, onMounted } from 'vue';
+    import { nextTick, ref, reactive, onMounted } from 'vue';
     import { ElInput } from 'element-plus';
+    import { typeAdd, typeDelet, typeList } from '@/api/car';
+    import { ICarTypeObj } from '@/utils/interface';
 
     const inputValue = ref('');
-    const dynamicTags = ref(['Tag 1', 'Tag 2', 'Tag 3']);
+    const state = reactive({
+        dynamicTags: [] as ICarTypeObj[]
+    });
+
     const inputVisible = ref(false);
     const InputRef = ref<InstanceType<typeof ElInput>>();
 
-    const handleClose = (tag: string) => {
-        dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1);
+    const handleClose = (tag: number, index: number) => {
+        typeDelet(tag).then(res => {
+            if (res.code == 200) {
+                state.dynamicTags.splice(index, 1);
+            }
+        });
     };
 
     const showInput = () => {
@@ -52,9 +62,23 @@
 
     const handleInputConfirm = () => {
         if (inputValue.value) {
-            dynamicTags.value.push(inputValue.value);
+            typeAdd({ typeName: inputValue.value }).then(res => {
+                console.log(res);
+                if (res.code == 200) {
+                    state.dynamicTags.push(res.data);
+                }
+            });
         }
         inputVisible.value = false;
         inputValue.value = '';
     };
+
+    onMounted(() => {
+        typeList({ pageSize: 100, pageNum: 1 }).then(res => {
+            console.log(res);
+            if (res.code == 200) {
+                state.dynamicTags = res.data.records;
+            }
+        });
+    });
 </script>

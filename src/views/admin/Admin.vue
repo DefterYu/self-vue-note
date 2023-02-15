@@ -56,7 +56,6 @@
     import { useRouter } from 'vue-router';
     import { ref } from 'vue';
     import {
-        Document,
         Menu as IconMenu,
         Location,
         Setting
