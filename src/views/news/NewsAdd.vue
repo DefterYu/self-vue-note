@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-3xl m-auto p-4 bg-red-200">
+    <div class="max-w-3xl m-auto p-4 bg-red-200 rounded-xl">
         <div class="my-4">
             <el-input
                 v-model="param.title"
@@ -11,7 +11,7 @@
                 v-model="param.content"
                 :rows="10"
                 type="textarea"
-                placeholder="新闻内容 支持且推荐使用富文本"
+                placeholder="新闻内容  支持且推荐使用富文本"
             />
         </div>
         <div class="my-4">
