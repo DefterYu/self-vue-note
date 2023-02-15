@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { urlencode } from './common';
 
 // const BASE_URL = 'http://192.168.1.16:7777';
 const BASE_URL = 'http://localhost:7777';
@@ -15,7 +16,7 @@ service.interceptors.request.use(
         console.log('请求参数', config);
 
         if (author && JSON.parse(author).token) {
-            console.log('存在token:', author);
+            // console.log('存在token:', author);
             config.headers['token'] = JSON.parse(author).token;
         }
 
