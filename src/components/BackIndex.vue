@@ -1,5 +1,5 @@
 <template>
-    <div class="p-6 fixed w-full z-10 bg-white shadow-lg">
+    <div class="p-6 w-full bg-white shadow-lg sticky top-0 z-10">
         <el-page-header
             :icon="House"
             title="返回首页"
@@ -9,9 +9,6 @@
                 <span class="text-large font-600 mr-3">{{ pageName }}</span>
             </template>
         </el-page-header>
-    </div>
-    <div class="p-6 w-full">
-        <el-page-header title="填充"></el-page-header>
     </div>
 </template>
 
