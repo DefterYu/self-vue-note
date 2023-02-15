@@ -41,28 +41,6 @@
             </el-menu-item>
         </el-menu>
     </div>
-    <!-- fix顶部占位 -->
-    <!-- <div class="w-full">
-        <el-menu
-            :default-active="activeIndex"
-            class="el-menu-demo"
-            mode="horizontal"
-            :ellipsis="false"
-        >
-            <el-menu-item index="/index">LOGO</el-menu-item>
-            <div class="flex-grow" />
-            <el-menu-item index="/index">首页</el-menu-item>
-            <el-menu-item index="/index/news">新闻</el-menu-item>
-            <el-menu-item>客服</el-menu-item>
-
-            <el-sub-menu>
-                <el-menu-item>个人中心</el-menu-item>
-                <el-menu-item>账号设置</el-menu-item>
-                <el-menu-item>退出登录</el-menu-item>
-            </el-sub-menu>
-            <el-menu-item>登录</el-menu-item>
-        </el-menu>
-    </div> -->
 
     <router-view></router-view>
 </template>
@@ -97,8 +75,6 @@
 
     onMounted(() => {
         console.log(authentication.token);
-
-        ElMessage({ message: '加载成功', type: 'success' });
     });
 </script>
 

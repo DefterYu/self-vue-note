@@ -2,6 +2,7 @@
  * @description 项目使用的路由记录
  */
 import { indexChildren } from './indexChildren';
+import { adminChildren } from './adminChildren';
 
 export const projeRouter = [
     {
@@ -43,5 +44,13 @@ export const projeRouter = [
         showName: '账号设置',
         meta: { requireAuth: true },
         component: () => import('@/views/user/BaseInfoEdit.vue')
+    },
+    {
+        path: '/admin',
+        name: 'admin',
+        showName: '管理员后台',
+        meta: { requireAuth: true, isAdmin: true },
+        component: () => import('@/views/admin/Admin.vue'),
+        children: adminChildren
     }
 ];
