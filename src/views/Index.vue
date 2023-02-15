@@ -1,44 +1,46 @@
 <template>
-    <el-menu
-        :default-active="activeIndex"
-        class="el-menu-demo"
-        mode="horizontal"
-        :ellipsis="false"
-        @select="handleSelect"
-    >
-        <el-menu-item index="/index">LOGO</el-menu-item>
-        <div class="flex-grow" />
-        <el-menu-item index="/index">首页</el-menu-item>
-        <el-menu-item index="/index/news">新闻</el-menu-item>
-        <el-menu-item
-            index="customerService"
-            v-if="authentication.token"
+    <div class="fixed w-full z-10">
+        <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            mode="horizontal"
+            :ellipsis="false"
+            @select="handleSelect"
         >
-            客服
-        </el-menu-item>
+            <el-menu-item index="/index">LOGO</el-menu-item>
+            <div class="flex-grow" />
+            <el-menu-item index="/index">首页</el-menu-item>
+            <el-menu-item index="/index/news">新闻</el-menu-item>
+            <el-menu-item
+                index="customerService"
+                v-if="authentication.token"
+            >
+                客服
+            </el-menu-item>
 
-        <el-sub-menu
-            index="2"
-            v-if="authentication.token"
-        >
-            <template #title>
-                <el-avatar
-                    :src="IMG_BASE_URL + authentication.userInfo.avatar"
-                    v-if="authentication.userInfo.avatar"
-                />
-                <el-avatar v-else>头像</el-avatar>
-            </template>
-            <el-menu-item index="/user">个人中心</el-menu-item>
-            <el-menu-item index="/user/setting">账号设置</el-menu-item>
-            <el-menu-item index="loginOut">退出登录</el-menu-item>
-        </el-sub-menu>
-        <el-menu-item
-            index="/login"
-            v-else
-        >
-            登录
-        </el-menu-item>
-    </el-menu>
+            <el-sub-menu
+                index="2"
+                v-if="authentication.token"
+            >
+                <template #title>
+                    <el-avatar
+                        :src="IMG_BASE_URL + authentication.userInfo.avatar"
+                        v-if="authentication.userInfo.avatar"
+                    />
+                    <el-avatar v-else>头像</el-avatar>
+                </template>
+                <el-menu-item index="/user">个人中心</el-menu-item>
+                <el-menu-item index="/user/setting">账号设置</el-menu-item>
+                <el-menu-item index="loginOut">退出登录</el-menu-item>
+            </el-sub-menu>
+            <el-menu-item
+                index="/login"
+                v-else
+            >
+                登录
+            </el-menu-item>
+        </el-menu>
+    </div>
     <router-view></router-view>
 </template>
 
