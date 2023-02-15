@@ -23,6 +23,12 @@ export const projeRouter = [
         children: indexChildren
     },
     {
+        path: '/login',
+        name: 'login',
+        showName: '登录',
+        component: () => import('@/views/user/LoginPage.vue')
+    },
+    {
         path: '/user',
         name: 'user',
         showName: '用户',
@@ -31,12 +37,6 @@ export const projeRouter = [
             requireAuth: true
         },
         component: () => import('@/views/user/User.vue')
-    },
-    {
-        path: '/login',
-        name: 'login',
-        showName: '登录',
-        component: () => import('@/views/user/LoginPage.vue')
     },
     {
         path: '/user/setting',

@@ -10,6 +10,7 @@
             <el-menu-item index="/index">LOGO</el-menu-item>
             <div class="flex-grow" />
             <el-menu-item index="/index">首页</el-menu-item>
+            <el-menu-item index="/index/carlist">我要租车</el-menu-item>
             <el-menu-item index="/index/news">新闻</el-menu-item>
             <el-menu-item
                 index="customerService"
