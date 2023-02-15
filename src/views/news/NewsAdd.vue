@@ -9,7 +9,7 @@
         <div class="my-4">
             <el-input
                 v-model="param.content"
-                :rows="2"
+                :rows="10"
                 type="textarea"
                 placeholder="新闻内容 支持且推荐使用富文本"
             />

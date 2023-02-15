@@ -1,39 +1,47 @@
 <template>
-    <el-scrollbar height="400px">
-        <div
-            v-for="(item, index) in state.list"
-            :key="index"
-            class="bg-gray-100 m-6 p-6"
+    <div class="max-w-5xl m-auto">
+        <el-scrollbar
+            height="850px"
+            ref="scrollbarRef"
         >
-            <div class="mb-4 text-2xl font-semibold">{{ item.title }}</div>
-            <p v-html="item.content"></p>
-            <div class="mt-4 text-xs text-right text-gray-400">
-                文章来源：{{ item.source || '网络' }}
+            <div
+                v-for="(item, index) in state.list"
+                :key="index"
+                class="bg-gray-100 m-6 p-6"
+            >
+                <div class="mb-4 text-2xl font-semibold">{{ item.title }}</div>
+                <p v-html="item.content"></p>
+                <div class="mt-4 text-xs text-right text-gray-400">
+                    文章来源：{{ item.source || '网络' }}
+                </div>
             </div>
-        </div>
-    </el-scrollbar>
-    <div>
+        </el-scrollbar>
+
         <div class="flex justify-center my-10">
-            <el-button @click="getList(0)">获取 0文章</el-button>
-            <el-button @click="getList(1)">获取 1文章</el-button>
+            <!-- <el-button @click="getList(0)">获取 0文章</el-button>
+            <el-button @click="getList(1)">获取 1文章</el-button> -->
+            <el-pagination
+                v-model:current-page="page.pageNum"
+                :total="total"
+                :hide-on-single-page="true"
+                :page-size="page.pageSize"
+                layout="prev, pager, next"
+                background
+                @size-change="pageCurrentChange"
+                @current-change="pageCurrentChange"
+            />
         </div>
-        <el-pagination
-            v-model:current-page="page.pageNum"
-            :total="total"
-            :hide-on-single-page="true"
-            :page-size="page.pageSize"
-            layout="prev, pager, next"
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
     </div>
 </template>
 
 <script setup lang="ts">
     import { newList } from '@/api/news';
     import { INewsObje } from '@/utils/interface';
+    import { ElScrollbar } from 'element-plus';
+
     import { ref, reactive, onMounted } from 'vue';
+
+    const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 
     const page = reactive({
         pageNum: 1,
@@ -44,13 +52,10 @@
     const state = reactive({
         list: [] as INewsObje[]
     });
-    const handleSizeChange = (val: number) => {
-        console.log(`${val} items per page`);
+
+    const pageCurrentChange = () => {
         getList(0);
-    };
-    const handleCurrentChange = (val: number) => {
-        console.log(`current page: ${val}`);
-        getList(0);
+        scrollbarRef.value!.setScrollTop(0);
     };
 
     const getList = (statu: 0 | 1) => {
