@@ -3,5 +3,5 @@ export interface INewsObje {
     title?: string;
     content?: string;
     source?: string;
-    statu?: string;
+    statu?: 0 | 1;
 }
