@@ -1,5 +1,6 @@
+import { UserInfo } from 'os';
 /**
- * 管理员的子路由
+ * 用户的子路由
  */
 export const userChildren = [
     {
@@ -12,10 +13,6 @@ export const userChildren = [
     },
     {
         path: 'info',
-        component: () => import('@/views/user/BaseInfoEdit.vue')
-    },
-    {
-        path: 'system',
-        component: () => import('@/views/admin/AdminSystem.vue')
+        component: () => import('@/views/user/UserInfo.vue')
     }
 ];

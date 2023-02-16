@@ -13,7 +13,7 @@
                 text-color="#fff"
                 @select="handleSelect"
             >
-                <el-menu-item index="2">
+                <el-menu-item index="/user/info">
                     <el-icon><icon-menu /></el-icon>
                     <span>个人信息</span>
                 </el-menu-item>

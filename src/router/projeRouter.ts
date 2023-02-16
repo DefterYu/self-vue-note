@@ -12,6 +12,11 @@ export const projeRouter = [
         redirect: '/index'
     },
     {
+        // 访问根路径重定向到/home
+        path: '/user',
+        redirect: '/user/info'
+    },
+    {
         //匹配位置路径到404
         path: '/:pathMatch(.*)*',
         component: () => import('@/views/NotFound.vue')

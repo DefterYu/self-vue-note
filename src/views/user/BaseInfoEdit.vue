@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div
+        <!-- <div
             class="my-4 py-2 border-b-2 border-light-blue-500 border-opacity-100"
         >
             <p class="text-xl font-semibold my-4">手机</p>
@@ -59,7 +59,7 @@
                     </el-button>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div
             class="my-4 py-2 border-b-2 border-light-blue-500 border-opacity-100"
