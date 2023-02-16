@@ -14,13 +14,13 @@ router.beforeEach((to, from, next) => {
     const authentication = author();
     //判断路由是否需要权限
     if (to.meta.requireAuth) {
-        console.log('need Author');
+        // console.log('need Author');
         //存在token则放行
         if (authentication.token) {
-            console.log('have token');
+            // console.log('have token');
             next();
         } else {
-            console.log('token null');
+            // console.log('token null');
             next('/login');
         }
     } else if (to.path == '/login' && authentication.token) {
@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
         next('/');
     } else {
         //其他情况则放行
-        console.log('dont need Author');
+        // console.log('dont need Author');
         next();
     }
 });

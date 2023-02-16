@@ -89,11 +89,14 @@
     const { setUserInfoItem } = authentication;
     const { userInfo } = storeToRefs(authentication);
 
+    //获取到图片地址后调用接口修改图片
     const upSuccess = (url: string) => {
-        console.log('获取到组件返回的链接', url);
         setUserInfoItem('avatar', url);
         updataUserInfo({ avatar: url }).then(res => {
-            console.log('请求结果', res);
+            ElMessage({
+                message: res.msg,
+                type: res.code == 200 ? 'success' : 'error'
+            });
         });
     };
 
