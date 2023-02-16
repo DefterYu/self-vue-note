@@ -56,7 +56,6 @@
         password: '123'
     });
 
-    let psdAgain = ref<string>('');
     const login = () => {
         loginTest(loginFromData).then(res => {
             console.log('登录结果', res);
@@ -67,7 +66,6 @@
                 });
             }
             ElMessage({ message: res.msg, type: 'success' });
-
             authentication.setToken(res.data.token);
             authentication.setUserInfo(res.data.userInfo);
             setTimeout(() => {
