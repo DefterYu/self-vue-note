@@ -2,6 +2,9 @@
 export const IMG_BASE_URL =
     'https://defteryu-1251931232.cos.ap-guangzhou.myqcloud.com/guet/';
 
+/** cos图片上传后端接口 */
+export const IMG_UP_URL = 'http://127.0.0.1:7777/up';
+
 /**格式化get数据 */
 export function urlencode(data: any, isPrefix = true) {
     isPrefix = isPrefix ? isPrefix : false;

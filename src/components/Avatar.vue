@@ -1,7 +1,7 @@
 <template>
     <el-upload
         class="avatar-uploader"
-        action="http://127.0.0.1:7777/up"
+        :action="IMG_UP_URL"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
@@ -27,7 +27,7 @@
     import { ref } from 'vue';
     import { ElMessage } from 'element-plus';
     import type { UploadProps } from 'element-plus';
-    import { IMG_BASE_URL } from '@/utils/common';
+    import { IMG_BASE_URL, IMG_UP_URL } from '@/utils/common';
 
     const imgSize = ref(100);
     defineProps({ imageUrl: { type: String } });
