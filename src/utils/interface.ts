@@ -9,6 +9,14 @@ export interface ICarTypeObj {
     id: number;
     typeName: string;
 }
+export interface IBugObj {
+    id: number;
+    userId: number;
+    nickName: string;
+    statu: string;
+    detail: string;
+    phone: string;
+}
 export interface ICarInfoObj {
     carId: number;
     carNumber: number;

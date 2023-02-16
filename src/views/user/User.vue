@@ -25,10 +25,15 @@
                     <el-menu-item index="/user/order">我的租用</el-menu-item>
                     <el-menu-item index="/user/collecto">我的收藏</el-menu-item>
                 </el-sub-menu>
-                <el-menu-item index="/user/bug">
-                    <el-icon><icon-menu /></el-icon>
-                    <span>故障工单</span>
-                </el-menu-item>
+                <el-sub-menu index="2">
+                    <template #title>
+                        <el-icon><icon-menu /></el-icon>
+                        <span>客服反馈</span>
+                    </template>
+                    <el-menu-item index="/user/bug">反馈记录</el-menu-item>
+                    <el-menu-item index="/user/bugadd">我要反馈</el-menu-item>
+                </el-sub-menu>
+
                 <el-menu-item
                     index="/admin"
                     v-if="authentication.userInfo.userType == 0"

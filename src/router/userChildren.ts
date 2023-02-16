@@ -7,6 +7,10 @@ export const userChildren = [
         component: () => import('@/views/bug/Bug.vue')
     },
     {
+        path: 'bugadd',
+        component: () => import('@/views/bug/BugAdd.vue')
+    },
+    {
         path: 'carlist',
         component: () => import('@/views/car/CarBuyList.vue')
     },
