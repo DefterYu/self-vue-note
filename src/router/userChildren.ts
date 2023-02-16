@@ -1,4 +1,3 @@
-import { UserInfo } from 'os';
 /**
  * 用户的子路由
  */

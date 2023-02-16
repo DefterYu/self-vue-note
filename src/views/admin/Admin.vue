@@ -22,7 +22,7 @@
                         <span>车辆信息</span>
                     </template>
                     <el-menu-item index="/admin/cartype">类型管理</el-menu-item>
-                    <el-menu-item index="/admin/cartype">车辆信息</el-menu-item>
+                    <el-menu-item index="/admin/carinfo">车辆信息</el-menu-item>
                     <el-menu-item index="1-2">租用情况</el-menu-item>
                     <el-menu-item index="/admin/caradd">发布新车</el-menu-item>
                 </el-sub-menu>

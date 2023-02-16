@@ -7,11 +7,11 @@
             @tab-change="tabChange"
         >
             <el-tab-pane
-                label="开放中"
+                label="已上架"
                 :name="0"
             />
             <el-tab-pane
-                label="禁用中"
+                label="已下架"
                 :name="1"
             />
         </el-tabs>
@@ -23,56 +23,47 @@
             border
         >
             <el-table-column
-                prop="userName"
-                label="用户名"
+                prop="title"
+                label="标题"
                 width="180"
             />
             <el-table-column
-                prop="nickName"
-                label="昵称"
-                width="180"
-            />
-            <el-table-column
-                prop="email"
-                label="邮箱"
-                width="180"
-            />
-            <el-table-column
-                label="身份"
+                prop="carType"
+                label="车型"
                 width="100"
-            >
-                <template #default="scope">
-                    <el-tag>
-                        {{ scope.row.userType == 0 ? '管理员' : '普通用户' }}
-                    </el-tag>
-                </template>
-            </el-table-column>
+            />
+            <el-table-column
+                prop="images"
+                label="图片"
+                width="180"
+            />
+            <el-table-column
+                prop="money"
+                label="费用"
+                width="100"
+            />
+            <el-table-column
+                prop="carNumber"
+                label="剩余数量"
+                width="100"
+            />
+
             <el-table-column
                 fixed="right"
                 label="操作"
             >
                 <template #default="scoped">
                     <el-button
-                        :type="scoped.row.status == 0 ? 'warning' : 'success'"
+                        :type="scoped.row.isSales == 0 ? 'warning' : 'success'"
                         size="small"
                         @click="banClick(scoped.row)"
                     >
-                        {{ scoped.row.status == 0 ? '禁用' : '解禁' }}
+                        {{ scoped.row.isSales == 0 ? '下架' : '上架' }}
                     </el-button>
-                    <el-button
-                        :type="scoped.row.userType == 0 ? 'warning' : 'success'"
-                        size="small"
-                        @click="adminSet(scoped.row)"
-                    >
-                        {{
-                            scoped.row.userType == 0
-                                ? '取消管理员'
-                                : '设为管理员'
-                        }}
-                    </el-button>
+
                     <el-popconfirm
                         title="确定要删除么"
-                        @confirm="deletClick(scoped.row.id)"
+                        @confirm="deletClick(scoped.row.carId)"
                     >
                         <template #reference>
                             <el-button
@@ -103,20 +94,21 @@
 </template>
 
 <script setup lang="ts">
-    import { useDelet, userList, userUpdate } from '@/api/user';
-    import { IuserInfoObj } from '@/utils/interface';
+    import { carUpdate, carList, carDelet } from '@/api/car';
+    import { ICarInfoObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
-    import { pa } from 'element-plus/es/locale';
     import { ref, reactive, onMounted } from 'vue';
     const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
+
     const activeName = ref<0 | 1>(0);
     const page = reactive({
         pageNum: 1,
-        pageSize: 10
+        pageSize: 15,
+        statu: 0
     });
     const total = ref(0);
     const state = reactive({
-        list: [] as IuserInfoObj[],
+        list: [] as ICarInfoObj[],
         userType: 1,
         statu: 0
     });
@@ -130,15 +122,14 @@
         scrollbarRef.value!.setScrollTop(0);
     };
 
-    const getList = (status?: 0 | 1) => {
+    const getList = (statu?: 0 | 1) => {
         const param = {
             ...page,
-            status
+            statu
         };
 
-        userList(param).then(res => {
+        carList(param).then(res => {
             console.log(res);
-
             if (res.code == 200) {
                 state.list = res.data.records;
                 total.value = res.data.total;
@@ -146,40 +137,38 @@
         });
     };
     const banClick = (params: any) => {
-        let index = state.list.findIndex(v => v.id == params.id);
-        statuChange(params.id, 'status', params.status == 0 ? 1 : 0, index);
+        let index = state.list.findIndex(v => v.carId == params.carId);
+        statuChange(
+            params.carId,
+            'isSales',
+            params.isSales == 0 ? 1 : 0,
+            index
+        );
     };
-    const adminSet = (params: any) => {
-        let index = state.list.findIndex(v => v.id == params.id);
-        statuChange(params.id, 'userType', params.userType == 0 ? 1 : 0, index);
-    };
+
     const statuChange = (
-        id: number,
+        carId: number,
         key: string,
         statu: 0 | 1,
         index: number
     ) => {
-        console.log(id, statu);
+        console.log(carId, statu);
         const param = <any>{
-            id
+            carId
         };
         param[key] = statu;
 
-        userUpdate(param).then(res => {
+        carUpdate(param).then(res => {
             console.log(res);
             if (res.code == 200) {
-                if (key == 'status') {
-                    state.list.splice(index, 1);
-                } else {
-                    state.list[index].userType = statu;
-                }
+                state.list.splice(index, 1);
             }
         });
     };
     const deletClick = (id: number) => {
-        useDelet(id).then(res => {
+        carDelet(id).then(res => {
             if (res.code == 200) {
-                let index = state.list.findIndex(v => v.id == id);
+                let index = state.list.findIndex(v => v.carId == id);
                 state.list.splice(index, 1);
             }
         });
