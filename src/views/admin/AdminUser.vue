@@ -106,7 +106,7 @@
     import { useDelet, userList, userUpdate } from '@/api/user';
     import { IuserInfoObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
-    import { pa } from 'element-plus/es/locale';
+
     import { ref, reactive, onMounted } from 'vue';
     const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
     const activeName = ref<0 | 1>(0);

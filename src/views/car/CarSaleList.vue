@@ -3,36 +3,33 @@
 
     <div class="grid grid-cols-3 gap-4 p-10">
         <div
-            class="bg-slate-100"
+            class="bg-slate-100 rounded-lg p-4"
             v-for="item in state.carShowList"
         >
-            <div>
-                <el-image
-                    style="width: 100px; height: 100px"
-                    :src="item.images[0]"
-                    fit="fill"
-                />
-                <el-image>
-                    <template #error>
-                        <div class="image-slot">
-                            <el-icon><icon-picture /></el-icon>
-                        </div>
-                    </template>
-                </el-image>
-            </div>
+            <div></div>
 
             <p class="text-lg">{{ item.title }}</p>
+            <p class=" ">剩余数量： {{ item.carNumber }}</p>
+            <div></div>
+            <el-button
+                type="danger"
+                text
+                @click="collectClick(item)"
+            >
+                点击收藏
+            </el-button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { Picture as IconPicture } from '@element-plus/icons-vue';
     import { carList } from '@/api/car';
+    import { collectionAdd } from '@/api/collect';
     import { ICarInfoObj } from '@/utils/interface';
-
+    import { author } from '@/store/authentication';
     import { reactive, ref, onMounted } from 'vue';
 
+    const authentication = author();
     const page = reactive({
         pageNum: 1,
         pageSize: 15,
@@ -41,6 +38,18 @@
     const state = reactive({
         carShowList: [] as ICarInfoObj[]
     });
+
+    const collectClick = (obj: any) => {
+        console.log(obj);
+        const param = {
+            userId: authentication.userInfo.id,
+            carId: obj.carId,
+            title: obj.title
+        };
+        collectionAdd(param).then(res => {
+            console.log(res);
+        });
+    };
 
     onMounted(() => {
         carList(page).then(res => {

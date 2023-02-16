@@ -28,6 +28,12 @@ export interface ISwitchObj {
     configName: string;
     statu: '0' | '1';
 }
+export interface ICollectionObj {
+    id: number;
+    userId: string;
+    carId: number;
+    title: string;
+}
 export interface IuserInfoObj {
     id: number;
     userName: string;

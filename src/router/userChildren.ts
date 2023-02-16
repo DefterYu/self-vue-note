@@ -13,5 +13,9 @@ export const userChildren = [
     {
         path: 'info',
         component: () => import('@/views/user/UserInfo.vue')
+    },
+    {
+        path: 'collecto',
+        component: () => import('@/views/user/Collection.vue')
     }
 ];
