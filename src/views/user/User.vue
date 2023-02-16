@@ -27,9 +27,12 @@
                 </el-sub-menu>
                 <el-menu-item index="/user/bug">
                     <el-icon><icon-menu /></el-icon>
-                    <span>故障上报</span>
+                    <span>故障工单</span>
                 </el-menu-item>
-                <el-menu-item index="/admin">
+                <el-menu-item
+                    index="/admin"
+                    v-if="authentication.userInfo.userType == 0"
+                >
                     <el-icon><setting /></el-icon>
                     <span>管理员</span>
                 </el-menu-item>
@@ -51,13 +54,14 @@
     import BackIndex from '@/components/BackIndex.vue';
     import { useRouter } from 'vue-router';
     import { ref } from 'vue';
+    import { author } from '@/store/authentication';
     import {
-        Document,
         Menu as IconMenu,
         Location,
         Setting
     } from '@element-plus/icons-vue';
 
+    const authentication = author();
     const router = useRouter();
 
     const isCollapse = ref(false);

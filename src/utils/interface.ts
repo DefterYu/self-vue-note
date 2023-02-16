@@ -28,3 +28,13 @@ export interface ISwitchObj {
     configName: string;
     statu: '0' | '1';
 }
+export interface IuserInfoObj {
+    id: number;
+    userName: string;
+    status: 0 | 1;
+    userType: 0 | 1;
+    nickName?: string;
+    email?: string;
+    phoneNumber?: string;
+    avatar?: string;
+}

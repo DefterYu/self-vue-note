@@ -12,9 +12,9 @@
                 text-color="#fff"
                 @select="handleSelect"
             >
-                <el-menu-item index="2">
+                <el-menu-item index="/admin/user">
                     <el-icon><icon-menu /></el-icon>
-                    <span>个人信息</span>
+                    <span>用户管理</span>
                 </el-menu-item>
                 <el-sub-menu index="1">
                     <template #title>

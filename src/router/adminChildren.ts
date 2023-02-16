@@ -7,6 +7,10 @@ export const adminChildren = [
         component: () => import('@/views/admin/AdminNews.vue')
     },
     {
+        path: 'user',
+        component: () => import('@/views/admin/AdminUser.vue')
+    },
+    {
         path: 'cartype',
         component: () => import('@/views/admin/AdminCarType.vue')
     },
