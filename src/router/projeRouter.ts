@@ -3,6 +3,7 @@
  */
 import { indexChildren } from './indexChildren';
 import { adminChildren } from './adminChildren';
+import { userChildren } from './userChildren';
 
 export const projeRouter = [
     {
@@ -25,8 +26,12 @@ export const projeRouter = [
     {
         path: '/login',
         name: 'login',
-        showName: '登录',
         component: () => import('@/views/user/LoginPage.vue')
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import('@/views/user/RegisterPage.vue')
     },
     {
         path: '/user',
@@ -36,7 +41,8 @@ export const projeRouter = [
             //添加自定义参数 需要登录才能进
             requireAuth: true
         },
-        component: () => import('@/views/user/User.vue')
+        component: () => import('@/views/user/User.vue'),
+        children: userChildren
     },
     {
         path: '/user/setting',

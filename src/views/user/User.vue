@@ -22,12 +22,10 @@
                         <el-icon><location /></el-icon>
                         <span>车辆信息</span>
                     </template>
-
-                    <el-menu-item index="1-1">我的出租</el-menu-item>
-                    <el-menu-item index="1-2">我的租用</el-menu-item>
+                    <el-menu-item index="/user/carlist">我的租用</el-menu-item>
                     <el-menu-item index="1-3">我的收藏</el-menu-item>
                 </el-sub-menu>
-                <el-menu-item index="2">
+                <el-menu-item index="/user/bug">
                     <el-icon><icon-menu /></el-icon>
                     <span>故障上报</span>
                 </el-menu-item>

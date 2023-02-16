@@ -2,7 +2,7 @@
     <back-index page-name="登录" />
 
     <div
-        class="container mx-auto w-6/12 border border-red-500 rounded-md px-10"
+        class="container mx-auto w-6/12 border border-red-500 rounded-md px-10 m-10"
     >
         <p class="text-xl py-4">登录</p>
         <div class="">
@@ -10,7 +10,7 @@
                 账号
                 <el-input
                     v-model="loginFromData.userName"
-                    placeholder="Please input"
+                    placeholder="用户名/邮箱/手机号"
                 />
             </div>
             <div class="py-2">
@@ -27,11 +27,14 @@
                 >
                     登录
                 </el-button>
+            </div>
+            <div class="w-full flex justify-center py-2">
                 <el-button
-                    round
-                    @click="login"
+                    type="primary"
+                    @click="router.push('/register')"
+                    link
                 >
-                    登录
+                    没有账号？点击注册
                 </el-button>
             </div>
         </div>
@@ -40,7 +43,7 @@
 
 <script setup lang="ts">
     import BackIndex from '@/components/BackIndex.vue';
-    import { loginTest, register } from '@/api/index';
+    import { loginTest } from '@/api/index';
     import { reactive, ref } from 'vue';
     import { useRouter } from 'vue-router';
     import { author } from '@/store/authentication';
@@ -52,10 +55,7 @@
         userName: 'test',
         password: '123'
     });
-    const regFromData = reactive({
-        userName: '',
-        password: ''
-    });
+
     let psdAgain = ref<string>('');
     const login = () => {
         loginTest(loginFromData).then(res => {

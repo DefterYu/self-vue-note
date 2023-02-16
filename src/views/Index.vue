@@ -13,7 +13,7 @@
             <el-menu-item index="/index/carlist">我要租车</el-menu-item>
             <el-menu-item index="/index/news">新闻</el-menu-item>
             <el-menu-item
-                index="customerService"
+                index="/user/bug"
                 v-if="authentication.token"
             >
                 客服
@@ -42,7 +42,7 @@
             </el-menu-item>
         </el-menu>
     </div>
-
+    <bug-add />
     <router-view></router-view>
 </template>
 
@@ -53,6 +53,7 @@
     import { useRouter } from 'vue-router';
     import { author } from '@/store/authentication';
     import { IMG_BASE_URL } from '@/utils/common';
+    import BugAdd from '@/views/bug/BugAdd.vue';
 
     const authentication = author();
     const router = useRouter();
