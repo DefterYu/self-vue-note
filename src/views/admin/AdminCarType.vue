@@ -3,7 +3,7 @@
         <el-tag
             v-for="(tag, index) in state.dynamicTags"
             :key="tag"
-            class="mx-1"
+            class="m-1"
             size="large"
             closable
             :disable-transitions="false"

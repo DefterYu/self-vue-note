@@ -9,5 +9,9 @@ export const adminChildren = [
     {
         path: 'cartype',
         component: () => import('@/views/admin/AdminCarType.vue')
+    },
+    {
+        path: 'system',
+        component: () => import('@/views/admin/AdminSystem.vue')
     }
 ];

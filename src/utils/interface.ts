@@ -9,3 +9,8 @@ export interface ICarTypeObj {
     id: number;
     typeName: string;
 }
+export interface ISwitchObj {
+    id: number;
+    configName: string;
+    statu: '0' | '1';
+}

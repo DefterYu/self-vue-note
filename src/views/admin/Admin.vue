@@ -22,7 +22,8 @@
                         <span>车辆信息</span>
                     </template>
                     <el-menu-item index="/admin/cartype">类型管理</el-menu-item>
-                    <el-menu-item index="1-2">我的租用</el-menu-item>
+                    <el-menu-item index="/admin/cartype">车辆信息</el-menu-item>
+                    <el-menu-item index="1-2">租用情况</el-menu-item>
                     <el-menu-item index="1-3">我的收藏</el-menu-item>
                 </el-sub-menu>
                 <el-menu-item index="2">
@@ -32,6 +33,10 @@
                 <el-menu-item index="/admin/news">
                     <el-icon><icon-menu /></el-icon>
                     <span>资讯管理</span>
+                </el-menu-item>
+                <el-menu-item index="/admin/system">
+                    <el-icon><icon-menu /></el-icon>
+                    <span>系统管理</span>
                 </el-menu-item>
                 <el-menu-item index="/user">
                     <el-icon><setting /></el-icon>
