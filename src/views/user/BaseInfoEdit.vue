@@ -80,6 +80,15 @@
         @close="nowTarget = ''"
         @ok="ok"
     />
+    <nike-name-form
+        :nowTarget="nowTarget"
+        @close="nowTarget = ''"
+        @ok="ok"
+    />
+    <password-form
+        :nowTarget="nowTarget"
+        @close="nowTarget = ''"
+    />
 </template>
 
 <script setup lang="ts">
@@ -88,6 +97,8 @@
     import BackIndex from '@/components/BackIndex.vue';
     import Avatar from '@/components/Avatar.vue';
     import EmailForm from './EmailForm.vue';
+    import NikeNameForm from './NikeNameForm.vue';
+    import PasswordForm from './PasswordForm.vue';
     import { author } from '@/store/authentication';
     import { storeToRefs } from 'pinia';
 
@@ -97,7 +108,6 @@
 
     //获取到图片地址后调用接口修改图片
     const upSuccess = (url: string) => {
-        // setUserInfoItem('avatar', url);
         ok({ avatar: url });
     };
 
@@ -118,32 +128,6 @@
             nowTarget.value = '';
         });
     };
-
-    const state = reactive({
-        rules: {
-            input12931: [
-                {
-                    required: true,
-                    message: '昵称不可为空'
-                }
-            ],
-            input23031: [
-                {
-                    pattern: /^[1][3-9][0-9]{9}$/,
-                    trigger: ['blur', 'change'],
-                    message: '请输入正确的手机号'
-                }
-            ],
-            input113152: [
-                {
-                    pattern:
-                        /^([-_A-Za-z0-9.]+)@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/,
-                    trigger: ['blur', 'change'],
-                    message: '请输入正确的邮箱'
-                }
-            ]
-        }
-    });
 </script>
 
 <style lang="scss" scoped></style>

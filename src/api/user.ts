@@ -12,6 +12,11 @@ export const userUpdate = (params: any) => {
     return request.post('/useredit/updata', { ...params });
 };
 
+/**用户修改密码 */
+export const userUpdatePwd = (params: any) => {
+    return request.post('/useredit/updata/password', { ...params });
+};
+
 /**获取用户列表 */
 export const userList = (params: any) => {
     return request.get('/useredit/list', { params });

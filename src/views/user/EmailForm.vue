@@ -1,4 +1,3 @@
-<!-- 邮件测试模块 -->
 <template>
     <el-dialog
         v-model="dialogFormVisible"
@@ -17,7 +16,7 @@
             >
                 <el-input
                     v-model="codeInput"
-                    placeholder="验证码"
+                    placeholder="输入验证码"
                 >
                     <template #append>
                         <el-button
@@ -52,14 +51,12 @@
     const prop = defineProps<{
         nowTarget: string;
     }>();
-
     const emit = defineEmits(['close', 'ok']);
 
-    const addr = ref('');
-    const codeInput = ref('');
+    const addr = ref(''),
+        codeInput = ref('');
 
     const dialogFormVisible = ref(false);
-
     const formLabelWidth = '100px';
 
     const lodingFlag = ref(false);
