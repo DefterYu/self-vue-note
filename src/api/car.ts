@@ -1,33 +1,38 @@
 import request from '@/utils/request';
 
-/**新闻相关接口 */
+/**车辆相关接口 */
 
+/**添加车辆 */
 export const carAdd = (params: any) => {
-    return request.post('/car/type/add', { ...params });
+    return request.post('/car/add', { ...params });
 };
 
-export const typeAdd = (params: any) => {
-    return request.post('/car/type/add', { ...params });
-};
-//更新状态
-export const carUpdate = (params: any) => {
-    return request.post('/car/update', { ...params });
-};
-
-//get不需要解构
-export const newList = (params: any) => {
-    return request.get('/car/type/list', { params });
-};
-
-//get不需要解构
-export const typeList = (params: any) => {
-    return request.get('/car/type/list', { params });
-};
-
+/**删除车辆信息 */
 export const carDelet = (id: string | number) => {
     return request.delete(`/car/delet/${id}`);
 };
 
+/**更改车辆状态 */
+export const carUpdate = (params: any) => {
+    return request.post('/car/update', { ...params });
+};
+
+/**获取车辆列表 */
+export const carList = (params: any) => {
+    return request.get('/car/list', { params });
+};
+
+/**添加车辆类型 */
+export const typeAdd = (params: any) => {
+    return request.post('/car/type/add', { ...params });
+};
+
+/**删除车辆类型 */
 export const typeDelet = (id: string | number) => {
     return request.delete(`/car/type/delet/${id}`);
+};
+
+/**获取车辆类型列表 */
+export const typeList = (params: any) => {
+    return request.get('/car/type/list', { params });
 };
