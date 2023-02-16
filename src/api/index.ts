@@ -22,7 +22,7 @@ export const onlineTest = () => {
 
 //发送邮箱验证码
 export const sendVerificationCode = (params: { mail: string }) => {
-    return request.post('/mail/sendVerificationCode', { ...params });
+    return request.post('/mail/sendVerificationCode', params);
 };
 //校验验证码
 export const checkVerificationCode = (code: string) => {

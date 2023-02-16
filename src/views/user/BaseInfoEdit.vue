@@ -75,13 +75,19 @@
             </div>
         </div>
     </div>
+    <email-form
+        :nowTarget="nowTarget"
+        @close="nowTarget = ''"
+        @ok="ok"
+    />
 </template>
 
 <script setup lang="ts">
     import { updataUserInfo } from '@/api';
-    import { ref, reactive } from 'vue';
+    import { ref, reactive, watch } from 'vue';
     import BackIndex from '@/components/BackIndex.vue';
     import Avatar from '@/components/Avatar.vue';
+    import EmailForm from './EmailForm.vue';
     import { author } from '@/store/authentication';
     import { storeToRefs } from 'pinia';
 
@@ -91,18 +97,26 @@
 
     //获取到图片地址后调用接口修改图片
     const upSuccess = (url: string) => {
-        setUserInfoItem('avatar', url);
-        updataUserInfo({ avatar: url }).then(res => {
-            ElMessage({
-                message: res.msg,
-                type: res.code == 200 ? 'success' : 'error'
-            });
-        });
+        // setUserInfoItem('avatar', url);
+        ok({ avatar: url });
     };
 
     const nowTarget = ref('');
     const btnClick = (key: string) => {
         nowTarget.value = key;
+    };
+    //组件参数回传
+    const ok = (params: any) => {
+        updataUserInfo(params).then(res => {
+            Object.keys(params).map(key => {
+                setUserInfoItem(key, params[key]);
+            });
+            ElMessage({
+                message: res.msg,
+                type: res.code == 200 ? 'success' : 'error'
+            });
+            nowTarget.value = '';
+        });
     };
 
     const state = reactive({
