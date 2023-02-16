@@ -43,39 +43,6 @@
             </span>
         </template>
     </el-dialog>
-    <div class="w-6/12 border border-red-500 rounded-md px-10">
-        <p class="text-xl">邮箱测试</p>
-        <div class="">
-            <div>
-                邮箱
-                <el-input
-                    v-model="addr"
-                    placeholder="输入邮箱"
-                />
-            </div>
-            <div>
-                验证码
-                <el-input
-                    v-model="codeInput"
-                    placeholder="输入验证码"
-                />
-            </div>
-            <div class="w-full flex justify-center">
-                <el-button
-                    round
-                    @click="sendMail"
-                >
-                    发送邮件
-                </el-button>
-                <el-button
-                    round
-                    @click="checkCode"
-                >
-                    校验验证码
-                </el-button>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script setup lang="ts">
@@ -92,6 +59,7 @@
     const codeInput = ref('');
 
     const dialogFormVisible = ref(false);
+
     const formLabelWidth = '100px';
 
     const lodingFlag = ref(false);
@@ -100,13 +68,14 @@
         if (!pattern.test(addr.value)) {
             return ElMessage({ message: '请输入正确邮箱', type: 'error' });
         }
-
+        lodingFlag.value = true;
         sendVerificationCode({ mail: addr.value }).then(res => {
             console.log('发送结果', res);
             ElMessage({
                 message: res.msg,
                 type: res.code == 200 ? 'success' : 'error'
             });
+            if (res.code == 200) lodingFlag.value = false;
         });
     };
     const checkCode = () => {
