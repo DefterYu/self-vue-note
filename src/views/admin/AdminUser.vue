@@ -15,16 +15,76 @@
                 :name="1"
             />
         </el-tabs>
-        <div class="w-full flex justify-between text-center font-semibold">
-            <div class="w-3/4 grid grid-cols-4">
-                <div>用户名</div>
-                <div>昵称</div>
-                <div>邮箱</div>
-                <div>身份</div>
-            </div>
-            <div class="w-1/4">操作</div>
-        </div>
-        <el-scrollbar
+
+        <el-table
+            :data="state.list"
+            style="width: 100%"
+            stripe
+            border
+        >
+            <el-table-column
+                prop="userName"
+                label="用户名"
+                width="180"
+            />
+            <el-table-column
+                prop="nickName"
+                label="昵称"
+                width="180"
+            />
+            <el-table-column
+                prop="email"
+                label="邮箱"
+                width="180"
+            />
+            <el-table-column
+                label="身份"
+                width="100"
+            >
+                <template #default="scope">
+                    <el-tag>
+                        {{ scope.row.userType == 0 ? '管理员' : '普通用户' }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column
+                fixed="right"
+                label="操作"
+            >
+                <template #default="scoped">
+                    <el-button
+                        :type="scoped.row.status == 0 ? 'warning' : 'success'"
+                        size="small"
+                        @click="banClick(scoped.row)"
+                    >
+                        {{ scoped.row.status == 0 ? '禁用' : '解禁' }}
+                    </el-button>
+                    <el-button
+                        :type="scoped.row.userType == 0 ? 'warning' : 'success'"
+                        size="small"
+                        @click="adminSet(scoped.row)"
+                    >
+                        {{
+                            scoped.row.userType == 0
+                                ? '取消管理员'
+                                : '设为管理员'
+                        }}
+                    </el-button>
+                    <el-popconfirm title="Are you sure to delete this?">
+                        <template #reference>
+                            <el-button
+                                type="primary"
+                                size="small"
+                                @click="deletClick(scoped.row.id)"
+                            >
+                                删除
+                            </el-button>
+                        </template>
+                    </el-popconfirm>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!-- <el-scrollbar
             height="500px"
             ref="scrollbarRef"
         >
@@ -89,7 +149,7 @@
                     </el-button>
                 </div>
             </div>
-        </el-scrollbar>
+        </el-scrollbar> -->
 
         <div class="flex justify-center my-10">
             <el-pagination
@@ -110,6 +170,7 @@
     import { useDelet, userList, userUpdate } from '@/api/user';
     import { IuserInfoObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
+    import { pa } from 'element-plus/es/locale';
     import { ref, reactive, onMounted } from 'vue';
     const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
     const activeName = ref<0 | 1>(0);
@@ -132,6 +193,7 @@
         getList(0);
         scrollbarRef.value!.setScrollTop(0);
     };
+
     const getList = (status?: 0 | 1) => {
         const param = {
             ...page,
@@ -146,6 +208,14 @@
                 total.value = res.data.total;
             }
         });
+    };
+    const banClick = (params: any) => {
+        let index = state.list.findIndex(v => v.id == params.id);
+        statuChange(params.id, 'status', params.status == 0 ? 1 : 0, index);
+    };
+    const adminSet = (params: any) => {
+        let index = state.list.findIndex(v => v.id == params.id);
+        statuChange(params.id, 'userType', params.userType == 0 ? 1 : 0, index);
     };
     const statuChange = (
         id: number,
@@ -170,9 +240,10 @@
             }
         });
     };
-    const deletClick = (id: number, index: number) => {
+    const deletClick = (id: number) => {
         useDelet(id).then(res => {
             if (res.code == 200) {
+                let index = state.list.findIndex(v => v.id == id);
                 state.list.splice(index, 1);
             }
         });

@@ -44,3 +44,8 @@ import type { UploadFile } from 'element-plus';
 export interface myUploadFile extends UploadFile {
     response: any;
 }
+
+export interface IOptions {
+    value: string;
+    label: string;
+}

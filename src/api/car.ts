@@ -33,6 +33,6 @@ export const typeDelet = (id: string | number) => {
 };
 
 /**获取车辆类型列表 */
-export const typeList = (params: any) => {
+export const typeList = (params?: any) => {
     return request.get('/car/type/list', { params });
 };
