@@ -2,7 +2,7 @@
     <div class="mx-auto p-10 max-w-3xl shadow-lg">
         <div class="my-4">
             <el-input
-                v-model="input"
+                v-model="state.detail"
                 placeholder="故障反馈、建议反馈"
                 :rows="4"
                 type="textarea"
@@ -10,13 +10,13 @@
         </div>
         <div class="my-4">
             <el-input
-                v-model="input"
-                placeholder="预留联系方式"
+                v-model="state.phone"
+                placeholder="预留联系方式（选填）"
             />
         </div>
         <div class="my-4">
             <el-date-picker
-                v-model="value1"
+                v-model="state.createTime"
                 type="datetime"
                 placeholder="反馈时间"
             />
@@ -25,21 +25,61 @@
             ref="ilu"
             :imgLimit="3"
         />
-        <div @click="ccc">点击获取图片</div>
+        <div class="my-4 flex justify-center">
+            <el-button
+                type="primary"
+                @click="workSubmit"
+            >
+                创建工单并提交
+            </el-button>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, reactive } from 'vue';
+    import { bugUpdata, bugAdd } from '@/api/bug';
     import ImgListUpload from '@/components/ImgListUpload.vue';
+    import { author } from '@/store/authentication';
 
-    const input = ref('');
-    const value1 = ref('');
+    const authentication = author();
     const ilu = ref();
 
-    const ccc = () => {
-        console.log(ilu.value.getImgArr());
+    const state = reactive({
+        detail: '',
+        createTime: '',
+        phone: ''
+    });
+
+    const workSubmit = () => {
+        if (!state.detail) {
+            return ElMessage({ message: '请输入反馈内容', type: 'error' });
+        }
+        if (!state.createTime) {
+            return ElMessage({ message: '请选择反馈时间', type: 'error' });
+        }
+        const param = {
+            ...state,
+            userId: authentication.userInfo.id,
+            nickName: authentication.userInfo.nickName,
+            image: ilu.value.getImgArr()
+        };
+        bugAdd(param).then(res => {
+            console.log(res);
+            ElMessage({
+                message: res.msg,
+                type: res.code == 200 ? 'success' : 'error'
+            });
+            if (res.code == 200) {
+                clearFrom();
+            }
+        });
     };
 
-    onMounted(() => {});
+    const clearFrom = () => {
+        state.createTime = '';
+        state.detail = '';
+        state.phone = '';
+        ilu.value.clear();
+    };
 </script>
