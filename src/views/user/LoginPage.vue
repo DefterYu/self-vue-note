@@ -17,7 +17,8 @@
                 密码
                 <el-input
                     v-model="loginFromData.password"
-                    placeholder="Please input"
+                    show-password
+                    placeholder="密码"
                 />
             </div>
             <div class="w-full flex justify-center py-2">
