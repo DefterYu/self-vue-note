@@ -10,7 +10,7 @@
                 账号
                 <el-input
                     v-model="loginFromData.userName"
-                    placeholder="用户名/邮箱/手机号"
+                    placeholder="用户名 / 邮箱"
                 />
             </div>
             <div class="py-2">
@@ -23,6 +23,8 @@
             <div class="w-full flex justify-center py-2">
                 <el-button
                     round
+                    :loading-icon="ChromeFilled"
+                    :loading="lodingFlag"
                     @click="login"
                 >
                     登录
@@ -43,6 +45,7 @@
 
 <script setup lang="ts">
     import BackIndex from '@/components/BackIndex.vue';
+    import { ChromeFilled } from '@element-plus/icons-vue';
     import { loginTest } from '@/api/index';
     import { reactive, ref } from 'vue';
     import { useRouter } from 'vue-router';
@@ -50,13 +53,25 @@
 
     const authentication = author();
     const router = useRouter();
+    const lodingFlag = ref(false);
 
     const loginFromData = reactive({
-        userName: 'test',
-        password: '123'
+        userName: '',
+        password: ''
     });
 
     const login = () => {
+        if (!loginFromData.userName) {
+            return ElMessage({
+                message: '用户名或邮箱不能为空',
+                type: 'error'
+            });
+        }
+        if (!loginFromData.password) {
+            return ElMessage({ message: '密码不能为空', type: 'error' });
+        }
+
+        lodingFlag.value = true;
         loginTest(loginFromData).then(res => {
             console.log('登录结果', res);
             if (typeof res == 'undefined' || res.code != 200) {
@@ -70,7 +85,8 @@
             authentication.setUserInfo(res.data.userInfo);
             setTimeout(() => {
                 router.push('/');
-            }, 3000);
+            }, 1000);
+            lodingFlag.value = false;
         });
     };
 </script>

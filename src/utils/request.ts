@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { urlencode } from './common';
-
+import { author } from '@/store/authentication';
+import { useRouter } from 'vue-router';
+const authentication = author();
+const router = useRouter();
 // const BASE_URL = 'http://192.168.1.16:7777';
 const BASE_URL = 'http://localhost:7777';
 
@@ -30,8 +32,11 @@ service.interceptors.request.use(
 //响应拦截器
 service.interceptors.response.use(
     response => {
-        // 仅返回响应中的data
         if (response.data.code == 401) {
+            console.log('过期');
+
+            authentication.deleToken();
+            router.push('/login');
         } else {
             return response.data;
         }

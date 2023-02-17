@@ -32,6 +32,8 @@
             <div class="w-full flex justify-center py-2">
                 <el-button
                     round
+                    :loading-icon="ChromeFilled"
+                    :loading="lodingFlag"
                     @click="reg"
                 >
                     注册
@@ -51,6 +53,7 @@
 </template>
 
 <script setup lang="ts">
+    import { ChromeFilled } from '@element-plus/icons-vue';
     import BackIndex from '@/components/BackIndex.vue';
     import { register } from '@/api/index';
     import { reactive, ref } from 'vue';
@@ -58,7 +61,7 @@
     import type { Action } from 'element-plus';
 
     const router = useRouter();
-
+    const lodingFlag = ref(false);
     const regFromData = reactive({
         userName: '',
         password: ''
@@ -66,8 +69,8 @@
     let psdAgain = ref<string>('');
 
     const open = () => {
-        ElMessageBox.alert('注册成功 返回登录页就行登录', '提示', {
-            confirmButtonText: 'OK',
+        ElMessageBox.alert('注册成功。是否返回登录页进行登录', '提示', {
+            confirmButtonText: '去登录',
             callback: (action: Action) => {
                 console.log(action);
                 if (action == 'confirm') {
@@ -76,6 +79,7 @@
             }
         });
     };
+
     const reg = () => {
         if (!regFromData.userName || !regFromData.password || !psdAgain.value) {
             return ElMessage({ message: '请完善信息', type: 'error' });
@@ -83,6 +87,8 @@
         if (regFromData.password != psdAgain.value) {
             return ElMessage({ message: '两次密码不一致', type: 'error' });
         }
+
+        lodingFlag.value = true;
         register(regFromData).then(res => {
             console.log('注册返回信息', res);
             if (res.code == 200) {
@@ -92,6 +98,7 @@
                 message: res.msg,
                 type: res.code == 200 ? 'success' : 'error'
             });
+            lodingFlag.value = false;
         });
     };
 </script>
