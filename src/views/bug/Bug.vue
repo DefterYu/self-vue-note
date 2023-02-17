@@ -45,17 +45,18 @@
                 fixed="right"
                 label="操作"
             >
-                <template #default="scoped">
+                <template #default="scope">
                     <el-button
+                        v-if="scope.row.statu == 0"
                         type="danger"
                         size="small"
-                        @click="banClick(scoped.row)"
+                        @click="banClick(scope.row)"
                     >
                         受理
                     </el-button>
                     <el-popconfirm
                         title="确定要删除么"
-                        @confirm="deletClick(scoped.row.id)"
+                        @confirm="deletClick(scope.row.id)"
                     >
                         <template #reference>
                             <el-button
@@ -63,7 +64,7 @@
                                 size="small"
                             >
                                 {{
-                                    scoped.row.statu == 0
+                                    scope.row.statu == 0
                                         ? '撤回工单'
                                         : '删除工单记录'
                                 }}

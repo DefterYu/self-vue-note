@@ -57,73 +57,25 @@
             </div>
         </div>
         <div class="m-2">
-            最多选中五张图片
-            <el-upload
-                v-model:file-list="state.fileList"
-                :action="IMG_UP_URL"
-                list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :before-upload="beforeAvatarUpload"
-                :limit="5"
-            >
-                <el-icon><Plus /></el-icon>
-            </el-upload>
+            <img-list-upload
+                ref="ilu"
+                :imgLimit="5"
+            />
         </div>
+
         <div class="flex justify-center my-10">
             <el-button @click="save">发布车辆信息</el-button>
         </div>
     </div>
-
-    <el-dialog v-model="dialogVisible">
-        <img
-            w-full
-            :src="dialogImageUrl"
-            alt="Preview Image"
-        />
-    </el-dialog>
 </template>
 
 <script setup lang="ts">
     import { ref, reactive, onMounted } from 'vue';
-    import { Plus } from '@element-plus/icons-vue';
-    import { IMG_UP_URL } from '@/utils/common';
+    import ImgListUpload from '@/components/ImgListUpload.vue';
     import { typeList, carAdd } from '@/api/car';
-    import { IOptions, ICarTypeObj, myUploadFile } from '@/utils/interface';
-    import type { UploadProps, UploadUserFile } from 'element-plus';
-    import { clear } from 'console';
+    import { IOptions, ICarTypeObj } from '@/utils/interface';
 
-    const state = reactive({
-        fileList: [] as UploadUserFile[] | myUploadFile[]
-    });
-
-    //预览
-    const dialogImageUrl = ref('');
-    const dialogVisible = ref(false);
-    const handlePictureCardPreview: UploadProps['onPreview'] = uploadFile => {
-        dialogImageUrl.value = uploadFile.url!;
-        dialogVisible.value = true;
-    };
-
-    //上传过滤器
-    const imgTypeList = ['image/jpeg', 'image/png'];
-    const beforeAvatarUpload: UploadProps['beforeUpload'] = rawFile => {
-        if (!imgTypeList.includes(rawFile.type)) {
-            ElMessage.error('只能使用限定格式的图片');
-            return false;
-        } else if (rawFile.size / 1024 / 1024 > 2) {
-            ElMessage.error('图片最大支持2MB!');
-            return false;
-        }
-        return true;
-    };
-
-    /**获取图片数组 */
-    const getImgArr = (): string[] | void[] => {
-        if (state.fileList.length == 0) return [];
-        return state.fileList.map(v => {
-            return v.response.data.url;
-        });
-    };
+    const ilu = ref();
 
     const param = reactive({
         remarks: '',
@@ -163,7 +115,7 @@
                 money: {
                     [moneyType.value]: moneyValue.value
                 },
-                images: getImgArr(),
+                images: ilu.value.getImgArr(),
                 carType: carType.value
             };
 
@@ -193,7 +145,7 @@
         moneyType.value = '';
         carType.value = '';
         moneyValue.value = '';
-        state.fileList = [];
+        ilu.value.clear();
     };
 
     onMounted(() => {

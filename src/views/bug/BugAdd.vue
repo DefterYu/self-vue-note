@@ -1,122 +1,45 @@
 <template>
-    <el-button
-        text
-        @click="dialogFormVisible = true"
-    >
-        open a Form nested Dialog
-    </el-button>
-
-    <el-dialog
-        v-model="dialogFormVisible"
-        title="提交故障反馈"
-    >
-        <el-form :model="form">
-            <el-form-item
-                label="故障详情"
-                :label-width="formLabelWidth"
-            >
-                <el-input
-                    v-model="form.name"
-                    autocomplete="off"
-                />
-            </el-form-item>
-            <el-form-item
-                label="故障时间"
-                :label-width="formLabelWidth"
-            >
-                <div class="block">
-                    <el-date-picker
-                        v-model="value1"
-                        type="datetime"
-                        placeholder="Select date and time"
-                    />
-                </div>
-            </el-form-item>
-            <el-form-item
-                label="Zones"
-                :label-width="formLabelWidth"
-            >
-                <el-select
-                    v-model="form.region"
-                    placeholder="Please select a zone"
-                >
-                    <el-option
-                        label="Zone No.1"
-                        value="shanghai"
-                    />
-                    <el-option
-                        label="Zone No.2"
-                        value="beijing"
-                    />
-                </el-select>
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                <el-button
-                    type="primary"
-                    @click="dialogFormVisible = false"
-                >
-                    Confirm
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
+    <div class="mx-auto p-10 max-w-3xl shadow-lg">
+        <div class="my-4">
+            <el-input
+                v-model="input"
+                placeholder="故障反馈、建议反馈"
+                :rows="4"
+                type="textarea"
+            />
+        </div>
+        <div class="my-4">
+            <el-input
+                v-model="input"
+                placeholder="预留联系方式"
+            />
+        </div>
+        <div class="my-4">
+            <el-date-picker
+                v-model="value1"
+                type="datetime"
+                placeholder="反馈时间"
+            />
+        </div>
+        <img-list-upload
+            ref="ilu"
+            :imgLimit="3"
+        />
+        <div @click="ccc">点击获取图片</div>
+    </div>
 </template>
 
 <script lang="ts" setup>
-    import { reactive, ref } from 'vue';
+    import { ref, onMounted } from 'vue';
+    import ImgListUpload from '@/components/ImgListUpload.vue';
 
-    const dialogFormVisible = ref(false);
+    const input = ref('');
     const value1 = ref('');
-    const formLabelWidth = '140px';
+    const ilu = ref();
 
-    const form = reactive({
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-    });
+    const ccc = () => {
+        console.log(ilu.value.getImgArr());
+    };
 
-    const gridData = [
-        {
-            date: '2016-05-02',
-            name: 'John Smith',
-            address: 'No.1518,  Jinshajiang Road, Putuo District'
-        },
-        {
-            date: '2016-05-04',
-            name: 'John Smith',
-            address: 'No.1518,  Jinshajiang Road, Putuo District'
-        },
-        {
-            date: '2016-05-01',
-            name: 'John Smith',
-            address: 'No.1518,  Jinshajiang Road, Putuo District'
-        },
-        {
-            date: '2016-05-03',
-            name: 'John Smith',
-            address: 'No.1518,  Jinshajiang Road, Putuo District'
-        }
-    ];
+    onMounted(() => {});
 </script>
-<style scoped>
-    .el-button--text {
-        margin-right: 15px;
-    }
-    .el-select {
-        width: 300px;
-    }
-    .el-input {
-        width: 300px;
-    }
-    .dialog-footer button:first-child {
-        margin-right: 10px;
-    }
-</style>
