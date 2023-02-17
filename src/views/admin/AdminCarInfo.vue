@@ -94,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-    import { carUpdate, carList, carDelet } from '@/api/car';
+    import { carUpdata, carList, carDelet } from '@/api/car';
     import { ICarInfoObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
     import { ref, reactive, onMounted } from 'vue';
@@ -158,7 +158,7 @@
         };
         param[key] = statu;
 
-        carUpdate(param).then(res => {
+        carUpdata(param).then(res => {
             console.log(res);
             if (res.code == 200) {
                 state.list.splice(index, 1);

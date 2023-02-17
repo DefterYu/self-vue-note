@@ -3,8 +3,8 @@ import request from '@/utils/request';
 /**系统相关接口 */
 
 //更新状态
-export const systemSwitchUpdate = (params: any) => {
-    return request.post('/system/update', { ...params });
+export const systemSwitchUpdata = (params: any) => {
+    return request.post('/system/updata', { ...params });
 };
 
 //get不需要解构

@@ -7,8 +7,8 @@ export const collectionAdd = (params: any) => {
 };
 
 //更新状态
-export const collectionUpdate = (params: any) => {
-    return request.post('/collection/update', { ...params });
+export const collectionUpdata = (params: any) => {
+    return request.post('/collection/updata', { ...params });
 };
 
 //get不需要解构

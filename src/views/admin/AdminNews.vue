@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-    import { newList, newsUpdate, newsDelet } from '@/api/news';
+    import { newList, newsUpdata, newsDelet } from '@/api/news';
     import { INewsObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
     import { ref, reactive, onMounted } from 'vue';
@@ -118,7 +118,7 @@
     const statuChange = (id: number, statu: 0 | 1, index: number) => {
         console.log(id, statu);
 
-        newsUpdate({ id, statu }).then(res => {
+        newsUpdata({ id, statu }).then(res => {
             console.log(res);
             if (res.code == 200) {
                 state.list.splice(index, 1);

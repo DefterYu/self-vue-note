@@ -23,14 +23,14 @@
     import { ISwitchObj } from '@/utils/interface';
     import { ref, reactive, onMounted } from 'vue';
     import { Check, Close } from '@element-plus/icons-vue';
-    import { getSystemSwitchList, systemSwitchUpdate } from '@/api/system';
+    import { getSystemSwitchList, systemSwitchUpdata } from '@/api/system';
 
     const state = reactive({
         sitchList: [] as ISwitchObj[]
     });
     const change = (statu: '0' | '1', id: number) => {
         console.log(statu, id);
-        systemSwitchUpdate({ statu, id }).then(res => {
+        systemSwitchUpdata({ statu, id }).then(res => {
             if (res.code != 200) {
                 getlist();
             }

@@ -7,8 +7,8 @@ export const bugAdd = (params: any) => {
 };
 
 //更新状态
-export const bugUpdate = (params: any) => {
-    return request.post('/bug/update', { ...params });
+export const bugUpdata = (params: any) => {
+    return request.post('/bug/updata', { ...params });
 };
 
 //get不需要解构

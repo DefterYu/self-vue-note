@@ -8,13 +8,13 @@ export const useDelet = (id: string | number) => {
 };
 
 /**更改用户状态 */
-export const userUpdate = (params: any) => {
+export const userUpdata = (params: any) => {
     return request.post('/useredit/updata', { ...params });
 };
 
 /**用户修改密码 */
-export const userUpdatePwd = (params: any) => {
-    return request.post('/useredit/updata/password', { ...params });
+export const userUpdataPwd = (params: any) => {
+    return request.post('/useredit/updupdataata/password', { ...params });
 };
 
 /**获取用户列表 */

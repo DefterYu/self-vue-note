@@ -13,8 +13,8 @@ export const carDelet = (id: string | number) => {
 };
 
 /**更改车辆状态 */
-export const carUpdate = (params: any) => {
-    return request.post('/car/update', { ...params });
+export const carUpdata = (params: any) => {
+    return request.post('/car/updata', { ...params });
 };
 
 /**获取车辆列表 */

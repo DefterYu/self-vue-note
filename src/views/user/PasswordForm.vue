@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
     import { ref, watch } from 'vue';
-    import { userUpdatePwd } from '@/api/user';
+    import { userUpdataPwd } from '@/api/user';
     const prop = defineProps<{
         nowTarget: string;
     }>();
@@ -66,7 +66,7 @@
             pwd2: pwd2.value,
             pwd3: pwd3.value
         };
-        userUpdatePwd(param).then(res => {
+        userUpdataPwd(param).then(res => {
             console.log(res);
             ElMessage({
                 message: res.msg,

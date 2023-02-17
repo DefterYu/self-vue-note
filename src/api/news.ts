@@ -7,8 +7,8 @@ export const newsAdd = (params: any) => {
 };
 
 //更新状态
-export const newsUpdate = (params: any) => {
-    return request.post('/news/update', { ...params });
+export const newsUpdata = (params: any) => {
+    return request.post('/news/updata', { ...params });
 };
 
 //get不需要解构

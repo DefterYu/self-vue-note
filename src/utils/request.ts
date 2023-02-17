@@ -31,7 +31,10 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         // 仅返回响应中的data
-        return response.data;
+        if (response.data.code == 401) {
+        } else {
+            return response.data;
+        }
     },
     error => {
         //此处接口请求失败

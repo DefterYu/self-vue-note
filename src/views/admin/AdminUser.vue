@@ -103,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-    import { useDelet, userList, userUpdate } from '@/api/user';
+    import { useDelet, userList, userUpdata } from '@/api/user';
     import { IuserInfoObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
 
@@ -165,7 +165,7 @@
         };
         param[key] = statu;
 
-        userUpdate(param).then(res => {
+        userUpdata(param).then(res => {
             console.log(res);
             if (res.code == 200) {
                 if (key == 'status') {

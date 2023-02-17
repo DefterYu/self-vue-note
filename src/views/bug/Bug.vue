@@ -49,6 +49,7 @@
                     <el-button
                         type="danger"
                         size="small"
+                        @click="banClick(scoped.row)"
                     >
                         受理
                     </el-button>
@@ -89,8 +90,8 @@
 </template>
 
 <script setup lang="ts">
-    import { bugList, bugDelet } from '@/api/bug';
-    import { onMounted, reactive, ref } from 'vue';
+    import { bugList, bugDelet, bugUpdata } from '@/api/bug';
+    import { onMounted, reactive, ref, toRaw } from 'vue';
     import { author } from '@/store/authentication';
     import { IBugObj } from '@/utils/interface';
 
@@ -111,6 +112,33 @@
     const state = reactive({
         list: [] as IBugObj[]
     });
+    const banClick = (params: any) => {
+        let index = state.list.findIndex(v => v.id == params.id);
+        console.log('点击参数', params, index);
+        statuChange(params.id, 'statu', params.statu == 0 ? 1 : 0, index);
+    };
+    const statuChange = (
+        id: number,
+        key: string,
+        statu: 0 | 1,
+        index: number
+    ) => {
+        console.log(id, statu);
+        const param = <any>{
+            id
+        };
+        param[key] = statu;
+
+        console.log(param);
+        bugUpdata(param).then(res => {
+            console.log(res);
+            if (res.code == 200) {
+                state.list.splice(index, 1);
+            }
+        });
+    };
+    const cc = () => {};
+
     const pageCurrentChange = () => {
         getList();
     };
