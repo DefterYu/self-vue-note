@@ -73,22 +73,25 @@
         }
 
         lodingFlag.value = true;
-        loginTest(loginFromData).then(res => {
-            console.log('登录结果', res);
-            if (typeof res == 'undefined' || res.code != 200) {
-                return ElMessage({
-                    message: res.msg || '请求异常',
+        loginTest(loginFromData)
+            .then(res => {
+                console.log('登录结果', res);
+                ElMessage({ message: res.msg, type: 'success' });
+                authentication.setToken(res.data.token);
+                authentication.setUserInfo(res.data.userInfo);
+                setTimeout(() => {
+                    router.push('/');
+                }, 1000);
+            })
+            .catch(err => {
+                ElMessage({
+                    message: err.msg || '请求异常',
                     type: 'error'
                 });
-            }
-            ElMessage({ message: res.msg, type: 'success' });
-            authentication.setToken(res.data.token);
-            authentication.setUserInfo(res.data.userInfo);
-            setTimeout(() => {
-                router.push('/');
-            }, 1000);
-            lodingFlag.value = false;
-        });
+            })
+            .finally(() => {
+                lodingFlag.value = false;
+            });
     };
 </script>
 
