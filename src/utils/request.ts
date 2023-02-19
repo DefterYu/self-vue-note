@@ -4,7 +4,8 @@ import { useRouter } from 'vue-router';
 const authentication = author();
 const router = useRouter();
 // const BASE_URL = 'http://192.168.1.16:7777';
-const BASE_URL = 'http://localhost:7777';
+// const BASE_URL = 'http://localhost:7777';
+const BASE_URL = 'http://defteryu.top:7777'; //阿里云后端地址+端口
 
 const service = axios.create({
     baseURL: BASE_URL

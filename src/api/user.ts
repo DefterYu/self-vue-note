@@ -14,7 +14,7 @@ export const userUpdata = (params: any) => {
 
 /**用户修改密码 */
 export const userUpdataPwd = (params: any) => {
-    return request.post('/useredit/updupdataata/password', { ...params });
+    return request.post('/useredit/updata/password', { ...params });
 };
 
 /**获取用户列表 */
