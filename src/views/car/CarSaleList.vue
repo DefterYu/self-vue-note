@@ -1,30 +1,42 @@
 <template>
-    <div>汽车出租列表</div>
-
-    <div class="flex flex-wrap mx-auto">
-        <div
-            class="bg-slate-100 rounded-lg m-6 hover:bg-slate-200 hover:border-transparent hover:shadow-lg cursor-pointer"
-            v-for="item in state.carShowList"
-            @click="toDetails(item)"
-        >
-            <div v-if="item.images.length > 0">
-                <el-image
-                    style="width: 250px; height: 200px"
-                    :src="IMG_BASE_URL + item.images[0]"
-                    fit="cover"
-                />
-            </div>
-            <div v-else></div>
-
-            <p class="text-lg font-semibold m-2">{{ item.title }}</p>
-            <el-tag
-                class="m-2"
-                type="warning"
-                effect="light"
+    <div class="mx-auto p-6">
+        <div class="flex flex-wrap justify-center">
+            <div
+                class="bg-slate-100 rounded-lg m-6 hover:bg-slate-200 hover:border-transparent hover:shadow-lg cursor-pointer"
+                v-for="item in state.carShowList"
+                @click="toDetails(item)"
             >
-                {{ item.carType }}
-            </el-tag>
-            <p class="m-2 text-red-400">{{ getMoneyText(item) }}</p>
+                <div v-if="item.images.length > 0">
+                    <el-image
+                        style="width: 250px; height: 200px"
+                        :src="IMG_BASE_URL + item.images[0]"
+                        fit="cover"
+                    />
+                </div>
+                <div v-else></div>
+
+                <p class="text-lg font-semibold m-2">{{ item.title }}</p>
+                <el-tag
+                    class="m-2"
+                    type="warning"
+                    effect="light"
+                >
+                    {{ item.carType }}
+                </el-tag>
+                <p class="m-2 text-red-400">{{ getMoneyText(item) }}</p>
+            </div>
+        </div>
+        <div class="flex justify-center my-10">
+            <el-pagination
+                v-model:current-page="page.pageNum"
+                :total="total"
+                :hide-on-single-page="true"
+                :page-size="page.pageSize"
+                layout="prev, pager, next"
+                background
+                @size-change="pageCurrentChange"
+                @current-change="pageCurrentChange"
+            />
         </div>
     </div>
     <!-- <el-dialog
@@ -54,16 +66,18 @@
     import { author } from '@/store/authentication';
     import { useRouter } from 'vue-router';
     import { reactive, onMounted, ref } from 'vue';
-    import { Picture as IconPicture } from '@element-plus/icons-vue';
+    import useToTop from '@/hook/useToTop';
     import { IMG_BASE_URL, getMoneyText } from '@/utils/common';
 
+    const { toTop } = useToTop();
     const authentication = author();
     const router = useRouter();
+    const total = ref(0);
 
     const dialogVisible = ref(false);
     const page = reactive({
         pageNum: 1,
-        pageSize: 15,
+        pageSize: 12,
         statu: 0
     });
     const state = reactive({
@@ -73,6 +87,11 @@
         router.push({
             path: `/order/add/${item.carId}`
         });
+    };
+
+    const pageCurrentChange = () => {
+        getList();
+        toTop();
     };
 
     const collectClick = (obj: any) => {
@@ -94,13 +113,18 @@
         });
     };
 
-    onMounted(() => {
+    const getList = () => {
         getCarList(page).then(res => {
             console.log(res);
             if (res.code == 200) {
                 state.carShowList = res.data.records;
+                total.value = res.data.total;
             }
         });
+    };
+
+    onMounted(() => {
+        getList();
     });
 </script>
 

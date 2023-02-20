@@ -193,7 +193,7 @@
 
     const page = reactive({
         pageNum: 1,
-        pageSize: 15,
+        pageSize: 10,
         statu: 0
     });
     const total = ref(0);

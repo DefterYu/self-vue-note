@@ -38,11 +38,11 @@
     import { newList } from '@/api/news';
     import { INewsObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
-
+    import useToTop from '@/hook/useToTop';
     import { ref, reactive, onMounted } from 'vue';
 
     const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
-
+    const { toTop } = useToTop();
     const page = reactive({
         pageNum: 1,
         pageSize: 10
@@ -56,6 +56,7 @@
     const pageCurrentChange = () => {
         getList(0);
         scrollbarRef.value!.setScrollTop(0);
+        toTop();
     };
 
     const getList = (statu: 0 | 1) => {
