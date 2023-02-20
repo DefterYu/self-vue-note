@@ -7,7 +7,7 @@
             <div
                 v-for="(item, index) in state.list"
                 :key="index"
-                class="bg-gray-100 m-6 p-6"
+                class="bg-gray-100 m-6 p-6 hover:bg-blue-100 hover:border-transparent hover:shadow-lg"
             >
                 <div class="mb-4 text-2xl font-semibold">{{ item.title }}</div>
                 <p v-html="item.content"></p>

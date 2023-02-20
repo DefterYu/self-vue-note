@@ -9,6 +9,18 @@ export const IMG_BASE_URL =
 /** cos图片上传后端接口 */
 export const IMG_UP_URL = `${BASE_URL}/up`;
 
+const moneyTypeText = {
+    0: '小时',
+    1: '日',
+    2: '月'
+};
+
+export function getMoneyText(params: any) {
+    return `${params.moneyValue} CNY / ${
+        moneyTypeText[params.moneyType as '0' | '1' | '2']
+    } `;
+}
+
 /**格式化get数据 */
 export function urlencode(data: any, isPrefix = true) {
     isPrefix = isPrefix ? isPrefix : false;

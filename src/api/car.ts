@@ -18,10 +18,13 @@ export const carUpdata = (params: any) => {
 };
 
 /**获取车辆列表 */
-export const carList = (params: any) => {
+export const getCarList = (params: any) => {
     return request.get('/car/list', { params });
 };
-
+/**获取车辆信息  */
+export const getCarById = (id: number | string) => {
+    return request.get(`/car/one/${id}`);
+};
 /**添加车辆类型 */
 export const typeAdd = (params: any) => {
     return request.post('/car/type/add', { ...params });

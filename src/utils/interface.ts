@@ -53,6 +53,15 @@ export interface IuserInfoObj {
     avatar?: string;
 }
 
+export interface IForm {
+    title: string;
+    remarks: string;
+    carType: string;
+    moneyType: string;
+    carNumber: number;
+    moneyValue: number;
+}
+
 //覆盖elmui文件上传的响应对象 防止报错
 import type { UploadFile } from 'element-plus';
 export interface myUploadFile extends UploadFile {

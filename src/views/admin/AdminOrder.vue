@@ -7,11 +7,11 @@
             @tab-change="tabChange"
         >
             <el-tab-pane
-                label="已上架"
+                label="待付款"
                 :name="0"
             />
             <el-tab-pane
-                label="已下架"
+                label="已付款"
                 :name="1"
             />
         </el-tabs>
@@ -24,7 +24,7 @@
         >
             <el-table-column
                 prop="title"
-                label="标题"
+                label="用户"
                 width="180"
             />
             <el-table-column
@@ -43,7 +43,7 @@
             </el-table-column>
             <el-table-column
                 prop="carNumber"
-                label="剩余数量"
+                label="租用数量"
                 width="100"
             />
 
@@ -57,7 +57,7 @@
                         size="small"
                         @click="editRow(scoped.row)"
                     >
-                        编辑
+                        修改
                     </el-button>
                     <el-button
                         :type="scoped.row.isSales == 0 ? 'warning' : 'success'"
@@ -100,10 +100,10 @@
 
     <el-dialog
         v-model="dialogFormVisible"
-        title="编辑车辆信息"
+        title="编辑订单信息"
     >
         <el-form :model="form">
-            <el-form-item label="车辆标题">
+            <el-form-item label="标题">
                 <el-input
                     v-model="form.title"
                     maxlength="16"
@@ -185,12 +185,11 @@
     import { typeList, carUpdata, getCarList, carDelet } from '@/api/car';
     import { ICarInfoObj, IOptions, ICarTypeObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
-    import { getMoneyText } from '@/utils/common';
+
     import { ref, reactive, onMounted } from 'vue';
     const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
     const dialogFormVisible = ref(false);
     const activeName = ref<0 | 1>(0);
-
     const page = reactive({
         pageNum: 1,
         pageSize: 15,
@@ -226,11 +225,22 @@
         moneyValue: 0
     });
 
-    const editRow = (params: any) => {
+    const moneyTypeText = {
+        0: '小时',
+        1: '日',
+        2: '月'
+    };
+    const getMoneyText = (params: any) => {
+        return `${params.moneyValue} CNY /${
+            moneyTypeText[params.moneyType as '0' | '1' | '2']
+        } `;
+    };
+    type FooType = keyof typeof form;
+    const editRow = (params: typeof form) => {
         console.log('点击', params);
 
         Object.keys(form).map(key => {
-            form[key] = params[key];
+            form[key] = params[key as FooType];
         });
         dialogFormVisible.value = true;
     };
@@ -269,7 +279,7 @@
     const updataLocal = () => {
         const index = state.list.findIndex(v => v.carId == form.carId);
         Object.keys(form).map(key => {
-            state.list[index][key] = form[key];
+            state.list[index][key as FooType] = form[key as FooType];
         });
     };
     const getList = (statu?: 0 | 1) => {

@@ -1,26 +1,33 @@
 <template>
     <div>汽车出租列表</div>
 
-    <div class="flex flex-wrap mx-10">
+    <div class="flex flex-wrap mx-auto">
         <div
-            class="bg-slate-100 rounded-lg p-4 m-6"
+            class="bg-slate-100 rounded-lg m-6 hover:bg-slate-200 hover:border-transparent hover:shadow-lg cursor-pointer"
             v-for="item in state.carShowList"
+            @click="toDetails(item)"
         >
-            <div></div>
+            <div v-if="item.images.length > 0">
+                <el-image
+                    style="width: 250px; height: 200px"
+                    :src="IMG_BASE_URL + item.images[0]"
+                    fit="cover"
+                />
+            </div>
+            <div v-else></div>
 
-            <p class="text-lg">{{ item.title }}</p>
-            <p class=" ">剩余数量： {{ item.carNumber }}</p>
-            <div></div>
-            <el-button
-                type="danger"
-                text
-                @click="collectClick(item)"
+            <p class="text-lg font-semibold m-2">{{ item.title }}</p>
+            <el-tag
+                class="m-2"
+                type="warning"
+                effect="light"
             >
-                点击收藏
-            </el-button>
+                {{ item.carType }}
+            </el-tag>
+            <p class="m-2 text-red-400">{{ getMoneyText(item) }}</p>
         </div>
     </div>
-    <el-dialog
+    <!-- <el-dialog
         v-model="dialogVisible"
         title="提示"
         width="30%"
@@ -37,16 +44,18 @@
                 </el-button>
             </span>
         </template>
-    </el-dialog>
+    </el-dialog> -->
 </template>
 
 <script setup lang="ts">
-    import { carList } from '@/api/car';
+    import { getCarList } from '@/api/car';
     import { collectionAdd } from '@/api/collect';
     import { ICarInfoObj } from '@/utils/interface';
     import { author } from '@/store/authentication';
     import { useRouter } from 'vue-router';
     import { reactive, onMounted, ref } from 'vue';
+    import { Picture as IconPicture } from '@element-plus/icons-vue';
+    import { IMG_BASE_URL, getMoneyText } from '@/utils/common';
 
     const authentication = author();
     const router = useRouter();
@@ -60,6 +69,11 @@
     const state = reactive({
         carShowList: [] as ICarInfoObj[]
     });
+    const toDetails = (item: ICarInfoObj) => {
+        router.push({
+            path: `/order/add/${item.carId}`
+        });
+    };
 
     const collectClick = (obj: any) => {
         if (!authentication.token || !authentication.userInfo) {
@@ -73,11 +87,15 @@
         };
         collectionAdd(param).then(res => {
             console.log(res);
+            ElMessage({
+                message: res.msg,
+                type: res.code == 200 ? 'success' : 'error'
+            });
         });
     };
 
     onMounted(() => {
-        carList(page).then(res => {
+        getCarList(page).then(res => {
             console.log(res);
             if (res.code == 200) {
                 state.carShowList = res.data.records;

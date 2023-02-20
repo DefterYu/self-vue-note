@@ -59,9 +59,14 @@ export const projeRouter = [
     {
         path: '/admin',
         name: 'admin',
-        showName: '管理员后台',
         meta: { requireAuth: true, isAdmin: true },
         component: () => import('@/views/admin/Admin.vue'),
         children: adminChildren
+    },
+    {
+        path: '/order/add/:carId',
+        name: 'orderCreate',
+        meta: { requireAuth: true },
+        component: () => import('@/views/order/OrderCreat.vue')
     }
 ];

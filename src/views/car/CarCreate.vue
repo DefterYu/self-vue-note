@@ -63,6 +63,12 @@
                     />
                 </el-col>
             </el-form-item>
+            <el-form-item>
+                <img-list-upload
+                    ref="ilu"
+                    :img-limit="3"
+                />
+            </el-form-item>
         </el-form>
 
         <div class="flex justify-center my-10">
@@ -72,10 +78,11 @@
 </template>
 
 <script setup lang="ts">
-    import { reactive, onMounted } from 'vue';
+    import { ref, reactive, onMounted } from 'vue';
     import { typeList, carAdd } from '@/api/car';
     import { IOptions, ICarTypeObj } from '@/utils/interface';
-
+    import ImgListUpload from '@/components/ImgListUpload.vue';
+    const ilu = ref();
     const form = reactive({
         title: '',
         remarks: '',
@@ -95,11 +102,6 @@
                 value: '1',
                 label: '按天计费'
             }
-            // ,
-            // {
-            //     value: '2',
-            //     label: '按月计费'
-            // }
         ] as IOptions[],
         carTypeList: [] as IOptions[]
     });
@@ -113,13 +115,14 @@
             form.carType &&
             form.moneyValue
         ) {
-            carAdd(form).then(res => {
+            const param = {
+                ...form,
+                images: ilu.value.getImgArr()
+            };
+            carAdd(param).then(res => {
                 console.log(res);
                 if (res.code == 200) {
-                    ElMessage({
-                        message: '发布成功',
-                        type: 'success'
-                    });
+                    ElMessage({ message: '发布成功', type: 'success' });
                     clearAll();
                 }
             });
@@ -139,6 +142,7 @@
         form.moneyType = '';
         form.moneyValue = 0;
         form.carNumber = 0;
+        ilu.value.clear();
     };
 
     onMounted(() => {

@@ -1,7 +1,9 @@
 <template>
     <back-index page-name="账号设置" />
 
-    <div class="container mx-auto w-6/12 min-w-min shadow-xl rounded-lg p-6">
+    <div
+        class="container mx-auto w-6/12 min-w-min p-6 hover:shadow-lg rounded-lg"
+    >
         <p class="my-8 text-4xl font-bold">账号设置</p>
         <p class="my-6 text-2xl font-bold">基本信息</p>
         <div

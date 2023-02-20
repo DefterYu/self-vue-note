@@ -7,7 +7,7 @@
         >
             <template #extra>
                 <div
-                    class="flex items-center cursor-pointer"
+                    class="flex items-center cursor-pointer hover:shadow-lg rounded-lg"
                     @click="router.back()"
                 >
                     <el-icon><Back /></el-icon>

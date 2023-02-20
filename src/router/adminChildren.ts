@@ -23,6 +23,10 @@ export const adminChildren = [
         component: () => import('@/views/car/CarCreate.vue')
     },
     {
+        path: 'order',
+        component: () => import('@/views/admin/AdminOrder.vue')
+    },
+    {
         path: 'system',
         component: () => import('@/views/admin/AdminSystem.vue')
     }
