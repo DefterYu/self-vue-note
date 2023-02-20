@@ -57,7 +57,6 @@
             return false;
         }
         console.log('图片上传成功');
-        // return false;
         return true;
     };
 </script>
