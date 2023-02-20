@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-3xl m-auto p-4 bg-gray-300 rounded-xl">
+    <div class="max-w-3xl m-auto p-4 bg-gray-200 rounded-xl">
         <div class="m-2">
             <el-input
                 v-model="param.title"
@@ -43,16 +43,21 @@
                 </el-select>
             </div>
 
-            <div class="flex">
+            <div class="flex w-4/12 m-2 justify-between items-center">
+                <div class="w-32">费用</div>
                 <el-input
                     v-model="moneyValue"
-                    class="m-2"
                     placeholder="费用"
                 />
-                <el-input
+            </div>
+            <div class="flex w-4/12 m-2 justify-between items-center">
+                <div class="w-32">车辆数量</div>
+                <el-input-number
                     v-model="param.carNumber"
-                    class="m-2"
-                    placeholder="车辆数量"
+                    :min="0"
+                    :max="1000"
+                    step-strictly
+                    controls-position="right"
                 />
             </div>
         </div>

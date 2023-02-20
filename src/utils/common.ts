@@ -1,6 +1,6 @@
 // const BASE_URL = 'http://192.168.1.16:7777';
-// export const BASE_URL = 'http://localhost:7777';
-export const BASE_URL = 'http://defteryu.top:7777'; //阿里云后端地址+端口
+export const BASE_URL = 'http://localhost:7777';
+// export const BASE_URL = 'http://defteryu.top:7777'; //阿里云后端地址+端口
 
 /** cos图片前缀 */
 export const IMG_BASE_URL =

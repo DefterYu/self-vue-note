@@ -1,9 +1,9 @@
 <template>
     <div>汽车出租列表</div>
 
-    <div class="grid grid-cols-3 gap-4 p-10">
+    <div class="flex flex-wrap mx-10">
         <div
-            class="bg-slate-100 rounded-lg p-4"
+            class="bg-slate-100 rounded-lg p-4 m-6"
             v-for="item in state.carShowList"
         >
             <div></div>
