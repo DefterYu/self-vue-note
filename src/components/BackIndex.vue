@@ -3,8 +3,17 @@
         <el-page-header
             :icon="House"
             title="返回首页"
-            @back="onBack"
+            @back="router.push('/')"
         >
+            <template #extra>
+                <div
+                    class="flex items-center cursor-pointer"
+                    @click="router.back()"
+                >
+                    <el-icon><Back /></el-icon>
+                    <span class="ml-2">返回上一页</span>
+                </div>
+            </template>
             <template #content>
                 <span class="text-large font-600 mr-3">{{ pageName }}</span>
             </template>
@@ -15,13 +24,7 @@
 <script setup lang="ts">
     import { House } from '@element-plus/icons-vue';
     import { useRouter } from 'vue-router';
-
     defineProps({ pageName: { type: String } });
 
     const router = useRouter();
-    const onBack = () => {
-        router.push('/');
-    };
 </script>
-
-<style scoped></style>
