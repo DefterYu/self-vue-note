@@ -32,17 +32,13 @@
                 label="车型"
                 width="100"
             />
-            <el-table-column
-                prop="images"
-                label="图片"
-                width="180"
-            />
+
             <el-table-column
                 label="费用"
                 width="180"
             >
                 <template #default="scoped">
-                    {{ getMoneyText(scoped.row.money) }}
+                    {{ getMoneyText(scoped.row) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -107,16 +103,14 @@
         title="编辑车辆信息"
     >
         <el-form :model="form">
-            <el-form-item
-                label="标题"
-                :label-width="formLabelWidth"
-            >
-                <el-input v-model="form.title" />
+            <el-form-item label="车辆标题">
+                <el-input
+                    v-model="form.title"
+                    maxlength="16"
+                    placeholder="车辆标题"
+                />
             </el-form-item>
-            <el-form-item
-                label="车辆备注"
-                :label-width="formLabelWidth"
-            >
+            <el-form-item label="车辆备注">
                 <el-input
                     v-model="form.remarks"
                     :rows="2"
@@ -124,15 +118,36 @@
                     placeholder="车辆备注"
                 />
             </el-form-item>
-            <el-form-item
-                label="付费模式"
-                :label-width="formLabelWidth"
-            >
-                <div class="flex">
+            <el-form-item label="车辆车型">
+                <el-col :span="10">
                     <el-select
-                        v-model="options.moneyType"
-                        placeholder="选择付费模式"
-                        class="mr-10"
+                        v-model="form.carType"
+                        placeholder="选择计费方式"
+                    >
+                        <el-option
+                            v-for="item in options.carTypeList"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                        />
+                    </el-select>
+                </el-col>
+                <el-col :span="3">车辆数量</el-col>
+                <el-col :span="10">
+                    <el-input-number
+                        v-model="form.carNumber"
+                        :min="0"
+                        :max="1000"
+                        step-strictly
+                        controls-position="right"
+                    />
+                </el-col>
+            </el-form-item>
+            <el-form-item label="计费方式">
+                <el-col :span="10">
+                    <el-select
+                        v-model="form.moneyType"
+                        placeholder="选择计费方式"
                     >
                         <el-option
                             v-for="item in options.money"
@@ -141,42 +156,17 @@
                             :value="item.value"
                         />
                     </el-select>
+                </el-col>
+                <el-col :span="3">车辆费用</el-col>
+                <el-col :span="8">
                     <el-input
-                        v-model="options.moneyValue"
+                        v-model="form.moneyValue"
                         placeholder="费用"
                     />
-                </div>
-            </el-form-item>
-            <el-form-item
-                label="车型"
-                :label-width="formLabelWidth"
-            >
-                <el-select
-                    v-model="options.carType"
-                    placeholder="选择车型"
-                >
-                    <el-option
-                        v-for="item in options.carTypeList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                    />
-                </el-select>
-            </el-form-item>
-            <el-form-item
-                label="车辆数量"
-                :label-width="formLabelWidth"
-            >
-                <div></div>
-                <el-input-number
-                    v-model="form.carNumber"
-                    :min="0"
-                    :max="1000"
-                    step-strictly
-                    controls-position="right"
-                />
+                </el-col>
             </el-form-item>
         </el-form>
+
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -192,8 +182,6 @@
 </template>
 
 <script setup lang="ts">
-    import ImgListUpload from '@/components/ImgListUpload.vue';
-
     import { typeList, carUpdata, carList, carDelet } from '@/api/car';
     import { ICarInfoObj, IOptions, ICarTypeObj } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
@@ -217,40 +205,41 @@
     const options = reactive({
         money: [
             {
-                value: 'hour',
+                value: '0',
                 label: '按小时计费'
             },
             {
-                value: 'day',
+                value: '1',
                 label: '按天计费'
             }
         ] as IOptions[],
-        moneyType: '',
-        moneyValue: 0,
-        carType: '',
         carTypeList: [] as IOptions[]
     });
+    const form = reactive({
+        carId: 0,
+        title: '',
+        remarks: '',
+        carType: '',
+        moneyType: '',
+        carNumber: 0,
+        moneyValue: 0
+    });
+
+    const moneyTypeText = {
+        0: '小时',
+        1: '日',
+        2: '月'
+    };
     const getMoneyText = (params: any) => {
-        if (params.month) {
-            return `${params.month} CNY/月`;
-        } else if (params.day) {
-            return `${params.day} CNY/天`;
-        } else if (params.hour) {
-            return `${params.hour} CNY/小时`;
-        } else {
-            return '数据异常';
-        }
+        return `${params.moneyValue} CNY /${moneyTypeText[params.moneyType]} `;
     };
     const editRow = (params: any) => {
+        console.log('点击', params);
+
         Object.keys(form).map(key => {
             form[key] = params[key];
         });
-        options.moneyType = Object.keys(params.money)[0];
-        options.moneyValue = params.money[options.moneyType];
-        options.carType = params.carType;
-
         dialogFormVisible.value = true;
-        console.log(params);
     };
 
     const tabChange = () => {
@@ -262,32 +251,16 @@
         getList(0);
         scrollbarRef.value!.setScrollTop(0);
     };
-    const formLabelWidth = '100px';
-    const form = reactive({
-        carId: 0,
-        title: '',
-        remarks: '',
-        carNumber: 0
-    });
 
     const saveEdit = () => {
         if (
-            options.moneyType &&
             form.title &&
+            form.moneyType &&
             form.carNumber &&
-            options.carType &&
-            options.moneyValue
+            form.carType &&
+            form.moneyValue
         ) {
-            const subParam = {
-                ...form,
-                money: {
-                    [options.moneyType]: options.moneyValue
-                },
-
-                carType: options.carType
-            };
-
-            carUpdata(subParam).then(res => {
+            carUpdata(form).then(res => {
                 console.log(res);
                 if (res.code == 200) {
                     ElMessage({ message: '修改成功', type: 'success' });
