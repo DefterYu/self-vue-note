@@ -264,15 +264,20 @@
                 console.log(res);
                 if (res.code == 200) {
                     ElMessage({ message: '修改成功', type: 'success' });
+                    updataLocal();
                     dialogFormVisible.value = false;
                 }
             });
         } else {
-            ElMessage({
-                message: '完善表单',
-                type: 'error'
-            });
+            ElMessage({ message: '完善表单', type: 'error' });
         }
+    };
+    /**更新本地数据 */
+    const updataLocal = () => {
+        const index = state.list.findIndex(v => v.carId == form.carId);
+        Object.keys(form).map(key => {
+            state.list[index][key] = form[key];
+        });
     };
     const getList = (statu?: 0 | 1) => {
         const param = {
