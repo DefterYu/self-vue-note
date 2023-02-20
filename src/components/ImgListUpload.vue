@@ -25,13 +25,16 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, reactive } from 'vue';
+    import { ref, reactive, watch } from 'vue';
     import { Plus } from '@element-plus/icons-vue';
     import { IMG_UP_URL } from '@/utils/common';
     import { myUploadFile } from '@/utils/interface';
     import type { UploadProps, UploadUserFile } from 'element-plus';
 
-    defineProps<{ imgLimit: number }>();
+    const prop = defineProps<{
+        imgLimit: number;
+    }>();
+
     const state = reactive({
         fileList: [] as UploadUserFile[] | myUploadFile[]
     });
@@ -61,7 +64,7 @@
     const getImgArr = (): string[] | void[] => {
         if (state.fileList.length == 0) return [];
         return state.fileList.map(v => {
-            return v.response.data.url;
+            return v.response.data.url || v.url;
         });
     };
     /**清空选中图片 */
