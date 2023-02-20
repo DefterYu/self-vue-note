@@ -197,7 +197,7 @@
         statu: 0
     });
     const total = ref(0);
-    const state = reactive({
+    const state = reactive<any>({
         list: [] as ICarInfoObj[],
         userType: 1,
         statu: 0
@@ -216,7 +216,7 @@
         ] as IOptions[],
         carTypeList: [] as IOptions[]
     });
-    const form = reactive({
+    const form = reactive<any>({
         carId: 0,
         title: '',
         remarks: '',
@@ -267,7 +267,9 @@
     };
     /**更新本地数据 */
     const updataLocal = () => {
-        const index = state.list.findIndex(v => v.carId == form.carId);
+        const index = state.list.findIndex(
+            (v: ICarInfoObj) => v.carId == form.carId
+        );
         Object.keys(form).map(key => {
             state.list[index][key] = form[key];
         });
@@ -287,7 +289,9 @@
     };
 
     const banClick = (params: any) => {
-        let index = state.list.findIndex(v => v.carId == params.carId);
+        let index = state.list.findIndex(
+            (v: ICarInfoObj) => v.carId == params.carId
+        );
         statuChange(
             params.carId,
             'isSales',
@@ -318,7 +322,9 @@
     const deletClick = (id: number) => {
         carDelet(id).then(res => {
             if (res.code == 200) {
-                let index = state.list.findIndex(v => v.carId == id);
+                let index = state.list.findIndex(
+                    (v: ICarInfoObj) => v.carId == id
+                );
                 state.list.splice(index, 1);
             }
         });
