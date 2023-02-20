@@ -38,10 +38,13 @@
                 width="180"
             />
             <el-table-column
-                prop="money"
                 label="费用"
-                width="100"
-            />
+                width="180"
+            >
+                <template #default="scoped">
+                    {{ getMoneyText(scoped.row.money) }}
+                </template>
+            </el-table-column>
             <el-table-column
                 prop="carNumber"
                 label="剩余数量"
@@ -53,6 +56,13 @@
                 label="操作"
             >
                 <template #default="scoped">
+                    <el-button
+                        :type="scoped.row.isSales == 0 ? 'warning' : 'success'"
+                        size="small"
+                        @click="editRow(scoped.row)"
+                    >
+                        编辑
+                    </el-button>
                     <el-button
                         :type="scoped.row.isSales == 0 ? 'warning' : 'success'"
                         size="small"
@@ -112,6 +122,22 @@
         userType: 1,
         statu: 0
     });
+
+    const getMoneyText = (params: any) => {
+        if (params.month) {
+            return `${params.month} CNY/月`;
+        } else if (params.day) {
+            return `${params.day} CNY/天`;
+        } else if (params.hour) {
+            return `${params.hour} CNY/小时`;
+        } else {
+            return '数据异常';
+        }
+    };
+    const editRow = (params: any) => {
+        console.log(params);
+    };
+
     const tabChange = () => {
         console.log('变动', activeName.value);
         page.pageNum = 1;
