@@ -1,6 +1,5 @@
 <template>
-    <div>客服工单处理</div>
-    <div class="max-w-5xl m-auto">
+    <div class="">
         <el-tabs
             v-model="activeName"
             class="demo-tabs"
@@ -16,47 +15,65 @@
                 :name="1"
             />
         </el-tabs>
-        <div class="w-full flex justify-between text-center font-semibold">
-            <div class="w-1/5">标题</div>
-            <div class="w-1/4">文章内容</div>
-            <div class="w-1/6">文章来源</div>
-            <div class="w-1/6">操作</div>
-        </div>
-        <el-scrollbar
-            height="500px"
-            ref="scrollbarRef"
+        <el-table
+            :data="state.list"
+            style="width: 100%"
+            stripe
+            border
         >
-            <div
-                v-for="(item, index) in state.list"
-                :key="index"
-                class="bg-gray-100 m-2 p-2 flex justify-between"
+            <el-table-column
+                prop="detail"
+                label="工单内容"
+                width="200"
+            />
+            <el-table-column
+                prop="phone"
+                label="预留手机号"
+                width="180"
+            />
+            <el-table-column
+                label="状态"
+                width="180"
             >
-                <div class="w-1/5">{{ item.title }}</div>
-
-                <p
-                    class="w-1/4"
-                    v-html="item.content"
-                ></p>
-
-                <div class="w-1/6">{{ item.source || '网络' }}</div>
-                <div class="w-1/6">
+                <template #default="scope">
+                    <el-tag :type="scope.row.statu == 0 ? 'danger' : 'success'">
+                        {{ scope.row.statu == 0 ? '未受理' : '已受理' }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column
+                fixed="right"
+                label="操作"
+            >
+                <template #default="scope">
                     <el-button
-                        type="success"
-                        v-if="item.statu == 1"
-                        @click="statuChange(item.id as number, 0, index)"
+                        v-if="scope.row.statu == 0"
+                        type="danger"
+                        size="small"
+                        @click="banClick(scope.row)"
                     >
-                        受理完成
+                        受理
                     </el-button>
-                    <el-button
-                        type="warning"
-                        v-if="item.statu == 0"
-                        @click="statuChange(item.id as number, 1, index)"
+                    <el-popconfirm
+                        title="确定要删除么"
+                        @confirm="deletClick(scope.row.id)"
                     >
-                        禁用
-                    </el-button>
-                </div>
-            </div>
-        </el-scrollbar>
+                        <template #reference>
+                            <el-button
+                                type="danger"
+                                size="small"
+                            >
+                                {{
+                                    scope.row.statu == 0
+                                        ? '驳回工单'
+                                        : '删除工单记录'
+                                }}
+                            </el-button>
+                        </template>
+                    </el-popconfirm>
+                </template>
+            </el-table-column>
+        </el-table>
 
         <div class="flex justify-center my-10">
             <el-pagination
@@ -74,48 +91,72 @@
 </template>
 
 <script setup lang="ts">
-    import { newList, newsUpdata } from '@/api/news';
-    import { INewsObj } from '@/utils/interface';
-    import { ElScrollbar } from 'element-plus';
-    import { ref, reactive, onMounted } from 'vue';
-    const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
-    const activeName = ref<0 | 1>(0);
+    import { bugList, bugDelet, bugUpdata } from '@/api/bug';
+    import { onMounted, reactive, ref, toRaw } from 'vue';
+    import { author } from '@/store/authentication';
+    import { IBugObj } from '@/utils/interface';
+
+    const authentication = author();
+    const total = ref(0);
     const page = reactive({
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        userId: authentication.userInfo.id
     });
-    const total = ref(0);
-    const state = reactive({
-        list: [] as INewsObj[]
-    });
+    const activeName = ref<0 | 1>(0);
     const tabChange = () => {
         console.log('变动', activeName.value);
         page.pageNum = 1;
         getList(activeName.value);
     };
-    const pageCurrentChange = () => {
-        getList(0);
-        scrollbarRef.value!.setScrollTop(0);
-    };
-    const getList = (statu: 0 | 1) => {
-        const param = {
-            ...page,
-            statu
-        };
-        newList(param).then(res => {
-            if (res.code == 200) {
-                state.list = res.data.records;
-                total.value = res.data.total;
-            }
-        });
-    };
-    const statuChange = (id: number, statu: 0 | 1, index: number) => {
-        console.log(id, statu);
 
-        newsUpdata({ id, statu }).then(res => {
+    const state = reactive({
+        list: [] as IBugObj[]
+    });
+    const banClick = (params: any) => {
+        let index = state.list.findIndex(v => v.id == params.id);
+        console.log('点击参数', params, index);
+        statuChange(params.id, 'statu', params.statu == 0 ? 1 : 0, index);
+    };
+    const statuChange = (
+        id: number,
+        key: string,
+        statu: 0 | 1,
+        index: number
+    ) => {
+        console.log(id, statu);
+        const param = <any>{
+            id
+        };
+        param[key] = statu;
+
+        console.log(param);
+        bugUpdata(param).then(res => {
             console.log(res);
             if (res.code == 200) {
                 state.list.splice(index, 1);
+            }
+        });
+    };
+    const cc = () => {};
+
+    const pageCurrentChange = () => {
+        getList();
+    };
+    const deletClick = (id: number) => {
+        bugDelet(id).then(res => {
+            if (res.code == 200) {
+                let index = state.list.findIndex(v => v.id == id);
+                state.list.splice(index, 1);
+            }
+        });
+    };
+    const getList = (statu?: 0 | 1) => {
+        bugList({ ...page, statu }).then(res => {
+            console.log(res);
+            if (res.code == 200) {
+                state.list = res.data.records;
+                total.value = res.data.total;
             }
         });
     };
@@ -124,3 +165,5 @@
         getList(0);
     });
 </script>
+
+<style scoped></style>

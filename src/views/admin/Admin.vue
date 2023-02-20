@@ -26,7 +26,7 @@
                     <el-menu-item index="/admin/order">租用情况</el-menu-item>
                     <el-menu-item index="/admin/caradd">发布新车</el-menu-item>
                 </el-sub-menu>
-                <el-menu-item index="2">
+                <el-menu-item index="/admin/bug">
                     <el-icon><icon-menu /></el-icon>
                     <span>故障管理</span>
                 </el-menu-item>

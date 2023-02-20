@@ -46,14 +46,14 @@
                 label="操作"
             >
                 <template #default="scope">
-                    <el-button
+                    <!-- <el-button
                         v-if="scope.row.statu == 0"
                         type="danger"
                         size="small"
                         @click="banClick(scope.row)"
                     >
                         受理
-                    </el-button>
+                    </el-button> -->
                     <el-popconfirm
                         title="确定要删除么"
                         @confirm="deletClick(scope.row.id)"

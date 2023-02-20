@@ -11,6 +11,10 @@ export const adminChildren = [
         component: () => import('@/views/admin/AdminUser.vue')
     },
     {
+        path: 'bug',
+        component: () => import('@/views/admin/AdminBug.vue')
+    },
+    {
         path: 'cartype',
         component: () => import('@/views/admin/AdminCarType.vue')
     },
