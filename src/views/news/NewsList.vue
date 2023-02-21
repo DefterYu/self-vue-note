@@ -1,25 +1,18 @@
 <template>
     <div class="max-w-5xl m-auto">
-        <el-scrollbar
-            height="850px"
-            ref="scrollbarRef"
+        <div
+            v-for="(item, index) in state.list"
+            :key="index"
+            class="bg-gray-100 m-6 p-6 hover:bg-blue-100 hover:border-transparent hover:shadow-lg"
         >
-            <div
-                v-for="(item, index) in state.list"
-                :key="index"
-                class="bg-gray-100 m-6 p-6 hover:bg-blue-100 hover:border-transparent hover:shadow-lg"
-            >
-                <div class="mb-4 text-2xl font-semibold">{{ item.title }}</div>
-                <p v-html="item.content"></p>
-                <div class="mt-4 text-xs text-right text-gray-400">
-                    文章来源：{{ item.source || '网络' }}
-                </div>
+            <div class="mb-4 text-2xl font-semibold">{{ item.title }}</div>
+            <p v-html="item.content"></p>
+            <div class="mt-4 text-xs text-right text-gray-400">
+                文章来源：{{ item.source || '网络' }}
             </div>
-        </el-scrollbar>
+        </div>
 
         <div class="flex justify-center my-10">
-            <!-- <el-button @click="getList(0)">获取 0文章</el-button>
-            <el-button @click="getList(1)">获取 1文章</el-button> -->
             <el-pagination
                 v-model:current-page="page.pageNum"
                 :total="total"
@@ -37,11 +30,9 @@
 <script setup lang="ts">
     import { newList } from '@/api/news';
     import { INewsObj } from '@/utils/interface';
-    import { ElScrollbar } from 'element-plus';
     import useToTop from '@/hook/useToTop';
     import { ref, reactive, onMounted } from 'vue';
 
-    const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
     const { toTop } = useToTop();
     const page = reactive({
         pageNum: 1,
@@ -55,7 +46,6 @@
 
     const pageCurrentChange = () => {
         getList(0);
-        scrollbarRef.value!.setScrollTop(0);
         toTop();
     };
 
@@ -72,7 +62,6 @@
             if (res.code == 200) {
                 state.list = res.data.records;
                 total.value = res.data.total;
-                // console.log('赋值后', state);
             }
         });
     };

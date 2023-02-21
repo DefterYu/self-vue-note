@@ -22,12 +22,9 @@ export interface ICarInfoObj {
     carNumber: number;
     title: string;
     carType: string;
-    images: string[];
-    money: {
-        day?: number;
-        hour?: number;
-        month?: number;
-    };
+    images: string[] | [];
+    moneyType: string;
+    moneyValue: number;
     remarks: string;
     isSales: number;
 }
@@ -60,6 +57,7 @@ export interface IForm {
     moneyType: string;
     carNumber: number;
     moneyValue: number;
+    images?: string[];
 }
 
 //覆盖elmui文件上传的响应对象 防止报错

@@ -1,7 +1,6 @@
 import request from '@/utils/request';
 
-/**新闻相关接口 */
-
+/**订单相关接口 */
 export const orderAdd = (params: any) => {
     return request.post('/order/add', { ...params });
 };
