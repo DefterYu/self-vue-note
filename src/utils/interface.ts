@@ -27,6 +27,7 @@ export interface ICarInfoObj {
     moneyValue: number;
     remarks: string;
     isSales: number;
+    isComment: string;
 }
 export interface ISwitchObj {
     id: number;
@@ -36,6 +37,7 @@ export interface ISwitchObj {
 export interface IOrderObj {
     id: number | string;
     carId: number | string;
+    title: string;
     userId: 12;
     nickName: string;
     isRetrun: '0' | '1';
@@ -51,6 +53,14 @@ export interface ICollectionObj {
     userId: string;
     carId: number;
     title: string;
+}
+export interface IReviewAdd {
+    remarks: string;
+    score: number;
+    carId: number;
+    userId: number;
+    orderId: number;
+    isAnonymous: '0' | '1';
 }
 export interface IuserInfoObj {
     id: number;

@@ -54,7 +54,6 @@
 
 <script setup lang="ts">
     import { ChromeFilled } from '@element-plus/icons-vue';
-    import { ElMessageBox } from 'element-plus';
     import BackIndex from '@/components/BackIndex.vue';
     import { register } from '@/api/index';
     import { reactive, ref } from 'vue';

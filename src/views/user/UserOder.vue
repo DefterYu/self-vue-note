@@ -74,7 +74,7 @@
             </el-table-column>
             <el-table-column
                 label="支付金额"
-                width="180"
+                width="100"
                 v-if="activeName == 1"
             >
                 <template #default="scoped">
@@ -96,8 +96,16 @@
                     >
                         支付
                     </el-button>
+                    <el-button
+                        v-if="activeName == 1"
+                        type="primary"
+                        size="small"
+                        @click="openReview(scoped.row)"
+                    >
+                        评分
+                    </el-button>
                     <el-popconfirm
-                        v-else
+                        v-if="activeName == 1"
                         title="确定要删除么"
                         @confirm="deletClick(scoped.row.id)"
                     >
@@ -127,16 +135,65 @@
             />
         </div>
     </div>
+    <el-dialog
+        v-model="dialogFormVisible"
+        title="编辑评价信息"
+    >
+        <el-form :model="reViewForm">
+            <el-form-item label="车辆评价">
+                <el-input
+                    v-model="reViewForm.remarks"
+                    :rows="2"
+                    type="textarea"
+                    placeholder="不填默认好评"
+                />
+            </el-form-item>
+            <el-form-item label="打个分吧">
+                <el-col :span="12">
+                    <el-rate
+                        v-model="reViewForm.score"
+                        :texts="['极差', '有待提高', '一般', '还行', '很好']"
+                        show-text
+                    />
+                </el-col>
+                <el-col :span="12">
+                    <el-switch
+                        v-model="reViewForm.isAnonymous"
+                        active-text="匿名评价"
+                        inactive-text="显示昵称"
+                        active-value="1"
+                        inactive-value="0"
+                    />
+                </el-col>
+            </el-form-item>
+        </el-form>
+
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取消</el-button>
+                <el-button
+                    type="primary"
+                    @click="saveReview()"
+                >
+                    评价商品
+                </el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script setup lang="ts">
     import { orderListByUser, orderDelet, orderBack } from '@/api/order';
+    import { reviewsAdd } from '@/api/reView';
     import { onMounted, reactive, ref } from 'vue';
-    import { IOrderObj } from '@/utils/interface';
+    import { IOrderObj, IReviewAdd } from '@/utils/interface';
     import { getMoneyText, timeFormet } from '@/utils/common';
+    import { author } from '@/store/authentication';
 
+    const authentication = author();
     const total = ref(0);
-    const activeName = ref<0 | 1>(0);
+    const activeName = ref<0 | 1>(0),
+        dialogFormVisible = ref(false);
     const tabChange = () => {
         console.log(activeName.value);
         page.pageNum = 1;
@@ -157,6 +214,32 @@
     const pageCurrentChange = () => {
         getList();
     };
+
+    const reViewForm = reactive<IReviewAdd>({
+        score: 0,
+        isAnonymous: '1',
+        remarks: '',
+        carId: 0,
+        orderId: 0,
+        userId: authentication.userInfo.id
+    });
+    //打开评价模板
+    const openReview = (param: any) => {
+        dialogFormVisible.value = true;
+        reViewForm.carId = param.carId;
+        reViewForm.orderId = param.id;
+    };
+    const saveReview = () => {
+        console.log('点击评价');
+        reviewsAdd(reViewForm).then(res => {
+            console.log('评价结果', res);
+            if (res.code == 200) {
+                dialogFormVisible.value = false;
+            }
+        });
+    };
+
+    //支付
     const toPay = (id: number) => {
         orderBack(id).then(res => {
             console.log('支付结果', res);
