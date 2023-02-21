@@ -63,7 +63,7 @@
     });
     const toDetails = (item: ICarInfoObj) => {
         router.push({
-            path: `/order/add/${item.carId}`
+            path: `/car/CarDetails/${item.carId}`
         });
     };
 

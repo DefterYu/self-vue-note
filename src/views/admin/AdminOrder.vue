@@ -120,7 +120,7 @@
                         plain
                         @click="
                             router.push({
-                                path: `/order/add/${scoped.row.carId}`
+                                path: `/car/CarDetails/${scoped.row.carId}`
                             })
                         "
                     >

@@ -91,7 +91,7 @@
     };
     const toBuy = (carId: number) => {
         router.push({
-            path: `/order/add/${carId}`
+            path: `/car/CarDetails/${carId}`
         });
     };
 

@@ -7,7 +7,7 @@
             @tab-change="tabChange"
         >
             <el-tab-pane
-                label="已上架"
+                label="已上架 在售"
                 :name="0"
             />
             <el-tab-pane

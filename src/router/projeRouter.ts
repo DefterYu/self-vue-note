@@ -61,9 +61,9 @@ export const projeRouter = [
         children: adminChildren
     },
     {
-        path: '/order/add/:carId',
+        path: '/car/CarDetails/:carId',
         name: 'orderCreate',
         meta: { requireAuth: true },
-        component: () => import('@/views/order/OrderCreat.vue')
+        component: () => import('@/views/car/CarDetails.vue')
     }
 ];
