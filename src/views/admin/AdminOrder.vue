@@ -7,76 +7,135 @@
             @tab-change="tabChange"
         >
             <el-tab-pane
-                label="待付款"
+                label="未支付"
                 :name="0"
             />
             <el-tab-pane
-                label="已付款"
+                label="已支付"
                 :name="1"
             />
         </el-tabs>
-
         <el-table
             :data="state.list"
             style="width: 100%"
             stripe
             border
+            v-loading="state.tableLoadingFlag"
         >
             <el-table-column
-                prop="title"
-                label="用户"
-                width="180"
-            />
-            <el-table-column
-                prop="carType"
-                label="车型"
-                width="100"
+                prop="nickName"
+                label="下单用户"
+                width="160"
             />
 
             <el-table-column
-                label="费用"
-                width="180"
+                label="订单状态"
+                width="100"
             >
                 <template #default="scoped">
-                    {{ getMoneyText(scoped.row) }}
+                    <el-tag
+                        type="warning"
+                        v-if="scoped.row.payStatu == '0'"
+                    >
+                        未支付
+                    </el-tag>
+                    <el-tag
+                        type="success"
+                        v-else
+                    >
+                        已支付
+                    </el-tag>
                 </template>
             </el-table-column>
             <el-table-column
-                prop="carNumber"
-                label="租用数量"
+                label="下单价格"
+                width="130"
+            >
+                <template #default="scoped">
+                    <span class="text-red-500">
+                        {{ getMoneyText(scoped.row) }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="下单时间"
+                width="180"
+            >
+                <template #default="scoped">
+                    <span>
+                        {{ timeFormet(scoped.row.createTime) }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="支付时间"
+                width="180"
+                v-if="activeName == 1"
+            >
+                <template #default="scoped">
+                    <span>
+                        {{ timeFormet(scoped.row.payTime) }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="支付金额"
                 width="100"
-            />
-
+                v-if="activeName == 1"
+            >
+                <template #default="scoped">
+                    <span class="text-red-600 font-bold">
+                        ￥ {{ scoped.row.spend }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="评价状态"
+                width="100"
+                v-if="activeName == 1"
+            >
+                <template #default="scoped">
+                    <el-tag
+                        type="warning"
+                        v-if="scoped.row.isComment == '0'"
+                    >
+                        待评价
+                    </el-tag>
+                    <el-tag
+                        type="success"
+                        v-else
+                    >
+                        已评价
+                    </el-tag>
+                </template>
+            </el-table-column>
             <el-table-column
                 fixed="right"
                 label="操作"
             >
                 <template #default="scoped">
                     <el-button
-                        type="primary"
+                        type="info"
                         size="small"
-                        @click="editRow(scoped.row)"
+                        plain
+                        @click="
+                            router.push({
+                                path: `/order/add/${scoped.row.carId}`
+                            })
+                        "
                     >
-                        修改
+                        车辆详情
                     </el-button>
-                    <el-button
-                        :type="scoped.row.isSales == 0 ? 'warning' : 'success'"
-                        size="small"
-                        @click="banClick(scoped.row)"
-                    >
-                        {{ scoped.row.isSales == 0 ? '下架' : '上架' }}
-                    </el-button>
-
                     <el-popconfirm
                         title="确定要删除么"
-                        @confirm="deletClick(scoped.row.carId)"
+                        @confirm="deletClick(scoped.row.id)"
                     >
                         <template #reference>
                             <el-button
                                 type="danger"
                                 size="small"
                             >
-                                删除
+                                删除订单
                             </el-button>
                         </template>
                     </el-popconfirm>
@@ -97,255 +156,133 @@
             />
         </div>
     </div>
-
-    <el-dialog
-        v-model="dialogFormVisible"
-        title="编辑订单信息"
-    >
-        <el-form :model="form">
-            <el-form-item label="标题">
-                <el-input
-                    v-model="form.title"
-                    maxlength="16"
-                    placeholder="车辆标题"
-                />
-            </el-form-item>
-            <el-form-item label="车辆备注">
-                <el-input
-                    v-model="form.remarks"
-                    :rows="2"
-                    type="textarea"
-                    placeholder="车辆备注"
-                />
-            </el-form-item>
-            <el-form-item label="车辆车型">
-                <el-col :span="10">
-                    <el-select
-                        v-model="form.carType"
-                        placeholder="选择计费方式"
-                    >
-                        <el-option
-                            v-for="item in options.carTypeList"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                        />
-                    </el-select>
-                </el-col>
-                <el-col :span="3">车辆数量</el-col>
-                <el-col :span="10">
-                    <el-input-number
-                        v-model="form.carNumber"
-                        :min="0"
-                        :max="1000"
-                        step-strictly
-                        controls-position="right"
-                    />
-                </el-col>
-            </el-form-item>
-            <el-form-item label="计费方式">
-                <el-col :span="10">
-                    <el-select
-                        v-model="form.moneyType"
-                        placeholder="选择计费方式"
-                    >
-                        <el-option
-                            v-for="item in options.money"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                        />
-                    </el-select>
-                </el-col>
-                <el-col :span="3">车辆费用</el-col>
-                <el-col :span="8">
-                    <el-input
-                        v-model="form.moneyValue"
-                        placeholder="费用"
-                    />
-                </el-col>
-            </el-form-item>
-        </el-form>
-
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button
-                    type="primary"
-                    @click="saveEdit()"
-                >
-                    更改信息
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
 </template>
 
 <script setup lang="ts">
-    import { typeList, carUpdata, getCarList, carDelet } from '@/api/car';
-    import { ICarInfoObj, IOptions, ICarTypeObj } from '@/utils/interface';
-    import { ElScrollbar } from 'element-plus';
+    import {
+        orderListByUser,
+        orderList,
+        orderDelet,
+        orderBack,
+        orderUpdata
+    } from '@/api/order';
+    import { reviewsAdd } from '@/api/reView';
+    import { onMounted, reactive, ref } from 'vue';
+    import { IOrderObj, IReviewAdd } from '@/utils/interface';
+    import { getMoneyText, timeFormet } from '@/utils/common';
+    import { author } from '@/store/authentication';
+    import { useRouter } from 'vue-router';
 
-    import { ref, reactive, onMounted } from 'vue';
-    const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
-    const dialogFormVisible = ref(false);
-    const activeName = ref<0 | 1>(0);
+    const router = useRouter();
+    const authentication = author();
+    const total = ref(0);
+    const activeName = ref<0 | 1>(0),
+        dialogFormVisible = ref(false);
+    const tabChange = () => {
+        console.log(activeName.value);
+        page.pageNum = 1;
+        page.payStatu = activeName.value;
+        getList();
+    };
     const page = reactive({
         pageNum: 1,
-        pageSize: 15,
-        statu: 0
+        pageSize: 10,
+        payStatu: activeName.value
     });
-    const total = ref(0);
+
     const state = reactive({
-        list: [] as ICarInfoObj[],
-        userType: 1,
-        statu: 0
+        list: [] as IOrderObj[],
+        tableLoadingFlag: false
     });
 
-    const options = reactive({
-        money: [
-            {
-                value: '0',
-                label: '按小时计费'
-            },
-            {
-                value: '1',
-                label: '按天计费'
-            }
-        ] as IOptions[],
-        carTypeList: [] as IOptions[]
-    });
-    const form = reactive({
-        carId: 0,
-        title: '',
-        remarks: '',
-        carType: '',
-        moneyType: '',
-        carNumber: 0,
-        moneyValue: 0
-    });
-
-    const moneyTypeText = {
-        0: '小时',
-        1: '日',
-        2: '月'
-    };
-    const getMoneyText = (params: any) => {
-        return `${params.moneyValue} CNY /${
-            moneyTypeText[params.moneyType as '0' | '1' | '2']
-        } `;
-    };
-    type FooType = keyof typeof form;
-    const editRow = (params: typeof form) => {
-        console.log('点击', params);
-
-        Object.keys(form).map(key => {
-            form[key] = params[key as FooType];
-        });
-        dialogFormVisible.value = true;
-    };
-
-    const tabChange = () => {
-        console.log('变动', activeName.value);
-        page.pageNum = 1;
-        getList(activeName.value);
-    };
     const pageCurrentChange = () => {
-        getList(0);
-        scrollbarRef.value!.setScrollTop(0);
+        getList();
     };
 
-    const saveEdit = () => {
-        if (
-            form.title &&
-            form.moneyType &&
-            form.carNumber &&
-            form.carType &&
-            form.moneyValue
-        ) {
-            carUpdata(form).then(res => {
-                console.log(res);
+    const reViewForm = reactive<IReviewAdd>({
+        score: 0,
+        isAnonymous: '1',
+        remarks: '',
+        carId: 0,
+        orderId: 0,
+        userId: authentication.userInfo.id
+    });
+    //打开评价模板
+    const openReview = (param: any) => {
+        dialogFormVisible.value = true;
+        reViewForm.carId = param.carId;
+        reViewForm.orderId = param.id;
+    };
+    /**评价 */
+    const saveReview = () => {
+        console.log('点击评价');
+        new Promise((resolve, reject) => {
+            //增加评价
+            reviewsAdd(reViewForm).then(res => {
+                console.log('评价结果', res);
                 if (res.code == 200) {
-                    ElMessage({ message: '修改成功', type: 'success' });
-                    updataLocal();
                     dialogFormVisible.value = false;
+
+                    resolve(200);
+                } else {
+                    reject('服务器异常,无法评价');
                 }
             });
-        } else {
-            ElMessage({ message: '完善表单', type: 'error' });
-        }
-    };
-    /**更新本地数据 */
-    const updataLocal = () => {
-        const index = state.list.findIndex(v => v.carId == form.carId);
-        Object.keys(form).map(key => {
-            state.list[index][key as FooType] = form[key as FooType];
-        });
-    };
-    const getList = (statu?: 0 | 1) => {
-        const param = {
-            ...page,
-            statu
-        };
-        getCarList(param).then(res => {
-            console.log(res);
-            if (res.code == 200) {
-                state.list = res.data.records;
-                total.value = res.data.total;
-            }
-        });
-    };
-
-    const banClick = (params: any) => {
-        let index = state.list.findIndex(v => v.carId == params.carId);
-        statuChange(
-            params.carId,
-            'isSales',
-            params.isSales == 0 ? 1 : 0,
-            index
-        );
+        })
+            .then(() => {
+                //更改订单状态为已评价
+                return new Promise((resolve, reject) => {
+                    orderUpdata({
+                        id: reViewForm.orderId,
+                        isComment: '1'
+                    }).then(res => {
+                        if (res.code == 200) {
+                            let index = state.list.findIndex(
+                                v => v.id == reViewForm.orderId
+                            );
+                            state.list[index].isComment = '1';
+                            ElMessage({ message: '评价成功', type: 'success' });
+                        } else {
+                            reject('订单状态异常');
+                        }
+                    });
+                });
+            })
+            .catch((errMsg: string) => {
+                ElMessage.error(errMsg);
+            });
     };
 
-    const statuChange = (
-        carId: number,
-        key: string,
-        statu: 0 | 1,
-        index: number
-    ) => {
-        console.log(carId, statu);
-        const param = <any>{
-            carId
-        };
-        param[key] = statu;
-
-        carUpdata(param).then(res => {
-            console.log(res);
-            if (res.code == 200) {
-                state.list.splice(index, 1);
-            }
-        });
-    };
     const deletClick = (id: number) => {
-        carDelet(id).then(res => {
+        console.log(id);
+
+        orderDelet(id).then(res => {
             if (res.code == 200) {
-                let index = state.list.findIndex(v => v.carId == id);
+                let index = state.list.findIndex(v => v.id == id);
                 state.list.splice(index, 1);
             }
         });
+    };
+    const getList = () => {
+        state.tableLoadingFlag = true;
+
+        orderList(page)
+            .then(res => {
+                console.log('订单列表', res);
+                if (res.code == 200) {
+                    console.log(res.data.records);
+                    state.list = res.data.records;
+                    total.value = res.data.total;
+                }
+            })
+            .finally(() => {
+                state.tableLoadingFlag = false;
+            });
     };
 
     onMounted(() => {
-        typeList().then(res => {
-            console.log(res);
-            if (res.code == 200) {
-                options.carTypeList = res.data.map((v: ICarTypeObj) => {
-                    return {
-                        value: v.typeName,
-                        label: v.typeName
-                    };
-                });
-            }
-        });
-        getList(0);
+        getList();
     });
 </script>
+
+<style scoped></style>

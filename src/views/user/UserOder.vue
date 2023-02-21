@@ -86,6 +86,7 @@
             <el-table-column
                 label="评价状态"
                 width="100"
+                v-if="activeName == 1"
             >
                 <template #default="scoped">
                     <el-tag
@@ -123,6 +124,19 @@
                         @click="openReview(scoped.row)"
                     >
                         评价车辆
+                    </el-button>
+                    <el-button
+                        v-if="activeName == 1 && scoped.row.isComment == '1'"
+                        type="info"
+                        size="small"
+                        plain
+                        @click="
+                            router.push({
+                                path: `/order/add/${scoped.row.carId}`
+                            })
+                        "
+                    >
+                        汽车详情
                     </el-button>
                     <el-popconfirm
                         v-if="activeName == 1"
@@ -214,7 +228,9 @@
     import { IOrderObj, IReviewAdd } from '@/utils/interface';
     import { getMoneyText, timeFormet } from '@/utils/common';
     import { author } from '@/store/authentication';
+    import { useRouter } from 'vue-router';
 
+    const router = useRouter();
     const authentication = author();
     const total = ref(0);
     const activeName = ref<0 | 1>(0),
@@ -282,6 +298,7 @@
                                 v => v.id == reViewForm.orderId
                             );
                             state.list[index].isComment = '1';
+                            ElMessage({ message: '评价成功', type: 'success' });
                         } else {
                             reject('订单状态异常');
                         }
