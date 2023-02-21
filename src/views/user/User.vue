@@ -23,7 +23,9 @@
                         <span>车辆信息</span>
                     </template>
                     <el-menu-item index="/user/order">我的租用</el-menu-item>
-                    <el-menu-item index="/user/collecto">我的收藏</el-menu-item>
+                    <el-menu-item index="/user/collection">
+                        我的收藏
+                    </el-menu-item>
                 </el-sub-menu>
                 <el-sub-menu index="2">
                     <template #title>

@@ -11,6 +11,16 @@
                 label="标题"
                 width="180"
             />
+            <el-table-column
+                label="收藏时价格"
+                width="180"
+            >
+                <template #default="scoped">
+                    <span class="text-red-500">
+                        {{ getMoneyText(scoped.row) }}
+                    </span>
+                </template>
+            </el-table-column>
 
             <el-table-column
                 fixed="right"
@@ -20,8 +30,9 @@
                     <el-button
                         type="primary"
                         size="small"
+                        @click="toBuy(scoped.row.carId)"
                     >
-                        下单
+                        去下单
                     </el-button>
                     <el-popconfirm
                         title="确定要删除么"
@@ -60,7 +71,10 @@
     import { onMounted, reactive, ref } from 'vue';
     import { author } from '@/store/authentication';
     import { ICollectionObj } from '@/utils/interface';
+    import { useRouter } from 'vue-router';
+    import { getMoneyText } from '@/utils/common';
 
+    const router = useRouter();
     const authentication = author();
     const total = ref(0);
     const page = reactive({
@@ -75,6 +89,12 @@
     const pageCurrentChange = () => {
         getList();
     };
+    const toBuy = (carId: number) => {
+        router.push({
+            path: `/order/add/${carId}`
+        });
+    };
+
     const deletClick = (id: number) => {
         console.log(id);
 
@@ -88,6 +108,7 @@
     const getList = () => {
         collectionList(page).then(res => {
             if (res.code == 200) {
+                console.log(res.data.records);
                 state.list = res.data.records;
                 total.value = res.data.total;
             }
