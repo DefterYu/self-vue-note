@@ -184,7 +184,7 @@
 <script setup lang="ts">
     import { typeList, carUpdata, getCarList, carDelet } from '@/api/car';
     import { ICarInfoObj, IOptions, ICarTypeObj } from '@/utils/interface';
-    import { ElScrollbar } from 'element-plus';
+    import { ElMessage, ElScrollbar } from 'element-plus';
     import { getMoneyText } from '@/utils/common';
     import { ref, reactive, onMounted } from 'vue';
     const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
