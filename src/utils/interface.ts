@@ -33,6 +33,19 @@ export interface ISwitchObj {
     configName: string;
     statu: '0' | '1';
 }
+export interface IOrderObj {
+    id: number | string;
+    carId: number | string;
+    userId: 12;
+    nickName: string;
+    isRetrun: '0' | '1';
+    payStatu: '0' | '1';
+    createTime: string;
+    payTime: string;
+    moneyValue: number;
+    moneyType: '0' | '1' | '2';
+    spend: number;
+}
 export interface ICollectionObj {
     id: number;
     userId: string;

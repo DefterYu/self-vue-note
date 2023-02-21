@@ -48,4 +48,7 @@ declare module '@vue/runtime-core' {
     TList: typeof import('./src/components/todo/TList.vue')['default']
     YuStore: typeof import('./src/components/YuStore.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+  }
 }

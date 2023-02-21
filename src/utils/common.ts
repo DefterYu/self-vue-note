@@ -16,9 +16,14 @@ const moneyTypeText = {
 };
 
 export function getMoneyText(params: any) {
-    return `${params.moneyValue} CNY / ${
+    return `￥ ${params.moneyValue}   / ${
         moneyTypeText[params.moneyType as '0' | '1' | '2']
     } `;
+}
+/**本地时间格式化 */
+export function timeFormet(timeStr: string) {
+    const date = new Date(timeStr); //时间对象
+    return date.toLocaleString();
 }
 
 /**格式化get数据 */

@@ -43,6 +43,7 @@
                     type="success"
                     plain
                     @click="buy()"
+                    :loading="lodingFlag"
                     :disabled="state.carInfo.isSales == 1"
                 >
                     下单
@@ -89,9 +90,10 @@
     import { IMG_BASE_URL, getMoneyText } from '@/utils/common';
     import { author } from '@/store/authentication';
     import { Star } from '@element-plus/icons-vue';
-    import { ElMessage, ElMessageBox } from 'element-plus';
+    import { ElMessageBox } from 'element-plus';
     import type { Action } from 'element-plus';
 
+    const lodingFlag = ref(false);
     const authentication = author();
     const routerHook = useRoute();
     const dialogVisible = ref(false),
@@ -141,9 +143,10 @@
         }
 
         if (state.carInfo.carNumber <= 0) {
-            ElMessage({ message: '暂时无可用车辆', type: 'error' });
+            return ElMessage({ message: '暂时无可用车辆', type: 'error' });
         }
 
+        lodingFlag.value = true;
         const param = {
             carId: state.carInfo.carId,
             nickName: authentication.userInfo.nickName,
@@ -151,13 +154,20 @@
             moneyType: state.carInfo.moneyType,
             moneyValue: state.carInfo.moneyValue
         };
-        orderAdd(param).then(res => {
-            console.log(res);
-            ElMessage({
-                message: res.msg,
-                type: res.code == 200 ? 'success' : 'error'
+        orderAdd(param)
+            .then(res => {
+                console.log(res);
+                if (res.code == 200) {
+                    state.carInfo.carNumber -= 1;
+                }
+                ElMessage({
+                    message: res.msg,
+                    type: res.code == 200 ? 'success' : 'error'
+                });
+            })
+            .finally(() => {
+                lodingFlag.value = false;
             });
-        });
     };
 
     /**获取信息  是否允许租用 等信息 */

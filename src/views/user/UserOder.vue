@@ -20,14 +20,29 @@
             style="width: 100%"
             stripe
             border
+            v-loading="state.tableLoadingFlag"
         >
             <el-table-column
-                prop="title"
-                label="标题"
-                width="180"
-            />
+                label="订单状态"
+                width="100"
+            >
+                <template #default="scoped">
+                    <el-tag
+                        type="warning"
+                        v-if="scoped.row.payStatu == '0'"
+                    >
+                        未支付
+                    </el-tag>
+                    <el-tag
+                        type="success"
+                        v-else
+                    >
+                        已支付
+                    </el-tag>
+                </template>
+            </el-table-column>
             <el-table-column
-                label="收藏时价格"
+                label="下单价格"
                 width="180"
             >
                 <template #default="scoped">
@@ -36,20 +51,53 @@
                     </span>
                 </template>
             </el-table-column>
-
+            <el-table-column
+                label="下单时间"
+                width="180"
+            >
+                <template #default="scoped">
+                    <span>
+                        {{ timeFormet(scoped.row.createTime) }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="支付时间"
+                width="180"
+                v-if="activeName == 1"
+            >
+                <template #default="scoped">
+                    <span>
+                        {{ timeFormet(scoped.row.payTime) }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="支付金额"
+                width="180"
+                v-if="activeName == 1"
+            >
+                <template #default="scoped">
+                    <span class="text-red-600 font-bold">
+                        ￥ {{ scoped.row.spend }}
+                    </span>
+                </template>
+            </el-table-column>
             <el-table-column
                 fixed="right"
                 label="操作"
             >
                 <template #default="scoped">
                     <el-button
+                        v-if="activeName == 0"
                         type="primary"
                         size="small"
-                        @click="toBuy(scoped.row.carId)"
+                        @click="toPay(scoped.row.id)"
                     >
-                        去下单
+                        支付
                     </el-button>
                     <el-popconfirm
+                        v-else
                         title="确定要删除么"
                         @confirm="deletClick(scoped.row.id)"
                     >
@@ -58,7 +106,7 @@
                                 type="danger"
                                 size="small"
                             >
-                                删除
+                                删除订单
                             </el-button>
                         </template>
                     </el-popconfirm>
@@ -82,45 +130,55 @@
 </template>
 
 <script setup lang="ts">
-    import { collectionList, collectionDelet } from '@/api/collect';
+    import { orderListByUser, orderDelet, orderBack } from '@/api/order';
     import { onMounted, reactive, ref } from 'vue';
-    import { author } from '@/store/authentication';
-    import { ICollectionObj } from '@/utils/interface';
-    import { useRouter } from 'vue-router';
-    import { getMoneyText } from '@/utils/common';
+    import { IOrderObj } from '@/utils/interface';
+    import { getMoneyText, timeFormet } from '@/utils/common';
 
-    const router = useRouter();
-    const authentication = author();
     const total = ref(0);
-
     const activeName = ref<0 | 1>(0);
     const tabChange = () => {
-        console.log('变动', activeName.value);
+        console.log(activeName.value);
         page.pageNum = 1;
-        // getList(activeName.value);
+        page.payStatu = activeName.value;
+        getList();
     };
     const page = reactive({
         pageNum: 1,
         pageSize: 10,
-        userId: authentication.userInfo.id
+        payStatu: activeName.value
     });
 
     const state = reactive({
-        list: [] as ICollectionObj[]
+        list: [] as IOrderObj[],
+        tableLoadingFlag: false
     });
+
     const pageCurrentChange = () => {
         getList();
     };
-    const toBuy = (carId: number) => {
-        router.push({
-            path: `/order/add/${carId}`
+    const toPay = (id: number) => {
+        orderBack(id).then(res => {
+            console.log('支付结果', res);
+            if (res.code == 200) {
+                let index = state.list.findIndex(v => v.id == id);
+                state.list.splice(index, 1);
+
+                ElMessageBox.alert(
+                    `还车成功，本次消费 ${res.data.spend} 元`,
+                    '提示',
+                    {
+                        confirmButtonText: '确认'
+                    }
+                );
+            }
         });
     };
 
     const deletClick = (id: number) => {
         console.log(id);
 
-        collectionDelet(id).then(res => {
+        orderDelet(id).then(res => {
             if (res.code == 200) {
                 let index = state.list.findIndex(v => v.id == id);
                 state.list.splice(index, 1);
@@ -128,13 +186,20 @@
         });
     };
     const getList = () => {
-        collectionList(page).then(res => {
-            if (res.code == 200) {
-                console.log(res.data.records);
-                state.list = res.data.records;
-                total.value = res.data.total;
-            }
-        });
+        state.tableLoadingFlag = true;
+
+        orderListByUser(page)
+            .then(res => {
+                console.log('订单列表', res);
+                if (res.code == 200) {
+                    console.log(res.data.records);
+                    state.list = res.data.records;
+                    total.value = res.data.total;
+                }
+            })
+            .finally(() => {
+                state.tableLoadingFlag = false;
+            });
     };
 
     onMounted(() => {
