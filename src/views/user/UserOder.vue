@@ -278,8 +278,6 @@
             reviewsAdd(reViewForm).then(res => {
                 console.log('评价结果', res);
                 if (res.code == 200) {
-                    dialogFormVisible.value = false;
-
                     resolve(200);
                 } else {
                     reject('服务器异常,无法评价');
@@ -298,6 +296,8 @@
                                 v => v.id == reViewForm.orderId
                             );
                             state.list[index].isComment = '1';
+                            clearFrom();
+                            dialogFormVisible.value = false;
                             ElMessage({ message: '评价成功', type: 'success' });
                         } else {
                             reject('订单状态异常');
@@ -308,6 +308,12 @@
             .catch((errMsg: string) => {
                 ElMessage.error(errMsg);
             });
+    };
+
+    const clearFrom = () => {
+        reViewForm.remarks = '';
+        reViewForm.isAnonymous = '0';
+        reViewForm.score = 0;
     };
 
     //支付

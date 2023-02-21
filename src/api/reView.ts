@@ -15,6 +15,11 @@ export const reviewsList = (params: any) => {
     return request.get('/reviews/list', { params });
 };
 
+/** 获取指定评价列表 */
+export const reviewslistByCar = (params: any) => {
+    return request.get(`/reviews/list/${params.carId}`, { params });
+};
+
 /**获取用户评价列表 */
 export const reviewsListByUser = (params: any) => {
     return request.get('/reviews/list/user', { params });

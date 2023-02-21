@@ -53,7 +53,57 @@
         <div class="my-10">
             <el-tabs type="border-card">
                 <el-tab-pane label="评价">
-                    <div>暂无评价</div>
+                    <div v-if="state.evaluate.length == 0">暂无评价</div>
+                    <div v-else>
+                        <div
+                            v-for="item in state.evaluate"
+                            class="border-b-2 border-gray-200 my-5 p-4 text-gray-400 hover:border-2 hover:text-gray-700"
+                        >
+                            <div class="flex items-center justify-between">
+                                <span class="">
+                                    {{
+                                        item.isAnonymous == '1'
+                                            ? '匿名用户'
+                                            : item.userId
+                                    }}
+                                </span>
+                                <el-rate
+                                    v-model="item.score"
+                                    disabled
+                                    text-color="#ff9900"
+                                />
+                            </div>
+
+                            <p class="text-sm m-4">
+                                {{ item.remarks }}
+                            </p>
+                            <el-popconfirm
+                                title="是否删除该评论"
+                                @confirm="deletReview(item)"
+                                v-if="authentication.userInfo.userType == '0'"
+                            >
+                                <template #reference>
+                                    <el-button
+                                        type="danger"
+                                        :icon="Delete"
+                                        circle
+                                    />
+                                </template>
+                            </el-popconfirm>
+                        </div>
+                        <div class="flex justify-center my-10">
+                            <el-pagination
+                                v-model:current-page="page.pageNum"
+                                :total="total"
+                                :hide-on-single-page="true"
+                                :page-size="page.pageSize"
+                                layout="prev, pager, next"
+                                background
+                                @size-change="pageCurrentChange"
+                                @current-change="pageCurrentChange"
+                            />
+                        </div>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -82,39 +132,38 @@
 <script setup lang="ts">
     import { getCarById } from '@/api/car';
     import { orderAdd } from '@/api/order';
+    import { reviewslistByCar, reviewsDelet } from '@/api/reView';
     import { useRoute, useRouter } from 'vue-router';
     import { ref, onMounted, reactive } from 'vue';
     import { collectionAdd } from '@/api/collect';
     import BackIndex from '@/components/BackIndex.vue';
-    import { ICarInfoObj } from '@/utils/interface';
+    import { ICarInfoObj, IReviewShow } from '@/utils/interface';
     import { IMG_BASE_URL, getMoneyText } from '@/utils/common';
     import { author } from '@/store/authentication';
-    import { Star } from '@element-plus/icons-vue';
-    import { ElMessageBox } from 'element-plus';
-    import type { Action } from 'element-plus';
+    import { Star, Delete } from '@element-plus/icons-vue';
 
     const lodingFlag = ref(false);
     const authentication = author();
     const routerHook = useRoute();
     const dialogVisible = ref(false),
         lodingFlage = ref(false);
+
     const router = useRouter();
 
+    //评论翻页
+    const total = ref(0);
+    const pageCurrentChange = () => {
+        getReviewList();
+    };
+    const page = reactive({
+        pageNum: 1,
+        pageSize: 10,
+        carId: 0 as number | string
+    });
     const state = reactive({
         carInfo: {} as ICarInfoObj /*车辆信息*/,
-        evaluate: {} /*评价信息*/
+        evaluate: [] as IReviewShow[] /*评价信息*/
     });
-    const open = () => {
-        ElMessageBox.alert('下单', '提示', {
-            confirmButtonText: '去登录',
-            callback: (action: Action) => {
-                console.log(action);
-                if (action == 'confirm') {
-                    router.push('/login');
-                }
-            }
-        });
-    };
 
     const collectClick = () => {
         if (!authentication.token || !authentication.userInfo) {
@@ -136,6 +185,18 @@
             });
         });
     };
+    //删除评论
+    const deletReview = (params: IReviewShow) => {
+        reviewsDelet(params.id).then(res => {
+            console.log('删除结果', res);
+            if (res.code == 200) {
+                let index = state.evaluate.findIndex(v => v.id == params.id);
+                state.evaluate.splice(index, 1);
+                ElMessage({ message: '删除成功', type: 'success' });
+            }
+        });
+    };
+
     /**点击购买 */
     const buy = () => {
         if (!authentication.token || !authentication.userInfo) {
@@ -174,12 +235,22 @@
     const getInfo = () => {
         if (!authentication.token || !authentication.userInfo) return;
     };
+    //获取评价列表
+    const getReviewList = () => {
+        reviewslistByCar(page).then(res => {
+            console.log('评价', res);
+            if (res.code == 200) {
+                state.evaluate = res.data.records;
+            }
+        });
+    };
 
     onMounted(() => {
-        let carId = routerHook.params.carId as string;
+        page.carId = routerHook.params.carId as string;
         getInfo();
-        getCarById(carId).then(res => {
-            console.log('获取参数', res, res.data);
+        getReviewList();
+        getCarById(page.carId).then(res => {
+            console.log('获取参数', res.data);
             if (typeof res.data == 'undefined') {
                 // 参数异常直接返回上一页
                 router.back();

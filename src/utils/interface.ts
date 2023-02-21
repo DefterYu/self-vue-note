@@ -29,6 +29,16 @@ export interface ICarInfoObj {
     isSales: number;
     isComment: string;
 }
+export interface IReviewShow {
+    id: number;
+    carId: number;
+    userId: number;
+    orderId: number;
+    score: number;
+    remarks: string;
+    createTime: string;
+    isAnonymous: '0' | '1';
+}
 export interface ISwitchObj {
     id: number;
     configName: string;

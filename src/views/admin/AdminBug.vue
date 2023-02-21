@@ -138,7 +138,6 @@
             }
         });
     };
-    const cc = () => {};
 
     const pageCurrentChange = () => {
         getList();
