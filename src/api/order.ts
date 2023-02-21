@@ -5,7 +5,7 @@ export const orderAdd = (params: any) => {
     return request.post('/order/add', { ...params });
 };
 
-/** 更新状态 */
+/** 更新订单 */
 export const orderUpdata = (params: any) => {
     return request.put('/order/updata', { ...params });
 };

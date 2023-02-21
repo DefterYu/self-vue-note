@@ -43,7 +43,7 @@
             </el-table-column>
             <el-table-column
                 label="下单价格"
-                width="180"
+                width="130"
             >
                 <template #default="scoped">
                     <span class="text-red-500">
@@ -84,6 +84,25 @@
                 </template>
             </el-table-column>
             <el-table-column
+                label="评价状态"
+                width="100"
+            >
+                <template #default="scoped">
+                    <el-tag
+                        type="warning"
+                        v-if="scoped.row.isComment == '0'"
+                    >
+                        待评价
+                    </el-tag>
+                    <el-tag
+                        type="success"
+                        v-else
+                    >
+                        已评价
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column
                 fixed="right"
                 label="操作"
             >
@@ -97,12 +116,13 @@
                         支付
                     </el-button>
                     <el-button
-                        v-if="activeName == 1"
+                        v-if="activeName == 1 && scoped.row.isComment == '0'"
                         type="primary"
                         size="small"
+                        plain
                         @click="openReview(scoped.row)"
                     >
-                        评分
+                        评价车辆
                     </el-button>
                     <el-popconfirm
                         v-if="activeName == 1"
@@ -183,7 +203,12 @@
 </template>
 
 <script setup lang="ts">
-    import { orderListByUser, orderDelet, orderBack } from '@/api/order';
+    import {
+        orderListByUser,
+        orderDelet,
+        orderBack,
+        orderUpdata
+    } from '@/api/order';
     import { reviewsAdd } from '@/api/reView';
     import { onMounted, reactive, ref } from 'vue';
     import { IOrderObj, IReviewAdd } from '@/utils/interface';
@@ -229,14 +254,43 @@
         reViewForm.carId = param.carId;
         reViewForm.orderId = param.id;
     };
+    /**评价 */
     const saveReview = () => {
         console.log('点击评价');
-        reviewsAdd(reViewForm).then(res => {
-            console.log('评价结果', res);
-            if (res.code == 200) {
-                dialogFormVisible.value = false;
-            }
-        });
+        new Promise((resolve, reject) => {
+            //增加评价
+            reviewsAdd(reViewForm).then(res => {
+                console.log('评价结果', res);
+                if (res.code == 200) {
+                    dialogFormVisible.value = false;
+
+                    resolve(200);
+                } else {
+                    reject('服务器异常,无法评价');
+                }
+            });
+        })
+            .then(() => {
+                //更改订单状态为已评价
+                return new Promise((resolve, reject) => {
+                    orderUpdata({
+                        id: reViewForm.orderId,
+                        isComment: '1'
+                    }).then(res => {
+                        if (res.code == 200) {
+                            let index = state.list.findIndex(
+                                v => v.id == reViewForm.orderId
+                            );
+                            state.list[index].isComment = '1';
+                        } else {
+                            reject('订单状态异常');
+                        }
+                    });
+                });
+            })
+            .catch((errMsg: string) => {
+                ElMessage.error(errMsg);
+            });
     };
 
     //支付

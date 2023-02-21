@@ -47,6 +47,7 @@ export interface IOrderObj {
     moneyValue: number;
     moneyType: '0' | '1' | '2';
     spend: number;
+    isComment: '0' | '1';
 }
 export interface ICollectionObj {
     id: number;
