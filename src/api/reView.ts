@@ -17,7 +17,7 @@ export const reviewsList = (params: any) => {
 
 /** 获取指定评价列表 */
 export const reviewslistByCar = (params: any) => {
-    return request.get(`/reviews/list/${params.carId}`, { params });
+    return request.get(`/reviews/list/car/${params.carId}`, { params });
 };
 
 /**获取用户评价列表 */
