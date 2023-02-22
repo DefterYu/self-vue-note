@@ -3,10 +3,9 @@
  */
 export const indexChildren = [
     {
-        // 访问根路径重定向到/home
         path: 'news',
         name: 'news',
-        component: () => import('@/views/news/News.vue')
+        component: () => import('@/views/news/NewsList.vue')
     },
     {
         path: 'carlist',
