@@ -1,5 +1,8 @@
 // const BASE_URL = 'http://192.168.1.16:7777';
-export const BASE_URL = 'http://localhost:7777';
+export const BASE_URL = 'https://defteryu.top:7777';
+// 测试时候记得本地host添加 127.0.0.1 defteryu.top #本地前端BASE_URL转发到本地idea
+
+// export const BASE_URL = 'http://localhost:7777';
 // export const BASE_URL = 'http://defteryu.top:7777'; //阿里云后端地址+端口
 
 /** cos图片前缀 */
