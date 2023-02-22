@@ -66,14 +66,17 @@
             return ElMessage({ message: '请输入正确邮箱', type: 'error' });
         }
         lodingFlag.value = true;
-        sendVerificationCode({ mail: addr.value }).then(res => {
-            console.log('发送结果', res);
-            ElMessage({
-                message: res.msg,
-                type: res.code == 200 ? 'success' : 'error'
+        sendVerificationCode({ mail: addr.value })
+            .then(res => {
+                console.log('发送结果', res);
+                ElMessage({
+                    message: res.msg,
+                    type: res.code == 200 ? 'success' : 'error'
+                });
+            })
+            .finally(() => {
+                lodingFlag.value = false;
             });
-            if (res.code == 200) lodingFlag.value = false;
-        });
     };
     const checkCode = () => {
         if (!pattern.test(addr.value)) {

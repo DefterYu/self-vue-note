@@ -13,12 +13,12 @@
                 @select="handleSelect"
             >
                 <el-menu-item index="/admin/user">
-                    <el-icon><icon-menu /></el-icon>
+                    <el-icon><User /></el-icon>
                     <span>用户管理</span>
                 </el-menu-item>
-                <el-sub-menu index="1">
+                <el-sub-menu index="car">
                     <template #title>
-                        <el-icon><location /></el-icon>
+                        <el-icon><Van /></el-icon>
                         <span>车辆信息</span>
                     </template>
                     <el-menu-item index="/admin/cartype">类型管理</el-menu-item>
@@ -27,13 +27,20 @@
                     <el-menu-item index="/admin/caradd">发布新车</el-menu-item>
                 </el-sub-menu>
                 <el-menu-item index="/admin/bug">
-                    <el-icon><icon-menu /></el-icon>
+                    <el-icon><Printer /></el-icon>
                     <span>故障管理</span>
                 </el-menu-item>
-                <el-menu-item index="/admin/news">
-                    <el-icon><icon-menu /></el-icon>
-                    <span>资讯管理</span>
-                </el-menu-item>
+                <el-sub-menu index="new">
+                    <template #title>
+                        <el-icon><Document /></el-icon>
+                        <span>资讯管理</span>
+                    </template>
+                    <el-menu-item index="/admin/newslist">
+                        内容管理
+                    </el-menu-item>
+                    <el-menu-item index="/admin/newsAdd">发布新闻</el-menu-item>
+                </el-sub-menu>
+
                 <el-menu-item index="/admin/system">
                     <el-icon><icon-menu /></el-icon>
                     <span>系统管理</span>

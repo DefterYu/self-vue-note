@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
     import { ref, reactive } from 'vue';
-    import { bugUpdata, bugAdd } from '@/api/bug';
+    import { bugAdd } from '@/api/bug';
     import ImgListUpload from '@/components/ImgListUpload.vue';
     import { author } from '@/store/authentication';
 

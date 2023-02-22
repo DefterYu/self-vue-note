@@ -14,12 +14,12 @@
                 @select="handleSelect"
             >
                 <el-menu-item index="/user/info">
-                    <el-icon><icon-menu /></el-icon>
+                    <el-icon><User /></el-icon>
                     <span>个人信息</span>
                 </el-menu-item>
                 <el-sub-menu index="1">
                     <template #title>
-                        <el-icon><location /></el-icon>
+                        <el-icon><Van /></el-icon>
                         <span>车辆信息</span>
                     </template>
                     <el-menu-item index="/user/order">我的租用</el-menu-item>
@@ -29,7 +29,7 @@
                 </el-sub-menu>
                 <el-sub-menu index="2">
                     <template #title>
-                        <el-icon><icon-menu /></el-icon>
+                        <el-icon><Printer /></el-icon>
                         <span>客服反馈</span>
                     </template>
                     <el-menu-item index="/user/bug">反馈记录</el-menu-item>

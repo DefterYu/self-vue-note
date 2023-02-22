@@ -32,6 +32,17 @@
                 width="180"
             />
             <el-table-column
+                prop="phone"
+                label="反馈时间"
+                width="180"
+            >
+                <template #default="scope">
+                    <span>
+                        {{ timeFormet(scope.row.createTime) }}
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column
                 label="状态"
                 width="180"
             >
@@ -92,16 +103,13 @@
 
 <script setup lang="ts">
     import { bugList, bugDelet, bugUpdata } from '@/api/bug';
-    import { onMounted, reactive, ref, toRaw } from 'vue';
-    import { author } from '@/store/authentication';
+    import { onMounted, reactive, ref } from 'vue';
     import { IBugObj } from '@/utils/interface';
-
-    const authentication = author();
+    import { timeFormet } from '@/utils/common';
     const total = ref(0);
     const page = reactive({
         pageNum: 1,
-        pageSize: 10,
-        userId: authentication.userInfo.id
+        pageSize: 10
     });
     const activeName = ref<0 | 1>(0);
     const tabChange = () => {

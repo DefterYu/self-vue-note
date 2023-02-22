@@ -3,8 +3,12 @@
  */
 export const adminChildren = [
     {
-        path: 'news',
+        path: 'newsList',
         component: () => import('@/views/admin/AdminNews.vue')
+    },
+    {
+        path: 'newsAdd',
+        component: () => import('@/views/news/NewsAdd.vue')
     },
     {
         path: 'user',
