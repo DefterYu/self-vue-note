@@ -53,6 +53,7 @@
         newsAdd(param).then(res => {
             console.log(res);
             if (res.code == 200) {
+                ElMessage({ message: '文章发表成功', type: 'success' });
                 param.content = '';
                 param.title = '';
                 param.source = '';

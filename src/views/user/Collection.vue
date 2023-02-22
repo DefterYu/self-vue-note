@@ -3,6 +3,7 @@
         <el-table
             :data="state.list"
             style="width: 100%"
+            empty-text="暂无数据"
             stripe
             border
         >

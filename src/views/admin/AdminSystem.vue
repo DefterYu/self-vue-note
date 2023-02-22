@@ -1,46 +1,45 @@
 <template>
-    <div class="">
-        <el-table
-            :data="state.sitchList"
-            style="width: 100%"
-            stripe
-            border
-        >
-            <el-table-column
-                prop="configName"
-                label="开关名称"
-                width="180"
-            />
+    <el-table
+        :data="state.sitchList"
+        style="width: 100%"
+        empty-text="暂无数据"
+        stripe
+        border
+    >
+        <el-table-column
+            prop="configName"
+            label="开关名称"
+            width="180"
+        />
 
-            <el-table-column
-                label="状态"
-                width="80"
-            >
-                <template #default="scope">
-                    <el-tag :type="scope.row.statu == 1 ? 'danger' : 'success'">
-                        {{ scope.row.statu == 1 ? '关闭' : '开启' }}
-                    </el-tag>
-                </template>
-            </el-table-column>
-            <el-table-column
-                fixed="right"
-                label="操作"
-            >
-                <template #default="scope">
-                    <el-switch
-                        v-model="scope.row.statu"
-                        style="margin-left: 24px"
-                        inline-prompt
-                        :active-icon="Check"
-                        :inactive-icon="Close"
-                        active-value="0"
-                        inactive-value="1"
-                        @change="change(scope.row.statu, scope.row.id)"
-                    />
-                </template>
-            </el-table-column>
-        </el-table>
-    </div>
+        <el-table-column
+            label="状态"
+            width="80"
+        >
+            <template #default="scope">
+                <el-tag :type="scope.row.statu == 1 ? 'danger' : 'success'">
+                    {{ scope.row.statu == 1 ? '关闭' : '开启' }}
+                </el-tag>
+            </template>
+        </el-table-column>
+        <el-table-column
+            fixed="right"
+            label="操作"
+        >
+            <template #default="scope">
+                <el-switch
+                    v-model="scope.row.statu"
+                    style="margin-left: 24px"
+                    inline-prompt
+                    :active-icon="Check"
+                    :inactive-icon="Close"
+                    active-value="0"
+                    inactive-value="1"
+                    @change="change(scope.row.statu, scope.row.id)"
+                />
+            </template>
+        </el-table-column>
+    </el-table>
 </template>
 
 <script setup lang="ts">
