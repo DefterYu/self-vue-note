@@ -2,7 +2,6 @@ import axios from 'axios';
 import { author } from '@/store/authentication';
 import { BASE_URL } from './common';
 import router from '@/router';
-const authentication = author();
 
 //路由重定向
 function redirectLogin() {
@@ -17,13 +16,14 @@ const service = axios.create({
 //请求拦截器
 service.interceptors.request.use(
     config => {
-        const author = window.localStorage.getItem('author');
-
+        // const author = window.localStorage.getItem('author');
+        const authentication = author();
+        const toke = authentication.token;
         console.log('请求参数', config);
 
-        if (author && JSON.parse(author).token) {
+        if (toke) {
             // console.log('存在token:', author);
-            config.headers['token'] = JSON.parse(author).token;
+            config.headers['token'] = toke;
         }
 
         return config;
@@ -36,9 +36,9 @@ service.interceptors.request.use(
 //响应拦截器
 service.interceptors.response.use(
     response => {
+        const authentication = author();
         if (response.data.code == 401) {
             console.log('过期');
-
             authentication.deleToken();
             redirectLogin();
         } else {
@@ -47,7 +47,12 @@ service.interceptors.response.use(
     },
     error => {
         //此处接口请求失败
-        Promise.reject(error);
+        // Promise.reject(error);
+        return {
+            code: 500,
+            msg: '服务器异常',
+            data: error
+        };
     }
 );
 
