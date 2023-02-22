@@ -57,7 +57,7 @@
                     <div v-else>
                         <div
                             v-for="item in state.evaluate"
-                            class="border-b-2 border-gray-200 my-5 p-4 text-gray-400 hover:border-2 hover:text-gray-700"
+                            class="border-b-2 border-gray-200 my-5 p-4 text-gray-400 hover:text-gray-700"
                         >
                             <div class="flex items-center justify-between">
                                 <span class="">
@@ -77,6 +77,7 @@
                             <p class="text-sm m-4">
                                 {{ item.remarks }}
                             </p>
+                            <p>{{ timeFormet(item.createTime) }}</p>
                             <el-popconfirm
                                 title="是否删除该评论"
                                 @confirm="deletReview(item)"
@@ -120,9 +121,27 @@
                 <el-button @click="dialogVisible = false">取消</el-button>
                 <el-button
                     type="primary"
-                    @click="router.replace('/login')"
+                    @click="router.push('/login')"
                 >
                     去登录
+                </el-button>
+            </span>
+        </template>
+    </el-dialog>
+    <el-dialog
+        v-model="dialogOrder"
+        title="提示"
+        width="30%"
+    >
+        <span>下单成功。是否前往订单页查看订单？</span>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogOrder = false">取消</el-button>
+                <el-button
+                    type="primary"
+                    @click="router.push('/user/order')"
+                >
+                    查看订单
                 </el-button>
             </span>
         </template>
@@ -138,7 +157,7 @@
     import { collectionAdd } from '@/api/collect';
     import BackIndex from '@/components/BackIndex.vue';
     import { ICarInfoObj, IReviewShow } from '@/utils/interface';
-    import { IMG_BASE_URL, getMoneyText } from '@/utils/common';
+    import { IMG_BASE_URL, getMoneyText, timeFormet } from '@/utils/common';
     import { author } from '@/store/authentication';
     import { Star, Delete } from '@element-plus/icons-vue';
 
@@ -146,6 +165,7 @@
     const authentication = author();
     const routerHook = useRoute();
     const dialogVisible = ref(false),
+        dialogOrder = ref(false),
         lodingFlage = ref(false);
 
     const router = useRouter();
@@ -165,6 +185,7 @@
         evaluate: [] as IReviewShow[] /*评价信息*/
     });
 
+    /**点击收藏 */
     const collectClick = () => {
         if (!authentication.token || !authentication.userInfo) {
             return (dialogVisible.value = true);
@@ -185,7 +206,8 @@
             });
         });
     };
-    //删除评论
+
+    /** 删除评论*/
     const deletReview = (params: IReviewShow) => {
         reviewsDelet(params.id).then(res => {
             console.log('删除结果', res);
@@ -220,6 +242,7 @@
                 console.log(res);
                 if (res.code == 200) {
                     state.carInfo.carNumber -= 1;
+                    dialogOrder.value = true;
                 }
                 ElMessage({
                     message: res.msg,
@@ -240,7 +263,7 @@
         reviewslistByCar(page).then(res => {
             console.log('评价', res);
             if (res.code == 200) {
-                state.evaluate = res.data.records;
+                state.evaluate = res.data.records || [];
             }
         });
     };

@@ -9,7 +9,7 @@
                 background-color="#545c64"
                 class="el-menu-vertical-demo"
                 :collapse="isCollapse"
-                default-active="2"
+                :default-active="defaultActive"
                 text-color="#fff"
                 @select="handleSelect"
             >
@@ -60,7 +60,7 @@
 <script setup lang="ts">
     import BackIndex from '@/components/BackIndex.vue';
     import { useRouter } from 'vue-router';
-    import { ref } from 'vue';
+    import { ref, onMounted, watch } from 'vue';
     import { author } from '@/store/authentication';
     import {
         Menu as IconMenu,
@@ -70,6 +70,7 @@
 
     const authentication = author();
     const router = useRouter();
+    const defaultActive = ref('');
 
     const isCollapse = ref(false);
 
@@ -81,6 +82,16 @@
             router.push(key);
         }
     };
+    //监控路由动向
+    watch(
+        () => router.currentRoute.value.path,
+        newVal => {
+            defaultActive.value = newVal;
+        }
+    );
+    onMounted(() => {
+        defaultActive.value = router.currentRoute.value.path;
+    });
 </script>
 
 <style scoped></style>

@@ -80,7 +80,7 @@
                 authentication.setToken(res.data.token);
                 authentication.setUserInfo(res.data.userInfo);
                 setTimeout(() => {
-                    router.push('/');
+                    router.back();
                 }, 1000);
             })
             .catch(err => {
