@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
     import { ISwitchObj } from '@/utils/interface';
-    import { ref, reactive, onMounted } from 'vue';
+    import { reactive, onMounted } from 'vue';
     import { Check, Close } from '@element-plus/icons-vue';
     import { getSystemSwitchList, systemSwitchUpdata } from '@/api/system';
 

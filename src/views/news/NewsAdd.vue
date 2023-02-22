@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-3xl m-auto p-4 bg-red-200 rounded-xl">
+    <div class="max-w-3xl m-auto rounded-xl mx-auto p-10 shadow-lg">
         <div class="my-4">
             <el-input
                 v-model="param.title"
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
     import { newsAdd } from '@/api/news';
-    import { onMounted, reactive } from 'vue';
+    import { reactive } from 'vue';
     import { author } from '@/store/authentication';
 
     const authentication = author();
@@ -36,23 +36,29 @@
     const param = reactive({
         content: '',
         title: '',
-        source: '汽车之家',
-        userId: ''
+        source: '',
+        userId: authentication.userInfo.id
     });
 
     const add = () => {
+        if (!param.title) {
+            return ElMessage({ message: '请填写文章标题', type: 'error' });
+        }
+        if (!param.content) {
+            return ElMessage({ message: '请填写文章内容', type: 'error' });
+        }
+        if (!param.source) {
+            return ElMessage({ message: '请填写文章来源', type: 'error' });
+        }
         newsAdd(param).then(res => {
             console.log(res);
             if (res.code == 200) {
                 param.content = '';
                 param.title = '';
-                // param.source = '';
+                param.source = '';
             }
         });
     };
-    onMounted(() => {
-        param.userId = authentication.userInfo.id;
-    });
 </script>
 
 <style scoped></style>
