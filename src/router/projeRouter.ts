@@ -63,7 +63,7 @@ export const projeRouter = [
     {
         path: '/car/CarDetails/:carId',
         name: 'orderCreate',
-        meta: { requireAuth: true },
+        meta: { requireAuth: false },
         component: () => import('@/views/car/CarDetails.vue')
     }
 ];
