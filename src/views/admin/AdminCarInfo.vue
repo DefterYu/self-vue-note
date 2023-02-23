@@ -183,7 +183,7 @@
 </template>
 
 <script setup lang="ts">
-    import { typeList, carUpdata, getCarList, carDelet } from '@/api/car';
+    import { typeList, carUpdata, getCarAdminList, carDelet } from '@/api/car';
     import { ICarInfoObj, IOptions, ICarTypeObj } from '@/utils/interface';
     import { ElMessage, ElScrollbar } from 'element-plus';
     import { getMoneyText } from '@/utils/common';
@@ -280,7 +280,7 @@
             ...page,
             statu
         };
-        getCarList(param).then(res => {
+        getCarAdminList(param).then(res => {
             console.log(res);
             if (res.code == 200) {
                 state.list = res.data.records;

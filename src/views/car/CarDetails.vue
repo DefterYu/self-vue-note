@@ -36,6 +36,7 @@
                     :icon="Star"
                     plain
                     circle
+                    :disabled="state.carInfo.isSales == 1"
                     @click="collectClick"
                 />
                 <el-button
@@ -49,6 +50,26 @@
                     下单
                 </el-button>
             </div>
+        </div>
+        <div class="py-4">
+            <el-alert
+                v-if="state.carInfo.isSales != 0"
+                title="当前车辆已下架 无法租用、收藏"
+                type="error"
+                effect="dark"
+                center
+                show-icon
+                :closable="false"
+            />
+            <el-alert
+                v-else-if="state.carInfo.carNumber <= 0"
+                title="当前剩余车辆为不足 无法租用"
+                type="warning"
+                effect="dark"
+                center
+                show-icon
+                :closable="false"
+            />
         </div>
         <div class="my-10">
             <el-tabs type="border-card">
@@ -161,7 +182,6 @@
     import { author } from '@/store/authentication';
     import { Star, Delete } from '@element-plus/icons-vue';
     import { ElLoading } from 'element-plus';
-
     const lodingFlag = ref(false);
     const authentication = author();
     const routerHook = useRoute();

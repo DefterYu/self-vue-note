@@ -56,8 +56,7 @@
 
     const page = reactive({
         pageNum: 1,
-        pageSize: 12,
-        statu: 0
+        pageSize: 12
     });
     const state = reactive({
         carShowList: [] as ICarInfoObj[]
@@ -96,19 +95,3 @@
         getList();
     });
 </script>
-
-<style scoped>
-    .demo-image__error .image-slot {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        background: var(--el-fill-color-light);
-        color: var(--el-text-color-secondary);
-        font-size: 30px;
-    }
-    .demo-image__error .image-slot .el-icon {
-        font-size: 30px;
-    }
-</style>

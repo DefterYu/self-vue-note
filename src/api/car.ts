@@ -17,9 +17,13 @@ export const carUpdata = (params: any) => {
     return request.post('/car/updata', { ...params });
 };
 
-/**获取车辆列表 */
+/**获取车辆列表（在售） */
 export const getCarList = (params: any) => {
-    return request.get('/car/list', { params });
+    return request.get('/car/list/sale', { params });
+};
+/**获取车辆列表(全部) */
+export const getCarAdminList = (params: any) => {
+    return request.get('/car/list/admin', { params });
 };
 /**获取车辆信息  */
 export const getCarById = (id: number | string) => {

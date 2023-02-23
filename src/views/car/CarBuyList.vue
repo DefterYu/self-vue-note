@@ -18,8 +18,6 @@
         </el-scrollbar>
 
         <div class="flex justify-center my-10">
-            <!-- <el-button @click="getList(0)">获取 0文章</el-button>
-            <el-button @click="getList(1)">获取 1文章</el-button> -->
             <el-pagination
                 v-model:current-page="page.pageNum"
                 :total="total"

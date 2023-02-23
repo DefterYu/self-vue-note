@@ -107,10 +107,8 @@
 <script setup lang="ts">
     import { newList, newsUpdata, newsDelet } from '@/api/news';
     import { INewsObj } from '@/utils/interface';
-    import { Check, Close } from '@element-plus/icons-vue';
-    import { ElScrollbar } from 'element-plus';
     import { ref, reactive, onMounted } from 'vue';
-    const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
+
     const activeName = ref<0 | 1>(0);
     const page = reactive({
         pageNum: 1,
@@ -127,7 +125,6 @@
     };
     const pageCurrentChange = () => {
         getList(0);
-        scrollbarRef.value!.setScrollTop(0);
     };
     const getList = (statu: 0 | 1) => {
         const param = {
