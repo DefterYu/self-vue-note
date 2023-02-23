@@ -48,6 +48,7 @@
     import { reactive, onMounted, ref } from 'vue';
     import useToTop from '@/hook/useToTop';
     import { IMG_BASE_URL, getMoneyText } from '@/utils/common';
+    import { ElLoading } from 'element-plus';
 
     const { toTop } = useToTop();
     const router = useRouter();
@@ -73,13 +74,22 @@
     };
 
     const getList = () => {
-        getCarList(page).then(res => {
-            console.log(res);
-            if (res.code == 200) {
-                state.carShowList = res.data.records;
-                total.value = res.data.total;
-            }
+        const loading = ElLoading.service({
+            lock: true,
+            text: '加载中',
+            background: 'rgba(0, 0, 0, 0.7)'
         });
+        getCarList(page)
+            .then(res => {
+                console.log(res);
+                if (res.code == 200) {
+                    state.carShowList = res.data.records;
+                    total.value = res.data.total;
+                }
+            })
+            .finally(() => {
+                loading.close();
+            });
     };
 
     onMounted(() => {

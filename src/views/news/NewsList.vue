@@ -32,6 +32,7 @@
     import { INewsObj } from '@/utils/interface';
     import useToTop from '@/hook/useToTop';
     import { ref, reactive, onMounted } from 'vue';
+    import { ElLoading } from 'element-plus';
 
     const { toTop } = useToTop();
     const page = reactive({
@@ -50,20 +51,29 @@
     };
 
     const getList = (statu: 0 | 1) => {
+        const loading = ElLoading.service({
+            lock: true,
+            text: '加载中',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
         const param = {
             ...page,
             statu
         };
         console.log(param);
 
-        newList(param).then(res => {
-            console.log(res);
+        newList(param)
+            .then(res => {
+                console.log(res);
 
-            if (res.code == 200) {
-                state.list = res.data.records;
-                total.value = res.data.total;
-            }
-        });
+                if (res.code == 200) {
+                    state.list = res.data.records;
+                    total.value = res.data.total;
+                }
+            })
+            .finally(() => {
+                loading.close();
+            });
     };
 
     onMounted(() => {

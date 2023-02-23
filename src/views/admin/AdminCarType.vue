@@ -2,7 +2,7 @@
     <div class="w-full p-10">
         <el-tag
             v-for="(tag, index) in state.dynamicTags"
-            :key="tag"
+            :key="tag.id"
             class="m-1"
             size="large"
             closable

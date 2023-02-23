@@ -3,6 +3,8 @@ import './style.css';
 import App from './App.vue';
 import pinia from './store';
 import router from './router';
+//全局elment样式 样式丢失时启用
+// import 'element-plus/dist/index.css';
 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 

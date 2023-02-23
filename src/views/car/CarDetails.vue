@@ -160,6 +160,7 @@
     import { IMG_BASE_URL, getMoneyText, timeFormet } from '@/utils/common';
     import { author } from '@/store/authentication';
     import { Star, Delete } from '@element-plus/icons-vue';
+    import { ElLoading } from 'element-plus';
 
     const lodingFlag = ref(false);
     const authentication = author();
@@ -268,11 +269,16 @@
         });
     };
 
-    onMounted(() => {
+    onMounted(async () => {
         page.carId = routerHook.params.carId as string;
         getInfo();
-        getReviewList();
-        getCarById(page.carId).then(res => {
+        const loading = ElLoading.service({
+            lock: true,
+            text: '加载中',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
+
+        await getCarById(page.carId).then(res => {
             console.log('获取参数', res.data);
             if (typeof res.data == 'undefined') {
                 // 参数异常直接返回上一页
@@ -283,6 +289,9 @@
                 lodingFlage.value = true;
             }
         });
+        getReviewList();
+
+        loading.close();
     });
 </script>
 

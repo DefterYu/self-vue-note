@@ -58,7 +58,7 @@
     import { register } from '@/api/index';
     import { reactive, ref } from 'vue';
     import { useRouter } from 'vue-router';
-    import type { Action } from 'element-plus';
+    import { Action, ElMessageBox } from 'element-plus';
 
     const router = useRouter();
     const lodingFlag = ref(false);
