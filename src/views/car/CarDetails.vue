@@ -1,14 +1,14 @@
 <template>
     <back-index page-name="订单创建" />
     <div
-        class="m-6 p-6 w-1/2 mx-auto container"
+        class="m-6 p-6 w-2/3 mx-auto container"
         v-if="lodingFlage"
     >
         <div class="grid grid-rows-3 grid-flow-col gap-4">
             <div class="row-span-3">
                 <!-- 图片要等数据返回才加载 -->
                 <el-image
-                    style="width: 350px; height: 250px"
+                    style="width: 400px; height: 300px"
                     :src="IMG_BASE_URL + state.carInfo.images[0]"
                     fit="cover"
                 />
@@ -127,6 +127,11 @@
                         </div>
                     </div>
                 </el-tab-pane>
+                <el-tab-pane label="详情">
+                    <div>
+                        {{ state.carInfo.remarks }}
+                    </div>
+                </el-tab-pane>
             </el-tabs>
         </div>
     </div>
@@ -181,7 +186,7 @@
     import { IMG_BASE_URL, getMoneyText, timeFormet } from '@/utils/common';
     import { author } from '@/store/authentication';
     import { Star, Delete } from '@element-plus/icons-vue';
-    import { ElLoading } from 'element-plus';
+    import { ElLoading, ElMessage } from 'element-plus';
     const lodingFlag = ref(false);
     const authentication = author();
     const routerHook = useRoute();
