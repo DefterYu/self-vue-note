@@ -62,11 +62,7 @@
     import { useRouter } from 'vue-router';
     import { ref, onMounted, watch } from 'vue';
     import { author } from '@/store/authentication';
-    import {
-        Menu as IconMenu,
-        Location,
-        Setting
-    } from '@element-plus/icons-vue';
+    import { Setting } from '@element-plus/icons-vue';
 
     const authentication = author();
     const router = useRouter();

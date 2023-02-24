@@ -21,3 +21,8 @@ export const userUpdataPwd = (params: any) => {
 export const userList = (params: any) => {
     return request.get('/useredit/list', { params });
 };
+
+/**获取用户信息 */
+export const userOne = () => {
+    return request.get('/useredit/one');
+};
