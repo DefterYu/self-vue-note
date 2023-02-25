@@ -8,7 +8,7 @@
             <div class="row-span-3">
                 <!-- 图片要等数据返回才加载 -->
                 <el-image
-                    style="width: 400px; height: 300px"
+                    style="width: 400px; height: 350px"
                     :src="IMG_BASE_URL + state.carInfo.images[0]"
                     fit="cover"
                 />
