@@ -1,9 +1,10 @@
-export interface INewsObj {
+export interface INewsVO {
     id?: number;
     title?: string;
     content?: string;
     source?: string;
     statu?: 0 | 1;
+    nickName?: string;
 }
 export interface ICarTypeObj {
     id: number;
@@ -29,7 +30,7 @@ export interface ICarInfoObj {
     isSales: number;
     isComment: string;
 }
-export interface IReviewShow {
+export interface IReviewPO {
     id: number;
     carId: number;
     userId: number;
@@ -38,6 +39,8 @@ export interface IReviewShow {
     remarks: string;
     createTime: string;
     isAnonymous: '0' | '1';
+    avatar?: string;
+    nickName?: string;
 }
 export interface ISwitchObj {
     id: number;

@@ -41,7 +41,6 @@
             </el-menu-item>
         </el-menu>
     </div>
-
     <router-view></router-view>
 </template>
 

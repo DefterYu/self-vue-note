@@ -81,13 +81,20 @@
                             class="border-b-2 border-gray-200 my-5 p-4 text-gray-400 hover:text-gray-700"
                         >
                             <div class="flex items-center justify-between">
-                                <span class="">
-                                    {{
-                                        item.isAnonymous == '1'
-                                            ? '匿名用户'
-                                            : item.userId
-                                    }}
-                                </span>
+                                <div>
+                                    <el-avatar
+                                        shape="square"
+                                        :size="50"
+                                        :src="IMG_BASE_URL + item.avatar"
+                                    />
+                                    <p>
+                                        {{
+                                            item.isAnonymous == '1'
+                                                ? '匿名用户'
+                                                : item.nickName
+                                        }}
+                                    </p>
+                                </div>
                                 <el-rate
                                     v-model="item.score"
                                     disabled
@@ -182,7 +189,7 @@
     import { ref, onMounted, reactive } from 'vue';
     import { collectionAdd } from '@/api/collect';
     import BackIndex from '@/components/BackIndex.vue';
-    import { ICarInfoObj, IReviewShow } from '@/utils/interface';
+    import { ICarInfoObj, IReviewPO } from '@/utils/interface';
     import { IMG_BASE_URL, getMoneyText, timeFormet } from '@/utils/common';
     import { author } from '@/store/authentication';
     import { Star, Delete } from '@element-plus/icons-vue';
@@ -208,7 +215,7 @@
     });
     const state = reactive({
         carInfo: {} as ICarInfoObj /*车辆信息*/,
-        evaluate: [] as IReviewShow[] /*评价信息*/
+        evaluate: [] as IReviewPO[] /*评价信息*/
     });
 
     /**点击收藏 */
@@ -234,7 +241,7 @@
     };
 
     /** 删除评论*/
-    const deletReview = (params: IReviewShow) => {
+    const deletReview = (params: IReviewPO) => {
         reviewsDelet(params.id).then(res => {
             console.log('删除结果', res);
             if (res.code == 200) {

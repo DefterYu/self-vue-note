@@ -28,6 +28,11 @@
             width="180"
         />
         <el-table-column
+            prop="nickName"
+            label="发布人"
+            width="180"
+        />
+        <el-table-column
             prop="source"
             label="文章来源"
             width="100"
@@ -106,7 +111,7 @@
 
 <script setup lang="ts">
     import { newList, newsUpdata, newsDelet } from '@/api/news';
-    import { INewsObj } from '@/utils/interface';
+    import { INewsVO } from '@/utils/interface';
     import { ref, reactive, onMounted } from 'vue';
 
     const activeName = ref<0 | 1>(0);
@@ -116,7 +121,7 @@
     });
     const total = ref(0);
     const state = reactive({
-        list: [] as INewsObj[]
+        list: [] as INewsVO[]
     });
     const tabChange = () => {
         console.log('变动', activeName.value);

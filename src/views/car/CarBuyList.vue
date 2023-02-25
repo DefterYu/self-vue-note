@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
     import { newList } from '@/api/news';
-    import { INewsObj } from '@/utils/interface';
+    import { INewsVO } from '@/utils/interface';
     import { ElScrollbar } from 'element-plus';
 
     import { ref, reactive, onMounted } from 'vue';
@@ -48,7 +48,7 @@
     const total = ref(0);
 
     const state = reactive({
-        list: [] as INewsObj[]
+        list: [] as INewsVO[]
     });
 
     const pageCurrentChange = () => {

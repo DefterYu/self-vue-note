@@ -10,6 +10,9 @@
             <div class="mt-4 text-xs text-right text-gray-400">
                 文章来源：{{ item.source || '网络' }}
             </div>
+            <div class="mt-4 text-xs text-right text-gray-400">
+                文章发布人：{{ item.nickName }}
+            </div>
         </div>
 
         <div class="flex justify-center my-10">
@@ -29,7 +32,7 @@
 
 <script setup lang="ts">
     import { newList } from '@/api/news';
-    import { INewsObj } from '@/utils/interface';
+    import { INewsVO } from '@/utils/interface';
     import useToTop from '@/hook/useToTop';
     import { ref, reactive, onMounted } from 'vue';
     import { ElLoading } from 'element-plus';
@@ -42,7 +45,7 @@
     const total = ref(0);
 
     const state = reactive({
-        list: [] as INewsObj[]
+        list: [] as INewsVO[]
     });
 
     const pageCurrentChange = () => {
