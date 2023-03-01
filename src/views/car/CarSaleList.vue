@@ -2,28 +2,75 @@
     <div class="mx-auto p-6">
         <div class="flex flex-wrap justify-center">
             <div
-                class="bg-slate-100 rounded-lg m-6 hover:bg-slate-200 hover:border-transparent hover:shadow-lg cursor-pointer"
+                class="bg-slate-100 rounded-lg m-6 p-2 hover:bg-white hover:border-transparent hover:shadow-lg cursor-pointer"
                 v-for="item in state.carShowList"
                 @click="toDetails(item)"
             >
-                <div v-if="item.images.length > 0">
-                    <el-image
-                        style="width: 250px; height: 200px"
-                        :src="IMG_BASE_URL + item.images[0]"
-                        fit="cover"
-                    />
-                </div>
-                <div v-else></div>
-
-                <p class="text-lg font-semibold m-2">{{ item.title }}</p>
-                <el-tag
-                    class="m-2"
-                    type="warning"
-                    effect="light"
+                <el-skeleton
+                    :loading="lodingFlag"
+                    animated
                 >
-                    {{ item.carType }}
-                </el-tag>
-                <p class="m-2 text-red-400">{{ getMoneyText(item) }}</p>
+                    <template #template>
+                        <el-skeleton-item
+                            variant="image"
+                            style="width: 240px; height: 240px"
+                        />
+                        <div style="padding: 14px">
+                            <el-skeleton-item
+                                variant="h3"
+                                style="width: 50%"
+                            />
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-items: space-between;
+                                    margin-top: 16px;
+                                    height: 16px;
+                                "
+                            >
+                                <el-skeleton-item
+                                    variant="text"
+                                    style="margin-right: 16px"
+                                />
+                            </div>
+                        </div>
+                    </template>
+                    <template #default>
+                        <div v-if="item.images && item.images.length > 0">
+                            <el-image
+                                class="rounded-lg"
+                                style="width: 250px; height: 200px"
+                                :src="IMG_BASE_URL + item.images[0]"
+                                fit="cover"
+                            />
+                        </div>
+                        <div
+                            v-else
+                            class="demo-image__error"
+                        >
+                            <el-image style="width: 250px; height: 200px">
+                                <template #error>
+                                    <div class="image-slot">
+                                        <el-icon><icon-picture /></el-icon>
+                                    </div>
+                                </template>
+                            </el-image>
+                        </div>
+
+                        <p class="text-lg font-semibold">{{ item.title }}</p>
+                        <el-tag
+                            class="hover:mx-2"
+                            type="warning"
+                            effect="light"
+                        >
+                            {{ item.carType }}
+                        </el-tag>
+                        <p class="m-2 text-red-400 hover:font-semibold">
+                            {{ getMoneyText(item) }}
+                        </p>
+                    </template>
+                </el-skeleton>
             </div>
         </div>
         <div class="flex justify-center my-10">
@@ -48,11 +95,12 @@
     import { reactive, onMounted, ref } from 'vue';
     import useToTop from '@/hook/useToTop';
     import { IMG_BASE_URL, getMoneyText } from '@/utils/common';
-    import { ElLoading } from 'element-plus';
+    import { Picture as IconPicture } from '@element-plus/icons-vue';
 
     const { toTop } = useToTop();
     const router = useRouter();
     const total = ref(0);
+    const lodingFlag = ref(false);
 
     const page = reactive({
         pageNum: 1,
@@ -73,11 +121,7 @@
     };
 
     const getList = () => {
-        const loading = ElLoading.service({
-            lock: true,
-            text: '加载中',
-            background: 'rgba(0, 0, 0, 0.7)'
-        });
+        lodingFlag.value = true;
         getCarList(page)
             .then(res => {
                 console.log(res);
@@ -87,7 +131,9 @@
                 }
             })
             .finally(() => {
-                loading.close();
+                setTimeout(() => {
+                    lodingFlag.value = false;
+                }, 600);
             });
     };
 
@@ -95,3 +141,18 @@
         getList();
     });
 </script>
+<style scoped>
+    .demo-image__error .image-slot {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background: var(--el-fill-color-light);
+        color: var(--el-text-color-secondary);
+        font-size: 30px;
+    }
+    .demo-image__error .image-slot .el-icon {
+        font-size: 30px;
+    }
+</style>

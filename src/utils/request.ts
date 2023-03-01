@@ -10,7 +10,7 @@ function redirectLogin() {
 
 const service = axios.create({
     baseURL: BASE_URL,
-    timeout: 6000
+    timeout: 8000
 });
 
 //请求拦截器
@@ -39,8 +39,9 @@ service.interceptors.response.use(
         const authentication = author();
         if (response.data.code == 401) {
             console.log('过期');
-            authentication.deleToken();
-            redirectLogin();
+            return response.data;
+            // authentication.deleToken();
+            // redirectLogin();
         } else {
             return response.data;
         }
@@ -48,6 +49,8 @@ service.interceptors.response.use(
     error => {
         //此处接口请求失败
         // Promise.reject(error);
+        console.log('失败拦截', error);
+
         return {
             code: 500,
             msg: '服务器异常',

@@ -5,13 +5,29 @@
         v-if="lodingFlage"
     >
         <div class="grid grid-rows-3 grid-flow-col gap-4">
-            <div class="row-span-3">
+            <div
+                class="row-span-3"
+                v-if="state.carInfo.images && state.carInfo.images.length > 0"
+            >
                 <!-- 图片要等数据返回才加载 -->
                 <el-image
                     style="width: 400px; height: 350px"
                     :src="IMG_BASE_URL + state.carInfo.images[0]"
                     fit="cover"
                 />
+            </div>
+
+            <div
+                v-else
+                class="row-span-3 demo-image__error"
+            >
+                <el-image style="width: 250px; height: 200px">
+                    <template #error>
+                        <div class="image-slot">
+                            <el-icon><icon-picture /></el-icon>
+                        </div>
+                    </template>
+                </el-image>
             </div>
             <div class="row-span-2 col-span-2">
                 <p class="m-2 font-bold">{{ state.carInfo.title }}</p>
@@ -192,7 +208,11 @@
     import { ICarInfoObj, IReviewPO } from '@/utils/interface';
     import { IMG_BASE_URL, getMoneyText, timeFormet } from '@/utils/common';
     import { author } from '@/store/authentication';
-    import { Star, Delete } from '@element-plus/icons-vue';
+    import {
+        Star,
+        Delete,
+        Picture as IconPicture
+    } from '@element-plus/icons-vue';
     import { ElLoading, ElMessage } from 'element-plus';
     const lodingFlag = ref(false);
     const authentication = author();
@@ -327,4 +347,18 @@
     });
 </script>
 
-<style scoped></style>
+<style scoped>
+    .demo-image__error .image-slot {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background: var(--el-fill-color-light);
+        color: var(--el-text-color-secondary);
+        font-size: 30px;
+    }
+    .demo-image__error .image-slot .el-icon {
+        font-size: 30px;
+    }
+</style>

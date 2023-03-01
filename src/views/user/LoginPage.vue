@@ -84,6 +84,8 @@
                 }, 1000);
             })
             .catch(err => {
+                console.log('失败结果', err);
+
                 ElMessage({
                     message: err.msg || '请求异常',
                     type: 'error'
