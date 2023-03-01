@@ -2,6 +2,7 @@
     <el-upload
         class="avatar-uploader"
         :action="IMG_UP_URL"
+        :headers="headers"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
@@ -24,15 +25,19 @@
 </template>
 
 <script lang="ts" setup>
-    import { ref } from 'vue';
+    import { ref, reactive } from 'vue';
     import { ElMessage } from 'element-plus';
     import type { UploadProps } from 'element-plus';
     import { IMG_BASE_URL, IMG_UP_URL } from '@/utils/common';
+    import { author } from '@/store/authentication';
 
     const imgSize = ref(100);
     defineProps({ imageUrl: { type: String } });
     const emit = defineEmits(['upSuccess']);
-
+    const authentication = author();
+    const headers = reactive({
+        token: authentication.token
+    });
     const imgTypeList = ['image/jpeg', 'image/png'];
 
     const handleAvatarSuccess: UploadProps['onSuccess'] = (

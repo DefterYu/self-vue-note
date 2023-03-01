@@ -6,6 +6,7 @@
         <el-upload
             v-model:file-list="state.fileList"
             :action="IMG_UP_URL"
+            :headers="headers"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :before-upload="beforeAvatarUpload"
@@ -29,11 +30,16 @@
     import { Plus } from '@element-plus/icons-vue';
     import { IMG_UP_URL } from '@/utils/common';
     import { myUploadFile } from '@/utils/interface';
+    import { author } from '@/store/authentication';
     import type { UploadProps, UploadUserFile } from 'element-plus';
 
     const prop = defineProps<{
         imgLimit: number;
     }>();
+    const authentication = author();
+    const headers = reactive({
+        token: authentication.token
+    });
 
     const state = reactive({
         fileList: [] as UploadUserFile[] | myUploadFile[]
