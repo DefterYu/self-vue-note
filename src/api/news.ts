@@ -12,7 +12,6 @@ export const newsUpdata = (params: any) => {
 };
 
 //get不需要解构
-//
 export const newList = (params: any) => {
     return request.get('/news/list', { params });
 };
