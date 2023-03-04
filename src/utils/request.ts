@@ -10,7 +10,7 @@ function redirectLogin() {
 
 const service = axios.create({
     baseURL: BASE_URL,
-    timeout: 8000
+    timeout: 10000
 });
 
 //请求拦截器
