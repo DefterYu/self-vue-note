@@ -3,15 +3,10 @@ import vue from '@vitejs/plugin-vue';
 
 import path from 'path';
 const resolve = (dir: string) => path.join(__dirname, dir);
-
 import AutoImport from 'unplugin-auto-import/vite';
+import ElementPlus from 'unplugin-element-plus/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-
-import {
-    createStyleImportPlugin,
-    ElementPlusResolve
-} from 'vite-plugin-style-import';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,10 +19,8 @@ export default defineConfig({
         Components({
             resolvers: [ElementPlusResolver()]
         }),
-        //按需引入组件样式
-        createStyleImportPlugin({
-            resolves: [ElementPlusResolve()]
-        })
+        // 按需引入组件样式
+        ElementPlus({})
     ],
     resolve: {
         alias: {
