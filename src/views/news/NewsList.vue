@@ -28,6 +28,10 @@
             />
         </div>
     </div>
+    <el-backtop
+        :right="50"
+        :bottom="150"
+    />
 </template>
 
 <script setup lang="ts">
