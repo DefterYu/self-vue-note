@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { author } from '@/store/authentication';
-import { BASE_URL } from './common';
+import { BASE_URL, openMsg } from './common';
 import router from '@/router';
 
 //路由重定向
@@ -16,39 +16,44 @@ const service = axios.create({
 //请求拦截器
 service.interceptors.request.use(
     config => {
-        // const author = window.localStorage.getItem('author');
         const authentication = author();
         const toke = authentication.token;
         console.log('请求参数', config);
 
         if (toke) {
-            // console.log('存在token:', author);
             config.headers['token'] = toke;
         }
 
         return config;
     },
     error => {
-        Promise.reject(error);
+        return Promise.reject(error);
     }
 );
 
 //响应拦截器
 service.interceptors.response.use(
-    response => {
-        const authentication = author();
+    async response => {
         if (response.data.code == 401) {
             console.log('过期');
-            return response.data;
-            // authentication.deleToken();
-            // redirectLogin();
+            return openMsg().then(
+                res => {
+                    author().deleToken();
+                    redirectLogin();
+                    return Promise.reject(res);
+                },
+                err => {
+                    router.replace('/');
+                    return Promise.reject(err);
+                }
+            );
         } else {
             return response.data;
         }
     },
     error => {
         //此处接口请求失败
-        // Promise.reject(error);
+        // retrun Promise.reject(error);
         console.log('失败拦截', error);
 
         return {

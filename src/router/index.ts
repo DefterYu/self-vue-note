@@ -25,6 +25,9 @@ router.beforeEach((to, from, next) => {
         }
     } else if (to.path == '/login' && authentication.token) {
         //已登录 且 目标为登录页 返回首页
+        console.log('存在token');
+
+        // next();
         next('/');
     } else {
         //其他情况则放行
