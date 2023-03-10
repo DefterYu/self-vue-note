@@ -6,6 +6,12 @@ import router from './router';
 //全局elment样式 样式丢失时启用
 // import 'element-plus/dist/index.css';
 
+// import 'element-plus/theme-chalk/index.css';
+// import "element-plus/theme-chalk/el-loading.css";
+// import "element-plus/theme-chalk/el-message.css";
+// import "element-plus/theme-chalk/el-notification.css";
+// import "element-plus/theme-chalk/el-message-box.css";
+
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
 const app = createApp(App);
