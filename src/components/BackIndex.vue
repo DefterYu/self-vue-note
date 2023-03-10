@@ -24,7 +24,10 @@
 <script setup lang="ts">
     import { House } from '@element-plus/icons-vue';
     import { useRouter } from 'vue-router';
-    defineProps({ pageName: { type: String } });
+    // defineProps({ pageName: { type: String } });
+    defineProps<{
+        pageName: string;
+    }>();
 
     const router = useRouter();
 </script>
