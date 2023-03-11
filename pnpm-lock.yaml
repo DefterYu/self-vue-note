@@ -9,6 +9,7 @@ specifiers:
   autoprefixer: ^10.4.13
   axios: ^1.3.3
   consola: ^2.15.3
+  echarts: ^5.4.1
   element-plus: ^2.2.30
   pinia: ^2.0.30
   pinia-plugin-persistedstate: ^3.0.2
@@ -31,6 +32,7 @@ dependencies:
   '@wangeditor/editor': 5.1.23
   '@wangeditor/editor-for-vue': 5.1.12_77ywgcaevzgjoxs6yixvgo4fve
   axios: 1.3.3
+  echarts: 5.4.1
   element-plus: 2.2.30_vue@3.2.47
   pinia: 2.0.30_hmuptsblhheur2tugfgucj7gc4
   pinia-plugin-persistedstate: 3.0.2_pinia@2.0.30
@@ -797,6 +799,13 @@ packages:
     resolution: {integrity: sha512-oNlcUdHsC4zb7Msx7JN3K0Nro1dzJ48knvBOnDPKJ2GV9wl1i5vydJZUSyOfrkKFDZEud/jBsTk92S/VGSAe/g==}
     dependencies:
       ssr-window: 3.0.0
+    dev: false
+
+  /echarts/5.4.1:
+    resolution: {integrity: sha512-9ltS3M2JB0w2EhcYjCdmtrJ+6haZcW6acBolMGIuf01Hql1yrIV01L1aRj7jsaaIULJslEP9Z3vKlEmnJaWJVQ==}
+    dependencies:
+      tslib: 2.3.0
+      zrender: 5.4.1
     dev: false
 
   /electron-to-chromium/1.4.301:
@@ -1772,6 +1781,10 @@ packages:
       is-number: 7.0.0
     dev: true
 
+  /tslib/2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+    dev: false
+
   /type/1.2.0:
     resolution: {integrity: sha512-+5nt5AAniqsCnu2cEQQdpzCAh33kVx8n0VoFidKpB1dVVLAN/F+bgVOqOJqOnEnrhp222clB5p3vUlD+1QAnfg==}
     dev: false
@@ -2000,3 +2013,9 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
     dev: true
+
+  /zrender/5.4.1:
+    resolution: {integrity: sha512-M4Z05BHWtajY2241EmMPHglDQAJ1UyHQcYsxDNzD9XLSkPDqMq4bB28v9Pb4mvHnVQ0GxyTklZ/69xCFP6RXBA==}
+    dependencies:
+      tslib: 2.3.0
+    dev: false
