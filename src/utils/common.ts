@@ -55,36 +55,3 @@ export function urlencode(data: any, isPrefix = true) {
 
     return _result.length ? prefix + _result.join('&') : '';
 }
-
-import { ElMessageBox } from 'element-plus';
-import type { Action } from 'element-plus';
-export const openMsg = () => {
-    return new Promise((resolve, reject) => {
-        ElMessageBox.alert('需要重新登录', '登录过期', {
-            showClose: false,
-            confirmButtonText: '重新登录',
-            cancelButtonText: '回到首页',
-            showCancelButton: true,
-            callback: (action: Action) => {
-                action == 'confirm' ? resolve('确定') : reject('回到首页');
-            }
-        });
-    });
-    // return new Promise<void>((resolve, reject) => {
-    //     ElMessageBox.confirm(
-    //         'You have unsaved changes, save and proceed?',
-    //         'Confirm',
-    //         {
-    //             distinguishCancelAndClose: true,
-    //             confirmButtonText: 'Save',
-    //             cancelButtonText: 'Discard Changes'
-    //         }
-    //     )
-    //         .then(() => {
-    //             resolve();
-    //         })
-    //         .catch((action: Action) => {
-    //             reject(action === 'cancel' ? 'x2' : 'x1');
-    //         });
-    // });
-};
