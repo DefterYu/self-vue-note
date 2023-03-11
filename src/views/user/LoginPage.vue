@@ -11,6 +11,7 @@
                 <el-input
                     v-model="loginFromData.userName"
                     placeholder="用户名 / 邮箱"
+                    @keyup.enter="login"
                 />
             </div>
             <div class="py-2">
@@ -19,6 +20,7 @@
                     v-model="loginFromData.password"
                     show-password
                     placeholder="密码"
+                    @keyup.enter="login"
                 />
             </div>
             <div class="w-full flex justify-center py-2">
