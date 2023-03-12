@@ -3,7 +3,7 @@
     <el-container>
 
         <!-- 左侧菜单 -->
-        <el-aside>
+        <el-aside style="width: auto;">
             <el-menu active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo"
                 :collapse="isCollapse" :default-active="defaultActive" text-color="#fff" @select="handleSelect">
                 <el-menu-item index="/user/info">

@@ -3,7 +3,7 @@
     <el-container>
 
         <!-- 左侧菜单 -->
-        <el-aside>
+        <el-aside style="width: auto;">
             <el-menu active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo"
                 :collapse="isCollapse" default-active="2" text-color="#fff" @select="handleSelect">
                 <el-menu-item index="/">
@@ -53,17 +53,15 @@
                 <el-sub-menu index="sys">
                     <template #title>
                         <el-icon>
-                            <Document />
+                            <SetUp />
                         </el-icon>
                         <span>系统管理</span>
                     </template>
-                    <el-menu-item index="/admin/newslist">
-                        内容管理
-                    </el-menu-item>
+
                     <el-menu-item index="/admin/system">
                         系统开关
                     </el-menu-item>
-                    <el-menu-item index="/admin/newsAdd">发布新闻</el-menu-item>
+
                 </el-sub-menu>
 
 
@@ -98,6 +96,7 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import {
     Menu as IconMenu,
+    SetUp,
     House,
     Setting
 } from '@element-plus/icons-vue';
