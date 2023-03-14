@@ -24,7 +24,7 @@ service.interceptors.request.use(
         if (token) {
             config.headers['token'] = token;
         }
-        // console.log('请求参数', config);
+        console.log('请求参数', config);
 
         return config;
     },
