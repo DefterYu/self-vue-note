@@ -37,5 +37,9 @@ export const adminChildren = [
     {
         path: 'system',
         component: () => import('@/views/admin/AdminSystem.vue')
+    },
+    {
+        path: 'role',
+        component: () => import('@/views/admin/AdminRole.vue')
     }
 ];
