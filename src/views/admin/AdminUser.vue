@@ -68,7 +68,6 @@ const state = reactive({
     statu: 0
 });
 const tabChange = () => {
-    console.log('变动', activeName.value);
     page.pageNum = 1;
     getList(activeName.value);
 };

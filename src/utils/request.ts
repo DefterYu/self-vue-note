@@ -6,6 +6,7 @@ import router from '@/router';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import type { Action } from 'element-plus';
 
+const authentication = author();
 //路由重定向
 function redirectLogin() {
     router.replace('/login');
@@ -19,12 +20,11 @@ const service = axios.create({
 //请求拦截器
 service.interceptors.request.use(
     config => {
-        const authentication = author();
         const token = authentication.token;
-        // console.log('请求参数', config);
         if (token) {
             config.headers['token'] = token;
         }
+        // console.log('请求参数', config);
 
         return config;
     },
@@ -35,9 +35,14 @@ service.interceptors.request.use(
 
 //响应拦截器
 service.interceptors.response.use(
-    async response => {
-        if (response.data.code == 401) {
-            console.log('过期');
+    response => {
+        console.log(response);
+        if (response.request.responseURL.includes('logout')) {
+            return null;
+        }
+
+        if (response.data.code == 204) {
+            console.log('token过期');
             return openMsg().then(
                 res => {
                     author().deleToken();
@@ -51,28 +56,27 @@ service.interceptors.response.use(
             );
         } else if (response.data.code == 403) {
             console.log('无权');
-            return openMsg().then(
-                res => {
-                    return Promise.reject(res);
-                },
-                err => {
-                    return Promise.reject(err);
-                }
-            );
+            ElMessage.error({
+                message: response.data.msg,
+                showClose: true,
+                grouping: true
+            });
+            router.replace('/');
+            return Promise.reject(response.data.msg);
         } else {
             return response.data;
         }
     },
     error => {
         //此处接口请求失败
-        // retrun Promise.reject(error);
         console.log('失败拦截', error);
         ElMessage.error('无法链接至服务器');
-        return {
-            code: 500,
-            msg: '服务器异常',
-            data: error
-        };
+        return Promise.reject(error);
+        // return {
+        // code: 500,
+        // msg: '服务器异常',
+        // data: error
+        // };
     }
 );
 
@@ -80,6 +84,19 @@ export default service;
 
 //打开消息提示框
 function openMsg() {
+    return new Promise((resolve, reject) => {
+        ElMessageBox.alert('需要重新登录', '登录过期', {
+            showClose: false,
+            confirmButtonText: '重新登录',
+            cancelButtonText: '回到首页',
+            showCancelButton: true,
+            callback: (action: Action) => {
+                action == 'confirm' ? resolve('确定') : reject('回到首页');
+            }
+        });
+    });
+}
+function noExpression() {
     return new Promise((resolve, reject) => {
         ElMessageBox.alert('需要重新登录', '登录过期', {
             showClose: false,
