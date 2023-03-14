@@ -39,7 +39,15 @@ export const adminChildren = [
         component: () => import('@/views/admin/AdminSystem.vue')
     },
     {
-        path: 'role',
-        component: () => import('@/views/admin/AdminRole.vue')
+        path: 'role_group',
+        component: () => import('@/views/role/Role.vue')
+    },
+    {
+        path: 'menu_node',
+        component: () => import('@/views/role/MenuNode.vue')
+    },
+    {
+        path: 'role_bind_menu',
+        component: () => import('@/views/role/RoleBindMenu.vue')
     }
 ];
