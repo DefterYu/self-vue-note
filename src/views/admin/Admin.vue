@@ -61,7 +61,9 @@
                     <el-menu-item index="/admin/system">
                         系统开关
                     </el-menu-item>
-
+                    <el-menu-item index="/admin/role">
+                        权限管理
+                    </el-menu-item>
                 </el-sub-menu>
 
 
