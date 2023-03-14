@@ -96,6 +96,14 @@ export interface IForm {
     moneyValue: number;
     images?: string[];
 }
+export interface IRole {
+    id: number;
+    name: string;
+    roleKey: string;
+    status: string;
+    delFlag?: number;
+    createTime?: string;
+}
 
 //覆盖elmui文件上传的响应对象 防止报错
 import type { UploadFile } from 'element-plus';
