@@ -97,11 +97,12 @@ export interface IForm {
     images?: string[];
 }
 export interface IRole {
-    id: number;
+    id?: number;
     name: string;
     roleKey: string;
     status: string;
     delFlag?: number;
+    remark?: string;
     createTime?: string;
 }
 

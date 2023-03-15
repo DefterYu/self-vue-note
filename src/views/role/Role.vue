@@ -1,13 +1,26 @@
 <template>
-    <div>
-        角色
-    </div>
-    <el-table :data="list" style="width: 100%" empty-text="暂无数据" stripe border>
+    <el-row :gutter="10" class="mb-8">
+        <el-col :span="1.5">
+            <el-button type="primary" plain :icon="Plus" @click="addClick">新增</el-button>
+        </el-col>
+        <el-col :span="1.5">
+            <el-button type="warning" plain :icon="Refresh" @click="refreshClick">刷新</el-button>
+        </el-col>
+    </el-row>
+    <el-table :data="list" style="width: 100%" :header-cell-style="{ background: '#f8f8f9', color: '#515a6e' }"
+        empty-text="暂无数据" stripe border table-layout="fixed">
         <el-table-column prop="id" label="id" width="50" />
-        <el-table-column prop="name" label="权限名" width="180" />
-        <el-table-column prop="roleKey" label="键值" width="180" />
+        <el-table-column prop="name" label="权限名" />
+        <el-table-column prop="roleKey" label="键值" />
+        <el-table-column prop="remark" label="备注" />
+        <el-table-column label="状态">
+            <template #default="scoped">
+                <el-switch v-model="scoped.row.status" active-value="0" inactive-value="1" />
+            </template>
 
-        <el-table-column fixed="right" label="操作" width="150">
+        </el-table-column>
+
+        <el-table-column fixed="right" label="操作">
             <template #default="scoped">
                 <el-button type="primary" size="small" text @click="editRoleClick(scoped.row)">
                     编辑
@@ -28,38 +41,126 @@
             :page-size="page.pageSize" layout="prev, pager, next" background @size-change="pageCurrentChange"
             @current-change="pageCurrentChange" />
     </div>
+    <el-dialog v-model="dialogFormVisible" title="添加角色">
+        <el-form :model="form" ref="ruleFormRef" :rules="rules">
+            <el-form-item label="角色名称" label-width="140" prop="name">
+                <el-input v-model="form.name" placeholder="请输入角色名称" />
+            </el-form-item>
+            <el-form-item label="键值" label-width="140" prop="roleKey">
+                <el-input v-model="form.roleKey" placeholder="请输入角色键值" />
+            </el-form-item>
+            <el-form-item label="状态" label-width="140">
+                <el-switch v-model="form.status" active-value="0" inactive-value="1" />
+            </el-form-item>
+            <el-form-item label="备注" label-width="140">
+                <el-input v-model="form.remark" :rows="4" type="textarea" placeholder="请输入角色备注" />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+                <el-button @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="submitForm(ruleFormRef)">
+                    新增
+                </el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { roleAdd, roleList, roleDelet, roleUpdata } from '@/api/authRole';
 import { onMounted, ref, reactive, toRefs } from 'vue';
 import { IRole } from '@/utils/interface';
-
+import { Plus, Refresh } from '@element-plus/icons-vue';
+import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessage } from 'element-plus';
 
 
 
 const state = reactive({
     list: [] as IRole[],
+    item: {} as IRole || {},
+    form: {
+        name: '',
+        roleKey: '',
+        status: '0',
+        remark: ''
+    } as IRole,
     userType: 1,
     total: 0,
     page: {
         pageNum: 1,
         pageSize: 10
-    }
+    },
+    dialogFormVisible: false
 });
-const { page, total, list } = toRefs(state);
+const { page, total, list, form, dialogFormVisible } = toRefs(state);
+
+const ruleFormRef = ref<FormInstance>();
+const rules = reactive<FormRules>({
+    name: [
+        { required: true, message: '请输入角色名称', trigger: 'blur' },
+    ],
+    roleKey: [
+        { required: true, message: '请输入角色键值', trigger: 'blur' },
+    ]
+})
+
+/**提交表单 */
+const submitForm = async (formEl: FormInstance | undefined) => {
+    if (!formEl) return
+    await formEl.validate((valid) => {
+        if (valid) {
+            roleAdd(state.form).then(res => {
+                console.log(res);
+                if (res.code == 200) {
+                    state.dialogFormVisible = false;
+                    refreshClick();
+                } else {
+                    ElMessage.error(res.msg)
+                }
+            })
+        }
+    })
+}
+
+/**重置表单 */
+const resetForm = (formEl: FormInstance | undefined) => {
+    if (!formEl) return
+    formEl.resetFields()
+}
+
+
 const pageCurrentChange = () => {
     // getList(0);
 
 };
+
 const editRoleClick = (params: IRole) => {
     console.log('点击元素', params);
+    state.item = params
 
 }
+
 const deletClick = (id: number) => {
     roleDelet(id).then(res => {
         console.log("删除结果", res);
+        refreshClick();
+    })
+}
+/**点击新增 */
+const addClick = () => {
+    state.dialogFormVisible = true
+}
 
+const refreshClick = () => {
+    roleList(state.page).then(res => {
+        console.log("获取角色列表", res);
+        if (res.code == 200) {
+            state.list = res.data.records
+            state.total = res.data.total
+        }
     })
 }
 
@@ -70,11 +171,7 @@ onMounted(() => {
             state.list = res.data.records
             state.total = res.data.total
         }
-
     })
-
-
-
 })
 
 
