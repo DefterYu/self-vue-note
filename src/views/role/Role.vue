@@ -15,7 +15,8 @@
         <el-table-column prop="remark" label="备注" />
         <el-table-column label="状态">
             <template #default="scoped">
-                <el-switch v-model="scoped.row.status" active-value="0" inactive-value="1" />
+                <el-switch v-model="scoped.row.status" active-value="0" inactive-value="1"
+                    @change="statusChange(scoped.row)" />
             </template>
 
         </el-table-column>
@@ -85,10 +86,9 @@
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="resetForm(editFormRef)">重置</el-button>
                 <el-button @click="dialogFormVisible_edit = false">取消</el-button>
                 <el-button type="primary" @click="submitFormEdit(editFormRef)">
-                    新增
+                    更新
                 </el-button>
             </span>
         </template>
@@ -162,11 +162,11 @@ const submitFormEdit = async (formEl: FormInstance | undefined) => {
     if (!formEl) return
     await formEl.validate((valid) => {
         if (valid) {
-            roleUpdata(state.form).then(res => {
+            roleUpdata(state.nowItem).then(res => {
                 console.log(res);
                 if (res.code == 200) {
+                    state.dialogFormVisible_edit = false;
                     getList();
-                    state.dialogFormVisible = false;
                 } else {
                     ElMessage.error(res.msg)
                 }
@@ -190,14 +190,19 @@ const pageCurrentChange = () => {
 /**点击编辑 */
 const editRoleClick = (params: IRole) => {
     console.log('点击元素', params);
-
-
     for (const key of Object.keys(params).values()) {
         // state.nowItem[key as keyof] = params[key];
     }
-    // state.nowItem = params
+    state.nowItem = params
     state.dialogFormVisible_edit = true
+}
 
+const statusChange = (params: IRole) => {
+    console.log(params);
+    roleUpdata(params).then(res => {
+        console.log("修改结果", res);
+
+    })
 }
 
 /**删除角色 */
