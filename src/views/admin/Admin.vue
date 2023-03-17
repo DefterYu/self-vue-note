@@ -61,7 +61,7 @@
                     <el-menu-item index="/admin/system">
                         系统开关
                     </el-menu-item>
-                    <el-menu-item index="/admin/role_group">
+                    <!-- <el-menu-item index="/admin/role_group">
                         角色管理
                     </el-menu-item>
                     <el-menu-item index="/admin/menu_node">
@@ -69,9 +69,8 @@
                     </el-menu-item>
                     <el-menu-item index="/admin/role_bind_menu">
                         角色授权
-                    </el-menu-item>
+                    </el-menu-item> -->
                 </el-sub-menu>
-
 
                 <el-menu-item index="/user">
                     <el-icon>
