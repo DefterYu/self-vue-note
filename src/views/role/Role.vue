@@ -80,7 +80,7 @@
             <el-form-item label="状态" label-width="140">
                 <el-switch v-model="nowItem.status" active-value="0" inactive-value="1" />
             </el-form-item>
-            <el-form-item label="备注" label-width="140">
+            <el-form-item label="备注" label-width="140" prop="remark">
                 <el-input v-model="nowItem.remark" :rows="4" type="textarea" placeholder="请输入角色备注" />
             </el-form-item>
         </el-form>
@@ -132,10 +132,10 @@ const addFormRef = ref<FormInstance>(),
     editFormRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
     name: [
-        { required: true, message: '请输入角色名称', trigger: 'blur' },
+        { required: true, message: '请输入角色名称', trigger: 'blur' }
     ],
     roleKey: [
-        { required: true, message: '请输入角色键值', trigger: 'blur' },
+        { required: true, message: '请输入角色键值', trigger: 'blur' }
     ]
 })
 
@@ -148,6 +148,7 @@ const submitFormAdd = async (formEl: FormInstance | undefined) => {
                 console.log(res);
                 if (res.code == 200) {
                     getList();
+                    formEl.resetFields();
                     state.dialogFormVisible = false;
                 } else {
                     ElMessage.error(res.msg)
@@ -190,13 +191,13 @@ const pageCurrentChange = () => {
 /**点击编辑 */
 const editRoleClick = (params: IRole) => {
     console.log('点击元素', params);
-    for (const key of Object.keys(params).values()) {
-        // state.nowItem[key as keyof] = params[key];
-    }
-    state.nowItem = params
+    Object.keys(params).map((key) => {
+        state.nowItem[key] = params[key as keyof IRole];
+    })
     state.dialogFormVisible_edit = true
 }
 
+/**切换状态 */
 const statusChange = (params: IRole) => {
     console.log(params);
     roleUpdata(params).then(res => {
