@@ -191,9 +191,10 @@ const pageCurrentChange = () => {
 /**点击编辑 */
 const editRoleClick = (params: IRole) => {
     console.log('点击元素', params);
-    Object.keys(params).map((key) => {
-        state.nowItem[key] = params[key as keyof IRole];
-    })
+    // Object.keys(params).map((key) => {
+    //     // state.nowItem[key] = params[key as keyof IRole];
+    // })
+    state.nowItem = JSON.parse(JSON.stringify(params));
     state.dialogFormVisible_edit = true
 }
 
