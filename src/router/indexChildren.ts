@@ -3,6 +3,11 @@
  */
 export const indexChildren = [
     {
+        path: 'banner',
+        name: 'banner',
+        component: () => import('@/views/Round.vue')
+    },
+    {
         path: 'news',
         name: 'news',
         component: () => import('@/views/news/NewsList.vue')

@@ -9,7 +9,11 @@ export const projeRouter = [
     {
         // 访问根路径重定向到/home
         path: '/',
-        redirect: '/index'
+        redirect: '/index/banner'
+    },
+    {
+        path: '/index',
+        redirect: '/index/banner'
     },
     {
         // 访问根路径重定向到/home
